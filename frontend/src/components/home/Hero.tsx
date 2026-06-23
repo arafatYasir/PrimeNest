@@ -36,7 +36,6 @@ export default function Hero() {
                         </div>
                         <Button
                             size="lg"
-                            className="cursor-pointer"
                         >
                             <Search className="h-4 w-4" />
                             <span className="hidden sm:inline">Search</span>
