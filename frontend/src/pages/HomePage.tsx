@@ -1,6 +1,11 @@
+import Hero from "@/components/home/Hero"
+
 const HomePage = () => {
     return (
-        <div className="text-3xl text-center font-bold font-heading">Welcome to homepage</div>
+        <>
+            {/* ---- Hero Section ---- */}
+            <Hero />
+        </>
     )
 }
 
