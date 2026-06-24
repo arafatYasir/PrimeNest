@@ -2,8 +2,27 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Container from "../Container";
 import { Link } from "react-router";
+import PropertyCard from "../PropertyCard";
+import { useQuery } from "@tanstack/react-query";
+import { fetchFeaturedProperties } from "@/lib/apiCalls";
 
 export default function FeaturedProperties() {
+    const { data, isLoading, isError, error } = useQuery({
+        queryKey: ["properties"],
+        queryFn: fetchFeaturedProperties,
+        staleTime: 5 * 60 * 1000
+    });
+
+    if (isLoading) {
+        return <div>Loading Featured Properties...</div>
+    }
+
+    if (isError) {
+        return <p>{error.message}</p>
+    }
+
+    console.log(data);
+
     return (
         <section className="bg-background">
             <Container>
@@ -29,6 +48,11 @@ export default function FeaturedProperties() {
                 </div>
 
                 {/* Property cards grid goes here later */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+                    {data.properties.map((property) => (
+                        <PropertyCard key={property._id ?? property.title} property={property} />
+                    ))}
+                </div>
             </Container>
         </section>
     );
