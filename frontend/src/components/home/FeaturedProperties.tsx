@@ -7,16 +7,23 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchFeaturedProperties } from "@/lib/apiCalls";
 import type { Property } from "@/types/global";
 import PropertyCardSkeleton from "../PropertyCardSkeleton";
+import PropertyCardsError from "../PropertyCardsError";
 
 export default function FeaturedProperties() {
-    const { data, isLoading, isError, error } = useQuery({
+    const { data, isLoading, isError, error, refetch } = useQuery({
         queryKey: ["properties"],
         queryFn: fetchFeaturedProperties,
         staleTime: 5 * 60 * 1000
     });
 
     if (isError) {
-        return <p>{error.message}</p>
+        return (
+            <PropertyCardsError
+                title="Couldn't get featured properties"
+                message={error.message}
+                onRetry={() => refetch()}
+            />
+        )
     }
 
     return (
