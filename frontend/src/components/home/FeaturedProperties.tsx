@@ -27,7 +27,7 @@ export default function FeaturedProperties() {
     }
 
     return (
-        <section className="bg-background">
+        <section>
             <Container>
                 <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
                     <div>

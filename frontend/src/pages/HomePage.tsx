@@ -1,5 +1,6 @@
 import FeaturedProperties from "@/components/home/FeaturedProperties"
 import Hero from "@/components/home/Hero"
+import WhyChooseUs from "@/components/home/WhyChooseUs"
 
 const HomePage = () => {
     return (
@@ -9,6 +10,9 @@ const HomePage = () => {
 
             {/* ---- Featured Properties Section ---- */}
             <FeaturedProperties />
+
+            {/* ---- Why Choose Us Section ---- */}
+            <WhyChooseUs />
         </>
     )
 }
