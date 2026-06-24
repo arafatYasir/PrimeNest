@@ -25,5 +25,33 @@ export const FEATURES = [
         description:
             "Bookmark properties you love and compare them side by side. Build your shortlist and never lose track of a listing that caught your eye.",
     }
+];
 
+export const FOOTER_COLUMNS = [
+    {
+        title: "Browse",
+        links: [
+            { label: "All Properties", href: "/properties" },
+            { label: "Houses", href: "/properties" },
+            { label: "Apartments", href: "/properties" },
+            { label: "Condos", href: "/properties" },
+            { label: "Lands", href: "/properties" },
+        ],
+    },
+    {
+        title: "For Sellers",
+        links: [
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Manage Listings", href: "/dashboard" },
+            { label: "Lead Inbox", href: "/dashboard" },
+        ],
+    },
+    {
+        title: "Account",
+        links: [
+            { label: "My Profile", href: "/profile" },
+            { label: "Saved Properties", href: "/saved" },
+            { label: "Sign In", href: "/sign-in" },
+        ],
+    },
 ];
