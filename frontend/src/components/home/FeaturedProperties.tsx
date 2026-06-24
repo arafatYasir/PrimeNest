@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import PropertyCard from "../PropertyCard";
 import { useQuery } from "@tanstack/react-query";
 import { fetchFeaturedProperties } from "@/lib/apiCalls";
+import type { Property } from "@/types/global";
 
 export default function FeaturedProperties() {
     const { data, isLoading, isError, error } = useQuery({
@@ -47,8 +48,8 @@ export default function FeaturedProperties() {
 
                 {/* Property cards grid goes here later */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-                    {data.properties.map((property) => (
-                        <PropertyCard key={property._id ?? property.title} property={property} />
+                    {data.properties.map((property: Property) => (
+                        <PropertyCard key={property._id} property={property} />
                     ))}
                 </div>
             </Container>
