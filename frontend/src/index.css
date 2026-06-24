@@ -3,6 +3,9 @@
 @import "shadcn/tailwind.css";
 
 @theme inline {
+  /* ---- Breakpoint ---- */
+  --breakpoint-xs: 480px;
+
   /* ---- Font Families ---- */
   --font-heading: "Manrope", sans-serif;
   --font-sans: "Inter", sans-serif;
