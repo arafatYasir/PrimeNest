@@ -1,15 +1,21 @@
 import express from "express";
-import { PORT } from "./config/env.js";
+import { PORT, SITE_URL } from "./config/env.js";
 import { connectToDB } from "./config/mongodb.js";
+import cors from "cors";
+import healthRouter from "./routes/health.route.js";
+import propertiesRouter from "./routes/properties.route.js";
 
 const app = express();
 
 // Middlewares
 app.use(express.json());
+app.use(cors({
+    origin: SITE_URL
+}));
 
-app.get("/health", (req, res) => {
-    res.status(200).json({ success: true });
-});
+// Routes
+app.use("/health", healthRouter);
+app.use("/properties", propertiesRouter);
 
 app.listen(PORT, async () => {
     console.log(`Example app listening on port ${PORT}`);

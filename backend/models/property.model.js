@@ -11,6 +11,7 @@ const propertySchema = new Schema(
             required: true
         },
         propertyType: {
+            type: String,
             enum: ["House", "Apartment", "Condo", "Land"],
             default: "House"
         },
@@ -57,6 +58,7 @@ const propertySchema = new Schema(
             required: true
         },
         features: {
+            type: String,
             enum: ["Garage", "Balcony", "Garden", "Swimming Pool", "Storage"]
         },
         seller: {
