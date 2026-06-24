@@ -6,6 +6,7 @@ import PropertyCard from "../PropertyCard";
 import { useQuery } from "@tanstack/react-query";
 import { fetchFeaturedProperties } from "@/lib/apiCalls";
 import type { Property } from "@/types/global";
+import PropertyCardSkeleton from "../PropertyCardSkeleton";
 
 export default function FeaturedProperties() {
     const { data, isLoading, isError, error } = useQuery({
@@ -13,10 +14,6 @@ export default function FeaturedProperties() {
         queryFn: fetchFeaturedProperties,
         staleTime: 5 * 60 * 1000
     });
-
-    if (isLoading) {
-        return <div>Loading Featured Properties...</div>
-    }
 
     if (isError) {
         return <p>{error.message}</p>
@@ -48,9 +45,17 @@ export default function FeaturedProperties() {
 
                 {/* ---- Featured Property Cards ---- */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-                    {data.properties.map((property: Property) => (
-                        <PropertyCard key={property._id} property={property} />
-                    ))}
+                    {
+                        isLoading ? (
+                            Array.from({ length: 8 }).map((_, i) => (
+                                <PropertyCardSkeleton key={i} />
+                            ))
+                        ) : (
+                            data.properties.map((property: Property) => (
+                                <PropertyCard key={property._id} property={property} />
+                            ))
+                        )
+                    }
                 </div>
             </Container>
         </section>
