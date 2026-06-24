@@ -46,7 +46,7 @@ export default function FeaturedProperties() {
                     </Link>
                 </div>
 
-                {/* Property cards grid goes here later */}
+                {/* ---- Featured Property Cards ---- */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
                     {data.properties.map((property: Property) => (
                         <PropertyCard key={property._id} property={property} />
