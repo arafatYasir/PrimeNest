@@ -21,8 +21,6 @@ export default function FeaturedProperties() {
         return <p>{error.message}</p>
     }
 
-    console.log(data);
-
     return (
         <section className="bg-background">
             <Container>
@@ -48,7 +46,7 @@ export default function FeaturedProperties() {
                 </div>
 
                 {/* Property cards grid goes here later */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
                     {data.properties.map((property) => (
                         <PropertyCard key={property._id ?? property.title} property={property} />
                     ))}
