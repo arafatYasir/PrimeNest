@@ -11,10 +11,10 @@ function WhyChooseUs() {
                     <span className="text-sm font-semibold tracking-wide text-accent uppercase">
                         Why PrimeNest
                     </span>
-                    <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight text-text sm:text-4xl">
+                    <h2 className="mt-2 font-heading text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text">
                         Everything you need to buy & sell with confidence
                     </h2>
-                    <p className="mx-auto mt-3 max-w-2xl text-base text-text-secondary">
+                    <p className="mx-auto mt-3 max-w-2xl text-sm sm:text-base text-text-secondary">
                         PrimeNest brings together smart search, direct communication, and
                         secure payments so every step of your real estate journey feels effortless.
                     </p>

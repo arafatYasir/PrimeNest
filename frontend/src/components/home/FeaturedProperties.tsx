@@ -34,7 +34,7 @@ export default function FeaturedProperties() {
                         <h2 className="font-heading text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text text-center sm:text-left">
                             Featured Properties
                         </h2>
-                        <p className="mt-2 text-xs xs:text-sm sm:text-base text-center sm:text-left text-text-secondary">
+                        <p className="mt-2 text-sm sm:text-base text-center sm:text-left text-text-secondary">
                             Explore our latest handpicked listings near you.
                         </p>
                     </div>
