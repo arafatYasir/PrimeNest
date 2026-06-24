@@ -4,6 +4,7 @@ import { connectToDB } from "./config/mongodb.js";
 import cors from "cors";
 import healthRouter from "./routes/health.route.js";
 import propertiesRouter from "./routes/properties.route.js";
+import errorMiddleware from "./middlewares/error.middleware.js";
 
 const app = express();
 
@@ -16,6 +17,9 @@ app.use(cors({
 // Routes
 app.use("/health", healthRouter);
 app.use("/properties", propertiesRouter);
+
+// Global error handler
+app.use(errorMiddleware);
 
 app.listen(PORT, async () => {
     console.log(`Example app listening on port ${PORT}`);
