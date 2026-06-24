@@ -29,12 +29,12 @@ export default function FeaturedProperties() {
     return (
         <section>
             <Container>
-                <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+                <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
                     <div>
-                        <h2 className="font-heading text-3xl font-bold tracking-tight text-text sm:text-4xl">
+                        <h2 className="font-heading text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text text-center sm:text-left">
                             Featured Properties
                         </h2>
-                        <p className="mt-2 text-base text-text-secondary">
+                        <p className="mt-2 text-xs xs:text-sm sm:text-base text-center sm:text-left text-text-secondary">
                             Explore our latest handpicked listings near you.
                         </p>
                     </div>
@@ -51,7 +51,9 @@ export default function FeaturedProperties() {
                 </div>
 
                 {/* ---- Featured Property Cards ---- */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                <div className="grid gap-6 mt-12" style={{
+                    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))"
+                }}>
                     {
                         isLoading ? (
                             Array.from({ length: 8 }).map((_, i) => (

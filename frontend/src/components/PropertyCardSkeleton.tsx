@@ -26,27 +26,15 @@ function PropertyCardSkeleton() {
 
                 {/* Divider + Stats */}
                 <div className="mt-auto pt-4">
-                    <div className="border-t border-border/60 pt-4 flex items-center justify-between">
+                    <div className="border-t border-border/60 pt-4 flex items-center justify-between gap-6">
                         {/* Beds */}
-                        <div className="flex items-center gap-1.5">
-                            <Skeleton className="h-[18px] w-[18px] rounded" />
-                            <Skeleton className="h-[18px] w-6 rounded" />
-                            <Skeleton className="h-[14px] w-7 rounded" />
-                        </div>
+                        <Skeleton className="w-1/3 h-[18px] rounded" />
 
                         {/* Baths */}
-                        <div className="flex items-center gap-1.5">
-                            <Skeleton className="h-[18px] w-[18px] rounded" />
-                            <Skeleton className="h-[18px] w-6 rounded" />
-                            <Skeleton className="h-[14px] w-9 rounded" />
-                        </div>
+                        <Skeleton className="w-1/3 h-[18px] rounded" />
 
                         {/* Area */}
-                        <div className="flex items-center gap-1.5">
-                            <Skeleton className="h-[18px] w-[18px] rounded" />
-                            <Skeleton className="h-[18px] w-10 rounded" />
-                            <Skeleton className="h-[14px] w-7 rounded" />
-                        </div>
+                        <Skeleton className="w-1/3 h-[18px] rounded" />
                     </div>
                 </div>
             </div>
