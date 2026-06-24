@@ -1,4 +1,11 @@
-import { Bath, Bed, MapPin, Maximize } from "lucide-react";
+import type { Property } from "@/types/global";
+import { Bath, Bed, MapPin, Maximize, type LucideIcon } from "lucide-react";
+
+interface StatItemTypes {
+    icon: LucideIcon;
+    value: number;
+    unit: string | undefined;
+}
 
 const STATUS_STYLES = {
     Available: {
@@ -18,7 +25,7 @@ const STATUS_STYLES = {
     },
 };
 
-function formatPrice(price) {
+function formatPrice(price: number) {
     return new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -26,7 +33,7 @@ function formatPrice(price) {
     }).format(price);
 }
 
-function StatItem({ icon: Icon, value, unit }) {
+function StatItem({ icon: Icon, value, unit }: StatItemTypes) {
     return (
         <div className="flex items-center gap-1.5">
             <Icon className="h-[18px] w-[18px] text-text-secondary/70" strokeWidth={1.5} />
@@ -36,7 +43,7 @@ function StatItem({ icon: Icon, value, unit }) {
     );
 }
 
-function PropertyCard({ property }) {
+function PropertyCard({ property }: { property: Property }) {
     const {
         _id,
         title,
@@ -131,7 +138,7 @@ function PropertyCard({ property }) {
                         <StatItem icon={Bath} value={baths} unit={baths !== undefined ? `Bath${baths > 1 ? "s" : ""}` : undefined} />
                         <StatItem
                             icon={Maximize}
-                            value={area ? area.toLocaleString() : "—"}
+                            value={area}
                             unit={area ? "sqft" : undefined}
                         />
                     </div>

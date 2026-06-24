@@ -58,8 +58,7 @@ const propertySchema = new Schema(
             required: true
         },
         features: {
-            type: String,
-            enum: ["Garage", "Balcony", "Garden", "Swimming Pool", "Storage"]
+            type: [String]
         },
         seller: {
             type: mongoose.Schema.Types.ObjectId,
