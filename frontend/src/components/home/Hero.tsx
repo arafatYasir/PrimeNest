@@ -1,10 +1,11 @@
 import { Search, MapPin, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Container from "../Container";
 
 export default function Hero() {
     return (
         <section className="relative overflow-hidden bg-linear-to-t from-secondary/5 to-secondary/30">
-            <div className="mx-auto flex max-w-4xl flex-col items-center px-4 sm:px-6 py-14 xs:py-22 sm:py-28 lg:py-36 text-center ">
+            <Container className="flex flex-col items-center py-14 xs:py-22 sm:py-28 lg:py-36">
                 {/* ---- Badge ---- */}
                 <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-2 xs:px-4 py-1.5 text-[10px] xs:text-xs sm:text-sm font-medium text-text-secondary shadow-sm">
                     <Home className="size-3 xs:size-3.5 sm:size-4 text-accent" />
@@ -18,7 +19,7 @@ export default function Hero() {
                     </span>
                 </h1>
 
-                <p className="mt-3 sm:mt-6 max-w-2xl text-xs xs:text-sm sm:text-base md:text-lg leading-relaxed text-text-secondary">
+                <p className="mt-3 sm:mt-6 max-w-2xl text-xs xs:text-sm sm:text-base md:text-lg leading-relaxed text-text-secondary text-center">
                     Discover, explore, and secure your next home. Browse properties on the
                     map, search by location, and connect with sellers, all in one place.
                 </p>
@@ -42,7 +43,7 @@ export default function Hero() {
                         </Button>
                     </div>
                 </div>
-            </div>
+            </Container>
         </section>
     );
 }
