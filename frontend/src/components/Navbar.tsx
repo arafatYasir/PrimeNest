@@ -68,7 +68,7 @@ export default function Navbar() {
                                                 to={item.to}
                                                 className={({ isActive }) =>
                                                     cn(
-                                                        "block rounded-md py-2.5 text-sm font-medium text-text-secondary transition-colors hover:bg-section hover:text-primary",
+                                                        "block rounded-md px-3 py-2.5 text-sm font-medium text-text-secondary transition-colors active:bg-section active:text-primary",
                                                         isActive && "text-accent"
                                                     )
                                                 }
@@ -152,7 +152,7 @@ export default function Navbar() {
                             size="icon"
                             aria-label="Notifications"
                             title="Notifications"
-                            className="relative size-9 rounded-full text-text-secondary hover:bg-section hover:text-primary"
+                            className="relative size-9 rounded-full text-text-secondary hover:text-primary active:text-primary"
                         >
                             <Bell className="size-4 xs:size-5" strokeWidth={2.25} />
                             <span className="absolute right-2.5 top-2 xs:right-1.5 xs:top-1.5 flex size-1 xs:size-2">
