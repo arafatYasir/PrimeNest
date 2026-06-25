@@ -2,10 +2,12 @@ import { Link, NavLink } from "react-router";
 import { Home } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react'
 
 const navItems = [
     { label: "Browse Properties", to: "/properties" },
     { label: "About Us", to: "/about" },
+    { label: "Contact", to: "/contact" }
 ];
 
 export default function Navbar() {
@@ -60,12 +62,21 @@ export default function Navbar() {
 
                 {/* ---- Authentication Part ---- */}
                 <div className="flex items-center gap-3">
-                    <Button
-                        size="lg"
-                        className=""
-                    >
-                        <Link to="/sign-in">Sign In</Link>
-                    </Button>
+                    <Show when="signed-out">
+                        <SignInButton mode="modal">
+                            <Button size="lg">Sign In</Button>
+                        </SignInButton>
+                    </Show>
+                    <Show when="signed-in">
+                        <Link to="/dashboard">
+                            <Button size="lg">Dashboard</Button>
+                        </Link>
+                        <UserButton appearance={{
+                            elements: {
+                                userButtonAvatarBox: "size-9!",
+                            }
+                        }} />
+                    </Show>
                 </div>
             </nav>
         </header>

@@ -1,5 +1,5 @@
 export const fetchFeaturedProperties = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/featured`);
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/properties/featured`);
     const data = await res.json();
 
     if (!res.ok) {
