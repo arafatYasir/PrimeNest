@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router";
 import { Home } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react'
+import { Show, SignInButton, UserButton } from '@clerk/react'
 
 const navItems = [
     { label: "Browse Properties", to: "/properties" },
