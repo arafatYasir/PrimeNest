@@ -51,7 +51,6 @@ export const FOOTER_COLUMNS = [
         links: [
             { label: "My Profile", href: "/profile" },
             { label: "Saved Properties", href: "/saved" },
-            { label: "Sign In", href: "/sign-in" },
         ],
     },
 ];
