@@ -15,9 +15,14 @@ const propertySchema = new Schema(
             enum: ["House", "Apartment", "Condo", "Land"],
             default: "House"
         },
+        listingType: {
+            type: String,
+            enum: ["For Sale", "For Rent", "Sold"],
+            default: "For Sale"
+        },
         status: {
             type: String,
-            enum: ["Available", "Sold", "Pending"],
+            enum: ["Available", "Sold"],
             default: "Available"
         },
         images: [String],
