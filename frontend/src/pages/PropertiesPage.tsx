@@ -1,8 +1,13 @@
 import Container from "@/components/Container";
 import PropertiesFilter from "@/components/properties/PropertiesFilter";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Grid3x3, MapPin } from "lucide-react";
 
 const PropertiesPage = () => {
+    // States
+    const [currentTab, setCurrentTab] = useState<"properties" | "map">("properties");
+
     // Scrolling to the top of the page
     useEffect(() => {
         window.scrollTo({ top: 0 });
@@ -34,9 +39,28 @@ const PropertiesPage = () => {
                         <PropertiesFilter />
                     </div>
 
-                    {/* ---- Property Cards ---- */}
+                    {/* ---- Property Cards / Map ---- */}
                     <div className="lg:col-span-3">
-                        
+                        {/* Properties Count */}
+                        <div>
+                            <h3 className="text-lg font-semibold font-sans text-text">Found Properties: 10</h3>
+                        </div>
+
+                        {/* Tabs */}
+                        <div className="mt-4">
+                            <Tabs value={currentTab} onValueChange={(value) => setCurrentTab(value)}>
+                                <TabsList>
+                                    <TabsTrigger value="properties">
+                                        <Grid3x3 />
+                                        Grid View
+                                    </TabsTrigger>
+                                    <TabsTrigger value="map">
+                                        <MapPin />
+                                        Map View
+                                    </TabsTrigger>
+                                </TabsList>
+                            </Tabs>
+                        </div>
                     </div>
                 </div>
             </Container>

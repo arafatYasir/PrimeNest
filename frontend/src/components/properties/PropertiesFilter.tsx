@@ -55,6 +55,7 @@ const PropertiesFilter = () => {
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="Available">Available</SelectItem>
+                        <SelectItem value="Pending">Pending</SelectItem>
                         <SelectItem value="Sold">Sold</SelectItem>
                     </SelectContent>
                 </Select>
