@@ -1,4 +1,4 @@
-import { SlidersHorizontal, Search } from "lucide-react";
+import { SlidersHorizontal, Search, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { bedsAndBathsFilterItems, propertyTypes } from "@/lib/data";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -139,14 +139,24 @@ const PropertiesFilter = () => {
                 </div>
             </div>
 
-            {/* Apply Button */}
-            <Button
-                size="lg"
-                className="w-full"
-            >
-                <Search className="size-4" />
-                Apply Filters
-            </Button>
+            {/* ---- Buttons ---- */}
+            <div className="space-y-2">
+                <Button
+                    size="lg"
+                    className="w-full"
+                >
+                    <Search className="size-4" />
+                    Apply Filters
+                </Button>
+                <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full group"
+                >
+                    <RotateCcw className="size-4 group-hover:-rotate-180 transition-transform duration-250 ease-in-out" />
+                    Reset Filters
+                </Button>
+            </div>
         </div>
     )
 }

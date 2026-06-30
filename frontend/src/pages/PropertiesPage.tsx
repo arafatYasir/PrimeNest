@@ -3,23 +3,35 @@ import PropertiesFilter from "@/components/properties/PropertiesFilter";
 import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Grid3x3, MapPin } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchAllProperties } from "@/lib/apiCalls";
 import PropertiesPageSkeleton from "@/components/properties/PropertiesPageSkeleton";
 import PropertyCard from "@/components/PropertyCard";
 import type { Property } from "@/types/global";
+import { useSearchParams } from "react-router";
+import { Button } from "@/components/ui/button";
 
 const PropertiesPage = () => {
     // States
     const [currentTab, setCurrentTab] = useState<"properties" | "map">("properties");
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
 
     // Data fetching
-    const { data, isLoading } = useQuery({
-        queryKey: ["properties"],
+    const { data, isLoading, isPlaceholderData } = useQuery({
+        queryKey: ["properties", page],
         queryFn: async () => fetchAllProperties(1),
+        placeholderData: keepPreviousData
     });
 
-    // Scrolling to the top of the page
+    // Functions
+    const goToPage = (page: number) => {
+        setSearchParams({ page: String(page) });
+        window.scrollTo({ top: 0 });
+    }
+
+    // Scrolling to the top of the page on first load
     useEffect(() => {
         window.scrollTo({ top: 0 });
     }, []);
@@ -79,11 +91,38 @@ const PropertiesPage = () => {
 
                                 {
                                     currentTab === "properties" ? (
-                                        <div className="grid grid-cols-3 gap-6 mt-10">
-                                            {data.data.map((property: Property) => (
-                                                <PropertyCard key={property._id} property={property} />
-                                            ))}
-                                        </div>
+                                        <>
+                                            <div className="grid grid-cols-3 gap-6 mt-10">
+                                                {data.data.map((property: Property) => (
+                                                    <PropertyCard key={property._id} property={property} />
+                                                ))}
+                                            </div>
+
+                                            {/* ---- Pagination ---- */}
+                                            <div className="mt-10 flex items-center justify-center gap-5">
+                                                <Button
+                                                    variant="outline"
+                                                    size="lg"
+                                                    disabled={data.pagination.currentPage <= 1 || isPlaceholderData}
+                                                    onClick={() => goToPage(page - 1)}
+                                                >
+                                                    Previous
+                                                </Button>
+
+                                                <span className="text-sm font-medium text-text">
+                                                    Page {data.pagination.currentPage} of {data.pagination.totalPages}
+                                                </span>
+
+                                                <Button
+                                                    variant="outline"
+                                                    size="lg"
+                                                    disabled={data.pagination.currentPage >= data.pagination.totalPages || isPlaceholderData}
+                                                    onClick={() => goToPage(page + 1)}
+                                                >
+                                                    Next
+                                                </Button>
+                                            </div>
+                                        </>
                                     ) : (
                                         <div>Map</div>
                                     )

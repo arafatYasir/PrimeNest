@@ -33,7 +33,10 @@ const PropertiesFilterSkeleton = () => {
                 ))}
             </div>
 
-            <Skeleton className="h-8 w-full rounded-lg" />
+            <div className="space-y-2">
+                <Skeleton className="h-8 w-full rounded-lg" />
+                <Skeleton className="h-8 w-full rounded-lg" />
+            </div>
         </div>
     )
 }
