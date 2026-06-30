@@ -12,12 +12,11 @@ import type { Property } from "@/types/global";
 const PropertiesPage = () => {
     // States
     const [currentTab, setCurrentTab] = useState<"properties" | "map">("properties");
-    const [page, setPage] = useState(1);
 
     // Data fetching
-    const { data, isLoading, isError, error, refetch } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["properties"],
-        queryFn: async () => fetchAllProperties(page),
+        queryFn: async () => fetchAllProperties(1),
     });
 
     // Scrolling to the top of the page
