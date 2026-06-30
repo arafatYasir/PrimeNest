@@ -17,7 +17,7 @@ const propertySchema = new Schema(
         },
         listingType: {
             type: String,
-            enum: ["For Sale", "For Rent", "Sold"],
+            enum: ["For Sale", "For Rent"],
             default: "For Sale"
         },
         status: {

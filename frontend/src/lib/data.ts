@@ -1,5 +1,12 @@
 import { Heart, MapPin, MessageSquare, ShieldCheck } from "lucide-react";
 
+export const navItems = [
+    { label: "Browse Properties", to: "/properties" },
+    { label: "About Us", to: "/about" },
+    { label: "Contact", to: "/contact" },
+];
+
+
 export const FEATURES = [
     {
         icon: MapPin,
@@ -53,4 +60,21 @@ export const FOOTER_COLUMNS = [
             { label: "Saved Properties", href: "/saved" },
         ],
     },
+];
+
+export const propertyTypes = [
+    { value: "Any", label: "Any" },
+    { value: "House", label: "House" },
+    { value: "Apartment", label: "Apartment" },
+    { value: "Condo", label: "Condo" },
+    { value: "Land", label: "Land" },
+]
+
+export const bedsAndBathsFilterItems = [
+    { value: "Any", label: "Any" },
+    { value: "1", label: "1+" },
+    { value: "2", label: "2+" },
+    { value: "3", label: "3+" },
+    { value: "4", label: "4+" },
+    { value: "5", label: "5+" },
 ];

@@ -12,12 +12,7 @@ import {
     SheetHeader,
 } from "./ui/sheet";
 import { Show, SignInButton, UserButton } from "@clerk/react";
-
-const navItems = [
-    { label: "Browse Properties", to: "/properties" },
-    { label: "About Us", to: "/about" },
-    { label: "Contact", to: "/contact" },
-];
+import { navItems } from "@/lib/data";
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
@@ -26,7 +21,7 @@ export default function Navbar() {
         <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-sm supports-backdrop-filter:bg-background/50">
             <nav className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* ---- Left: Hamburger ---- */}
-                <div className="flex items-center gap-3 lg:gap-10">
+                <div className="flex items-center gap-3 lg:gap-0">
                     {/* ---- Mobile menu trigger ---- */}
                     <Sheet open={open} onOpenChange={setOpen}>
                         <SheetTrigger>
@@ -110,7 +105,7 @@ export default function Navbar() {
                     </Link>
 
                     {/* ---- Nav links (desktop) ---- */}
-                    <ul className="hidden items-center gap-8 lg:flex">
+                    <ul className="hidden items-center gap-8 lg:flex ml-3 lg:ml-10">
                         {navItems.map((item) => (
                             <li key={item.to}>
                                 <NavLink
