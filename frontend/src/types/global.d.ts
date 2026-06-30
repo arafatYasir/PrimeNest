@@ -11,8 +11,8 @@ export interface Property {
     beds?: number;
     baths?: number;
     location: {
-        lat: string;
-        lon: string;
+        lat: number;
+        lon: number;
         country: string;
         city: string;
         fullAddress: string;

@@ -150,7 +150,7 @@ const PropertiesPage = () => {
                                             </div>
                                         </>
                                     ) : (
-                                        <PropertiesMapView />
+                                        <PropertiesMapView properties={data.data} />
                                     )
                                 }
                             </div>

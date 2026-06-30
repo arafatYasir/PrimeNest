@@ -38,11 +38,11 @@ const propertySchema = new Schema(
         baths: Number,
         location: {
             lat: {
-                type: String,
+                type: Number,
                 required: true,
             },
             lon: {
-                type: String,
+                type: Number,
                 required: true,
             },
             country: {
