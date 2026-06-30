@@ -12,6 +12,7 @@ import { useSearchParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { sortOptions } from "@/lib/data";
+import PropertiesMapView from "@/components/properties/PropertiesMapView";
 
 const PropertiesPage = () => {
     // States
@@ -23,7 +24,7 @@ const PropertiesPage = () => {
     // Data fetching
     const { data, isLoading, isPlaceholderData } = useQuery({
         queryKey: ["properties", page],
-        queryFn: async () => fetchAllProperties(1),
+        queryFn: async () => fetchAllProperties(page),
         placeholderData: keepPreviousData
     });
 
@@ -80,11 +81,11 @@ const PropertiesPage = () => {
                                             <Tabs value={currentTab} onValueChange={(value) => setCurrentTab(value as "properties" | "map")}>
                                                 <TabsList>
                                                     <TabsTrigger value="properties">
-                                                        <Grid3x3 className="size-4 mr-2" />
+                                                        <Grid3x3 className="size-4" />
                                                         Grid View
                                                     </TabsTrigger>
                                                     <TabsTrigger value="map">
-                                                        <MapPin className="size-4 mr-2" />
+                                                        <MapPin className="size-4" />
                                                         Map View
                                                     </TabsTrigger>
                                                 </TabsList>
@@ -149,7 +150,7 @@ const PropertiesPage = () => {
                                             </div>
                                         </>
                                     ) : (
-                                        <div>Map</div>
+                                        <PropertiesMapView />
                                     )
                                 }
                             </div>
