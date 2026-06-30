@@ -11,7 +11,7 @@ import PropertyCardsError from "../PropertyCardsError";
 
 export default function FeaturedProperties() {
     const { data, isLoading, isError, error, refetch } = useQuery({
-        queryKey: ["properties"],
+        queryKey: ["featured-properties"],
         queryFn: fetchFeaturedProperties,
         staleTime: 5 * 60 * 1000
     });

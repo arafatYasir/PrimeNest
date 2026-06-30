@@ -3,10 +3,22 @@ import PropertiesFilter from "@/components/properties/PropertiesFilter";
 import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Grid3x3, MapPin } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchAllProperties } from "@/lib/apiCalls";
+import PropertiesPageSkeleton from "@/components/properties/PropertiesPageSkeleton";
+import PropertyCard from "@/components/PropertyCard";
+import type { Property } from "@/types/global";
 
 const PropertiesPage = () => {
     // States
     const [currentTab, setCurrentTab] = useState<"properties" | "map">("properties");
+    const [page, setPage] = useState(1);
+
+    // Data fetching
+    const { data, isLoading, isError, error, refetch } = useQuery({
+        queryKey: ["properties"],
+        queryFn: async () => fetchAllProperties(page),
+    });
 
     // Scrolling to the top of the page
     useEffect(() => {
@@ -33,36 +45,54 @@ const PropertiesPage = () => {
                 </div>
 
                 {/* ---- Main Content Layout ---- */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    {/* ---- Filters Sidebar ---- */}
-                    <div className="lg:col-span-1">
-                        <PropertiesFilter />
-                    </div>
+                {
+                    isLoading ? (
+                        <PropertiesPageSkeleton />
+                    ) : (
+                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                            {/* ---- Filters Sidebar ---- */}
+                            <div className="lg:col-span-1">
+                                <PropertiesFilter />
+                            </div>
 
-                    {/* ---- Property Cards / Map ---- */}
-                    <div className="lg:col-span-3">
-                        {/* Properties Count */}
-                        <div>
-                            <h3 className="text-lg font-semibold font-sans text-text">Found Properties: 10</h3>
-                        </div>
+                            {/* ---- Property Cards / Map ---- */}
+                            <div className="lg:col-span-3">
+                                {/* Properties Count */}
+                                <div>
+                                    <h3 className="text-lg font-semibold font-sans text-text">Found Properties: {data.pagination.totalProperties}</h3>
+                                </div>
 
-                        {/* Tabs */}
-                        <div className="mt-4">
-                            <Tabs value={currentTab} onValueChange={(value) => setCurrentTab(value)}>
-                                <TabsList>
-                                    <TabsTrigger value="properties">
-                                        <Grid3x3 />
-                                        Grid View
-                                    </TabsTrigger>
-                                    <TabsTrigger value="map">
-                                        <MapPin />
-                                        Map View
-                                    </TabsTrigger>
-                                </TabsList>
-                            </Tabs>
+                                {/* Tabs */}
+                                <div className="mt-4">
+                                    <Tabs value={currentTab} onValueChange={(value) => setCurrentTab(value)}>
+                                        <TabsList>
+                                            <TabsTrigger value="properties">
+                                                <Grid3x3 />
+                                                Grid View
+                                            </TabsTrigger>
+                                            <TabsTrigger value="map">
+                                                <MapPin />
+                                                Map View
+                                            </TabsTrigger>
+                                        </TabsList>
+                                    </Tabs>
+                                </div>
+
+                                {
+                                    currentTab === "properties" ? (
+                                        <div className="grid grid-cols-3 gap-6 mt-10">
+                                            {data.data.map((property: Property) => (
+                                                <PropertyCard key={property._id} property={property} />
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div>Map</div>
+                                    )
+                                }
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    )
+                }
             </Container>
         </main>
     );
