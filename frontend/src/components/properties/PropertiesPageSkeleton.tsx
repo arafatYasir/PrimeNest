@@ -12,14 +12,23 @@ const PropertiesPageSkeleton = () => {
 
             {/* Content */}
             <div className="lg:col-span-3">
-                {/* Heading */}
-                <Skeleton className="h-7 w-50 rounded" />
+                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                    <div>
+                        {/* Heading */}
+                        <Skeleton className="h-7 w-50 rounded" />
 
-                {/* Tabs */}
-                <div className="mt-4">
-                    <div className="inline-flex gap-1 rounded-xl bg-border/40 p-1">
-                        <Skeleton className="h-6 w-23 rounded-xl" />
-                        <Skeleton className="h-6 w-23 rounded-xl" />
+                        {/* Tabs */}
+                        <div className="mt-5">
+                            <div className="inline-flex gap-1 rounded-xl bg-border/40 p-1">
+                                <Skeleton className="h-6 w-23 rounded-xl" />
+                                <Skeleton className="h-6 w-23 rounded-xl" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <Skeleton className="h-4 w-20 mb-2 rounded" />
+                        <Skeleton className="h-10 w-56 rounded-xl" />
                     </div>
                 </div>
 

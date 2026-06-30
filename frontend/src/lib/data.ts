@@ -78,3 +78,14 @@ export const bedsAndBathsFilterItems = [
     { value: "4", label: "4+" },
     { value: "5", label: "5+" },
 ];
+
+export const sortOptions = [
+    { value: "None", label: "None" },
+    { value: "Price (Low to High)", label: "Price (Low to High)" },
+    { value: "Price (High to Low)", label: "Price (High to Low)" },
+    { value: "Newest", label: "Newest" },
+    { value: "Oldest", label: "Oldest" },
+    { value: "Bedrooms", label: "Bedrooms" },
+    { value: "Bathrooms", label: "Bathrooms" },
+    { value: "Square Feet", label: "Square Feet" },
+];

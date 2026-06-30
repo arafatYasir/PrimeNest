@@ -10,6 +10,8 @@ import PropertyCard from "@/components/PropertyCard";
 import type { Property } from "@/types/global";
 import { useSearchParams } from "react-router";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { sortOptions } from "@/lib/data";
 
 const PropertiesPage = () => {
     // States
@@ -68,25 +70,48 @@ const PropertiesPage = () => {
 
                             {/* ---- Property Cards / Map ---- */}
                             <div className="lg:col-span-3">
-                                {/* Properties Count */}
-                                <div>
-                                    <h3 className="text-lg font-semibold font-sans text-text">Found Properties: {data.pagination.totalProperties}</h3>
-                                </div>
+                                {/* ---- Tabs / Sort ---- */}
+                                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                                    <div>
+                                        <div>
+                                            <h3 className="text-lg font-semibold font-sans text-text">Found Properties: {data.pagination.totalProperties}</h3>
+                                        </div>
+                                        <div className="mt-5">
+                                            <Tabs value={currentTab} onValueChange={(value) => setCurrentTab(value as "properties" | "map")}>
+                                                <TabsList>
+                                                    <TabsTrigger value="properties">
+                                                        <Grid3x3 className="size-4 mr-2" />
+                                                        Grid View
+                                                    </TabsTrigger>
+                                                    <TabsTrigger value="map">
+                                                        <MapPin className="size-4 mr-2" />
+                                                        Map View
+                                                    </TabsTrigger>
+                                                </TabsList>
+                                            </Tabs>
+                                        </div>
+                                    </div>
 
-                                {/* Tabs */}
-                                <div className="mt-4">
-                                    <Tabs value={currentTab} onValueChange={(value) => setCurrentTab(value)}>
-                                        <TabsList>
-                                            <TabsTrigger value="properties">
-                                                <Grid3x3 />
-                                                Grid View
-                                            </TabsTrigger>
-                                            <TabsTrigger value="map">
-                                                <MapPin />
-                                                Map View
-                                            </TabsTrigger>
-                                        </TabsList>
-                                    </Tabs>
+                                    <div className="w-full md:w-56">
+                                        <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
+                                            Sort By
+                                        </label>
+                                        <Select
+                                            defaultValue="None"
+                                        >
+                                            <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
+                                                <SelectValue placeholder="Sort By" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {sortOptions.map((item) => (
+                                                    <SelectItem key={item.value} value={item.value}>
+                                                        {item.label}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
                                 </div>
 
                                 {
