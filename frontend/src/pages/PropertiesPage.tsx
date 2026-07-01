@@ -18,6 +18,7 @@ const PropertiesPage = () => {
     // States
     const [currentTab, setCurrentTab] = useState<"properties" | "map">("properties");
     const [searchParams, setSearchParams] = useSearchParams();
+    const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "None");
     const [location, setLocation] = useState(searchParams.get("location") || "");
     const [propertyType, setPropertyType] = useState(searchParams.get("propertyType") || "Any");
     const [propertyStatus, setPropertyStatus] = useState(searchParams.get("propertyStatus") || "Available");
@@ -29,7 +30,7 @@ const PropertiesPage = () => {
 
     // Search Params
     const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
-    const sortBy = searchParams.get("sortBy") || "None";
+    const sortByParams = searchParams.get("sortBy") || "None";
     const locationParams = searchParams.get("location") || "";
     const propertyTypeParams = searchParams.get("propertyType") || "Any";
     const propertyStatusParams = searchParams.get("propertyStatus") || "Available";
@@ -44,7 +45,7 @@ const PropertiesPage = () => {
         queryKey: [
             "properties",
             page,
-            sortBy,
+            sortByParams,
             locationParams,
             propertyTypeParams,
             propertyStatusParams,
@@ -54,7 +55,7 @@ const PropertiesPage = () => {
             bedsParams,
             bathsParams
         ],
-        queryFn: async () => fetchAllProperties(page, sortBy),
+        queryFn: async () => fetchAllProperties(page, sortByParams),
         placeholderData: keepPreviousData
     });
 
@@ -143,7 +144,7 @@ const PropertiesPage = () => {
         setBaths("Any");
 
         // Reset search params
-        setSearchParams({ });
+        setSearchParams({});
     }
 
     // Scrolling to the top of the page on first load
@@ -157,6 +158,19 @@ const PropertiesPage = () => {
             goToPage(data.pagination.totalPages);
         }
     }, [data, page]);
+
+    // Syncing the states with the search params
+    useEffect(() => {
+        setSortBy(searchParams.get("sortBy") || "None");
+        setLocation(searchParams.get("location") || "");
+        setPropertyType(searchParams.get("propertyType") || "Any");
+        setPropertyStatus(searchParams.get("propertyStatus") || "Available");
+        setListingType(searchParams.get("listingType") || "Any");
+        setMinPrice(searchParams.get("minPrice") || "");
+        setMaxPrice(searchParams.get("maxPrice") || "");
+        setBeds(searchParams.get("beds") || "Any");
+        setBaths(searchParams.get("baths") || "Any");
+    }, [searchParams]);
 
     return (
         <main>
@@ -236,8 +250,11 @@ const PropertiesPage = () => {
                                             Sort By
                                         </label>
                                         <Select
-                                            defaultValue={sortBy || "None"}
-                                            onValueChange={(value) => applySort(value ?? "")}
+                                            value={sortBy}
+                                            onValueChange={(value) => {
+                                                setSortBy(value ?? "None");
+                                                applySort(value ?? "None");
+                                            }}
                                         >
                                             <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
                                                 <SelectValue placeholder="Sort By" />
