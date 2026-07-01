@@ -25,13 +25,8 @@ const STATUS_STYLES = {
     },
 };
 
-function formatPrice(price: number) {
-    return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 0,
-    }).format(price);
-}
+const formatPrice = (price: number, listingType: string) =>
+    `$${price.toLocaleString()}${listingType === "For Rent" ? "/mo" : ""}`;
 
 function StatItem({ icon: Icon, value, unit }: StatItemTypes) {
     return (
@@ -48,6 +43,7 @@ function PropertyCard({ property }: { property: Property }) {
         _id,
         title,
         propertyType,
+        listingType,
         status,
         images,
         price,
@@ -114,7 +110,7 @@ function PropertyCard({ property }: { property: Property }) {
             <div className="flex flex-1 flex-col p-5">
                 {/* Price */}
                 <span className="font-heading text-[22px] font-bold tracking-tight text-text leading-tight">
-                    {formatPrice(price)}
+                    {formatPrice(price, listingType)}
                 </span>
 
                 {/* Title */}
