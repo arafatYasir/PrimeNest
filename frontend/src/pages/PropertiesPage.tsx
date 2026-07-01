@@ -117,7 +117,7 @@ const PropertiesPage = () => {
                                         </label>
                                         <Select
                                             defaultValue={sortBy || "None"}
-                                            onValueChange={(value) => applySort(value)}
+                                            onValueChange={(value: string) => applySort(value)}
                                         >
                                             <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
                                                 <SelectValue placeholder="Sort By" />
