@@ -1,16 +1,30 @@
-import Property from "../models/property.model.js"
+import Property from "../models/property.model.js";
+
+const sortingMap = {
+    "None": { createdAt: -1 },
+    "Price (Low to High)": { price: 1 },
+    "Price (High to Low)": { price: -1 },
+    "Newest": { yearBuilt: -1 },
+    "Oldest": { yearBuilt: 1 },
+    "Bedrooms": { beds: -1 },
+    "Bathrooms": { baths: -1 },
+    "Square Feet": { area: -1 }
+};
 
 export async function getAllProperties(req, res, next) {
     try {
+        // Getting queries
         let page = parseInt(req.query.page) || 1;
-        const limit = 15;
-
+        const sortBy = req.query.sortBy || "None";
+        
         if (page < 1) page = 1;
-
+        
+        const limit = 15;
         const skip = (page - 1) * limit;
+        const sortingQuery = sortingMap[sortBy];
 
         const [properties, totalProperties] = await Promise.all([
-            Property.find({}).sort({ createdAt: -1 }).skip(skip).limit(limit),
+            Property.find({}).sort(sortingQuery).skip(skip).limit(limit),
             Property.countDocuments({})
         ]);
 

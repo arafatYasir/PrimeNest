@@ -19,12 +19,14 @@ const PropertiesPage = () => {
     const [currentTab, setCurrentTab] = useState<"properties" | "map">("properties");
     const [searchParams, setSearchParams] = useSearchParams();
 
+    // Search Params
     const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+    const sortBy = searchParams.get("sortBy") || "None";
 
     // Data fetching
     const { data, isLoading, isPlaceholderData } = useQuery({
-        queryKey: ["properties", page],
-        queryFn: async () => fetchAllProperties(page),
+        queryKey: ["properties", page, sortBy],
+        queryFn: async () => fetchAllProperties(page, sortBy),
         placeholderData: keepPreviousData
     });
 
@@ -32,6 +34,15 @@ const PropertiesPage = () => {
     const goToPage = (page: number) => {
         setSearchParams({ page: String(page) });
         window.scrollTo({ top: 0 });
+    }
+
+    const applySort = (value: string) => {
+        setSearchParams((prev) => {
+            const next = new URLSearchParams(prev);
+            next.set("sortBy", value);
+            next.set("page", "1");
+            return next;
+        });
     }
 
     // Scrolling to the top of the page on first load
@@ -105,7 +116,8 @@ const PropertiesPage = () => {
                                             Sort By
                                         </label>
                                         <Select
-                                            defaultValue="None"
+                                            defaultValue={sortBy || "None"}
+                                            onValueChange={(value) => applySort(value)}
                                         >
                                             <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
                                                 <SelectValue placeholder="Sort By" />
