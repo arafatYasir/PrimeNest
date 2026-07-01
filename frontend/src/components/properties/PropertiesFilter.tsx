@@ -3,8 +3,59 @@ import { Button } from "@/components/ui/button";
 import { bedsAndBathsFilterItems, propertyTypes } from "@/lib/data";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import type React from "react";
 
-const PropertiesFilter = () => {
+interface PropertiesFilterProps {
+    location: string;
+    setLocation: React.Dispatch<React.SetStateAction<string>>;
+    propertyType: string;
+    setPropertyType: React.Dispatch<React.SetStateAction<string>>;
+    propertyStatus: string;
+    setPropertyStatus: React.Dispatch<React.SetStateAction<string>>;
+    listingType: string;
+    setListingType: React.Dispatch<React.SetStateAction<string>>;
+    minPrice: string;
+    setMinPrice: React.Dispatch<React.SetStateAction<string>>;
+    maxPrice: string;
+    setMaxPrice: React.Dispatch<React.SetStateAction<string>>;
+    beds: string;
+    setBeds: React.Dispatch<React.SetStateAction<string>>;
+    baths: string;
+    setBaths: React.Dispatch<React.SetStateAction<string>>;
+    applyFilters: () => void;
+    resetFilters: () => void;
+}
+
+const PropertiesFilter = ({
+    location,
+    setLocation,
+    propertyType,
+    setPropertyType,
+    propertyStatus,
+    setPropertyStatus,
+    listingType,
+    setListingType,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    beds,
+    setBeds,
+    baths,
+    setBaths,
+    applyFilters,
+    resetFilters
+}: PropertiesFilterProps) => {
+    // Functions
+    const handlePriceChange = (value: string, setter: (v: string) => void) => {
+        // Strip anything that isn't a digit
+        let cleaned = value.replace(/[^0-9]/g, "");
+
+        // Strip leading zeros (but allow a single "0")
+        cleaned = cleaned.replace(/^0+(?=\d)/, "");
+
+        setter(cleaned);
+    };
     return (
         <div className="rounded-2xl border border-border bg-card p-6 shadow-xs">
             {/* Filter Title */}
@@ -22,6 +73,8 @@ const PropertiesFilter = () => {
                     type="text"
                     placeholder="City or ZIP code..."
                     className="w-full"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
                 />
             </div>
 
@@ -30,7 +83,7 @@ const PropertiesFilter = () => {
                 <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
                     Property Type
                 </label>
-                <Select defaultValue="Any">
+                <Select value={propertyType} onValueChange={(value) => setPropertyType(value ?? "Any")}>
                     <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
                         <SelectValue placeholder="Any" />
                     </SelectTrigger>
@@ -49,7 +102,7 @@ const PropertiesFilter = () => {
                 <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
                     Property Status
                 </label>
-                <Select defaultValue="Available">
+                <Select value={propertyStatus} onValueChange={(value) => setPropertyStatus(value ?? "Available")}>
                     <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
                         <SelectValue placeholder="Available" />
                     </SelectTrigger>
@@ -66,11 +119,12 @@ const PropertiesFilter = () => {
                 <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
                     Listing Type
                 </label>
-                <Select defaultValue="For Sale">
+                <Select value={listingType} onValueChange={(value) => setListingType(value ?? "Any")}>
                     <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
-                        <SelectValue placeholder="For Sale" />
+                        <SelectValue placeholder="Any" />
                     </SelectTrigger>
                     <SelectContent>
+                        <SelectItem value="Any">Any</SelectItem>
                         <SelectItem value="For Sale">For Sale</SelectItem>
                         <SelectItem value="For Rent">For Rent</SelectItem>
                     </SelectContent>
@@ -86,16 +140,22 @@ const PropertiesFilter = () => {
                     <div className="relative flex-1">
                         <Input
                             type="text"
+                            inputMode="numeric"
                             placeholder="Min"
                             className="w-full"
+                            value={minPrice}
+                            onChange={(e) => handlePriceChange(e.target.value, setMinPrice)}
                         />
                     </div>
                     <span className="text-text-secondary font-medium">-</span>
                     <div className="relative flex-1">
                         <Input
                             type="text"
+                            inputMode="numeric"
                             placeholder="Max"
                             className="w-full"
+                            value={maxPrice}
+                            onChange={(e) => handlePriceChange(e.target.value, setMaxPrice)}
                         />
                     </div>
                 </div>
@@ -107,7 +167,7 @@ const PropertiesFilter = () => {
                     <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
                         Bedrooms
                     </label>
-                    <Select defaultValue="Any">
+                    <Select value={beds} onValueChange={(value) => setBeds(value ?? "Any")}>
                         <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
                             <SelectValue placeholder="Any" />
                         </SelectTrigger>
@@ -124,7 +184,7 @@ const PropertiesFilter = () => {
                     <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
                         Bathrooms
                     </label>
-                    <Select defaultValue="Any">
+                    <Select value={baths} onValueChange={(value) => setBaths(value ?? "Any")}>
                         <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
                             <SelectValue placeholder="Any" />
                         </SelectTrigger>
@@ -144,6 +204,7 @@ const PropertiesFilter = () => {
                 <Button
                     size="lg"
                     className="w-full"
+                    onClick={applyFilters}
                 >
                     <Search className="size-4" />
                     Apply Filters
@@ -152,6 +213,7 @@ const PropertiesFilter = () => {
                     size="lg"
                     variant="outline"
                     className="w-full group"
+                    onClick={resetFilters}
                 >
                     <RotateCcw className="size-4 group-hover:-rotate-180 transition-transform duration-250 ease-in-out" />
                     Reset Filters

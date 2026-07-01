@@ -18,14 +18,42 @@ const PropertiesPage = () => {
     // States
     const [currentTab, setCurrentTab] = useState<"properties" | "map">("properties");
     const [searchParams, setSearchParams] = useSearchParams();
+    const [location, setLocation] = useState(searchParams.get("location") || "");
+    const [propertyType, setPropertyType] = useState(searchParams.get("propertyType") || "Any");
+    const [propertyStatus, setPropertyStatus] = useState(searchParams.get("propertyStatus") || "Available");
+    const [listingType, setListingType] = useState(searchParams.get("listingType") || "Any");
+    const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
+    const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
+    const [beds, setBeds] = useState(searchParams.get("beds") || "Any");
+    const [baths, setBaths] = useState(searchParams.get("baths") || "Any");
 
     // Search Params
     const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
     const sortBy = searchParams.get("sortBy") || "None";
+    const locationParams = searchParams.get("location") || "";
+    const propertyTypeParams = searchParams.get("propertyType") || "Any";
+    const propertyStatusParams = searchParams.get("propertyStatus") || "Available";
+    const listingTypeParams = searchParams.get("listingType") || "Any";
+    const minPriceParams = searchParams.get("minPrice") || "";
+    const maxPriceParams = searchParams.get("maxPrice") || "";
+    const bedsParams = searchParams.get("beds") || "Any";
+    const bathsParams = searchParams.get("baths") || "Any";
 
     // Data fetching
     const { data, isLoading, isPlaceholderData } = useQuery({
-        queryKey: ["properties", page, sortBy],
+        queryKey: [
+            "properties",
+            page,
+            sortBy,
+            locationParams,
+            propertyTypeParams,
+            propertyStatusParams,
+            listingTypeParams,
+            minPriceParams,
+            maxPriceParams,
+            bedsParams,
+            bathsParams
+        ],
         queryFn: async () => fetchAllProperties(page, sortBy),
         placeholderData: keepPreviousData
     });
@@ -43,6 +71,72 @@ const PropertiesPage = () => {
             next.set("page", "1");
             return next;
         });
+    }
+
+    const applyFilters = () => {
+        setSearchParams((prev) => {
+            const next = new URLSearchParams(prev);
+
+            // Location
+            if (location.trim()) {
+                next.set("location", location.trim());
+            }
+            else next.delete("location");
+
+            // Property Type
+            if (propertyType.trim()) {
+                next.set("propertyType", propertyType.trim());
+            }
+            else next.delete("propertyType");
+
+            // Property Status
+            if (propertyStatus.trim()) {
+                next.set("propertyStatus", propertyStatus.trim());
+            }
+            else next.delete("propertyStatus");
+
+            // Listing Type
+            if (listingType.trim()) {
+                next.set("listingType", listingType.trim());
+            }
+            else next.delete("listingType");
+
+            // Min Price
+            if (!isNaN(parseInt(minPrice))) {
+                next.set("minPrice", minPrice);
+            }
+            else next.delete("minPrice");
+
+            // Max Price
+            if (!isNaN(parseInt(maxPrice))) {
+                next.set("maxPrice", maxPrice);
+            }
+            else next.delete("maxPrice");
+
+            // Beds
+            if (beds.trim()) {
+                next.set("beds", beds.trim());
+            }
+            else next.delete("beds");
+
+            // Baths
+            if (baths.trim()) {
+                next.set("baths", baths.trim());
+            }
+            else next.delete("baths");
+
+            next.set("page", "1");
+
+            return next;
+        })
+    }
+
+    const resetFilters = () => {
+        // Reset States
+        setLocation("");
+
+        // Reset search params
+        // setSearchParams({ location: "" });
     }
 
     // Scrolling to the top of the page on first load
@@ -84,7 +178,26 @@ const PropertiesPage = () => {
                         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                             {/* ---- Filters Sidebar ---- */}
                             <div className="lg:col-span-1">
-                                <PropertiesFilter />
+                                <PropertiesFilter
+                                    location={location}
+                                    setLocation={setLocation}
+                                    propertyType={propertyType}
+                                    setPropertyType={setPropertyType}
+                                    propertyStatus={propertyStatus}
+                                    setPropertyStatus={setPropertyStatus}
+                                    listingType={listingType}
+                                    setListingType={setListingType}
+                                    minPrice={minPrice}
+                                    setMinPrice={setMinPrice}
+                                    maxPrice={maxPrice}
+                                    setMaxPrice={setMaxPrice}
+                                    beds={beds}
+                                    setBeds={setBeds}
+                                    baths={baths}
+                                    setBaths={setBaths}
+                                    applyFilters={applyFilters}
+                                    resetFilters={resetFilters}
+                                />
                             </div>
 
                             {/* ---- Property Cards / Map ---- */}
@@ -97,7 +210,7 @@ const PropertiesPage = () => {
                                         </div>
                                         <div className="mt-5">
                                             <Tabs value={currentTab} onValueChange={(value) => setCurrentTab(value as "properties" | "map")}>
-                                                <TabsList>
+                                                <TabsList className="gap-1">
                                                     <TabsTrigger value="properties">
                                                         <Grid3x3 className="size-4" />
                                                         Grid View
