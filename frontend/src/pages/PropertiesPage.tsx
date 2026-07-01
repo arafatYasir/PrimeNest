@@ -39,6 +39,13 @@ const PropertiesPage = () => {
         window.scrollTo({ top: 0 });
     }, []);
 
+    // Handling if user manually sets a page number in the url search params which doesn't exist
+    useEffect(() => {
+        if (data?.pagination && data.pagination.totalPages > 0 && page > data.pagination.totalPages) {
+            goToPage(data.pagination.totalPages);
+        }
+    }, [data, page]);
+
     return (
         <main>
             <Container className="py-8 sm:py-12">
