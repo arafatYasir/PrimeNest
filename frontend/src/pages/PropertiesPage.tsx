@@ -134,9 +134,16 @@ const PropertiesPage = () => {
     const resetFilters = () => {
         // Reset States
         setLocation("");
+        setPropertyType("Any");
+        setPropertyStatus("Available");
+        setListingType("Any");
+        setMinPrice("");
+        setMaxPrice("");
+        setBeds("Any");
+        setBaths("Any");
 
         // Reset search params
-        // setSearchParams({ location: "" });
+        setSearchParams({ });
     }
 
     // Scrolling to the top of the page on first load
