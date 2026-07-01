@@ -3,6 +3,19 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { BedDouble, Bath, Maximize, MapPin } from "lucide-react";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
+import L from "leaflet";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+// Fix Leaflet's default icon paths for bundlers
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: markerIcon2x,
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow,
+});
 
 const formatPrice = (price: number, listingType: string) =>
     `$${price.toLocaleString()}${listingType === "For Rent" ? "/mo" : ""}`;
@@ -21,6 +34,7 @@ const PropertiesMapView = ({ properties }: { properties: Property[] }) => {
             scrollWheelZoom={true}
             maxBounds={usOuterBounds}
             maxBoundsViscosity={1.0}
+            zoomControl={false}
         >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -42,10 +56,10 @@ const PropertiesMapView = ({ properties }: { properties: Property[] }) => {
                                 </span>
                                 <span
                                     className={`absolute right-2 top-2 rounded px-2 py-0.5 text-[11px] font-semibold text-white ${property.status === "Available"
-                                            ? "bg-success"
-                                            : property.status === "Pending"
-                                                ? "bg-warning"
-                                                : "bg-text"
+                                        ? "bg-success"
+                                        : property.status === "Pending"
+                                            ? "bg-warning"
+                                            : "bg-text"
                                         }`}
                                 >
                                     {property.status}
@@ -92,7 +106,7 @@ const PropertiesMapView = ({ properties }: { properties: Property[] }) => {
                                 {/* ---- Button ---- */}
                                 <Link
                                     to={`/properties/${property._id}`}
-                                    
+
                                 >
                                     <Button size="lg" className="w-full">View details</Button>
                                 </Link>
