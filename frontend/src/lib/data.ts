@@ -68,6 +68,19 @@ export const propertyTypes = [
     { value: "Apartment", label: "Apartment" },
     { value: "Condo", label: "Condo" },
     { value: "Land", label: "Land" },
+];
+
+export const propertyStatuses = [
+    { value: "Any", label: "Any" },
+    { value: "Available", label: "Available" },
+    { value: "Pending", label: "Pending" },
+    { value: "Sold", label: "Sold" }
+];
+
+export const listingTypes = [
+    { value: "Any", label: "Any" },
+    { value: "For Sale", label: "For Sale" },
+    { value: "For Rent", label: "For Rent" }
 ]
 
 export const bedsAndBathsFilterItems = [

@@ -2,7 +2,7 @@ import Container from "@/components/Container";
 import PropertiesFilter from "@/components/properties/PropertiesFilter";
 import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Grid3x3, MapPin } from "lucide-react";
+import { Grid3x3, MapPin, SearchX } from "lucide-react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchAllProperties } from "@/lib/apiCalls";
 import PropertiesPageSkeleton from "@/components/properties/PropertiesPageSkeleton";
@@ -21,7 +21,7 @@ const PropertiesPage = () => {
     const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "None");
     const [location, setLocation] = useState(searchParams.get("location") || "");
     const [propertyType, setPropertyType] = useState(searchParams.get("propertyType") || "Any");
-    const [propertyStatus, setPropertyStatus] = useState(searchParams.get("propertyStatus") || "Available");
+    const [propertyStatus, setPropertyStatus] = useState(searchParams.get("propertyStatus") || "Any");
     const [listingType, setListingType] = useState(searchParams.get("listingType") || "Any");
     const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
     const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
@@ -33,7 +33,7 @@ const PropertiesPage = () => {
     const sortByParams = searchParams.get("sortBy") || "None";
     const locationParams = searchParams.get("location") || "";
     const propertyTypeParams = searchParams.get("propertyType") || "Any";
-    const propertyStatusParams = searchParams.get("propertyStatus") || "Available";
+    const propertyStatusParams = searchParams.get("propertyStatus") || "Any";
     const listingTypeParams = searchParams.get("listingType") || "Any";
     const minPriceParams = searchParams.get("minPrice") || "";
     const maxPriceParams = searchParams.get("maxPrice") || "";
@@ -55,13 +55,28 @@ const PropertiesPage = () => {
             bedsParams,
             bathsParams
         ],
-        queryFn: async () => fetchAllProperties(page, sortByParams),
+        queryFn: async () => fetchAllProperties({
+            page,
+            sortBy: sortByParams,
+            location: locationParams,
+            propertyType: propertyTypeParams,
+            propertyStatus: propertyStatusParams,
+            listingType: listingTypeParams,
+            minPrice: minPriceParams,
+            maxPrice: maxPriceParams,
+            beds: bedsParams,
+            baths: bathsParams
+        }),
         placeholderData: keepPreviousData
     });
 
     // Functions
     const goToPage = (page: number) => {
-        setSearchParams({ page: String(page) });
+        setSearchParams((prev) => {
+            const next = new URLSearchParams(prev);
+            next.set("page", String(page));
+            return next;
+        });
         window.scrollTo({ top: 0 });
     }
 
@@ -136,7 +151,7 @@ const PropertiesPage = () => {
         // Reset States
         setLocation("");
         setPropertyType("Any");
-        setPropertyStatus("Available");
+        setPropertyStatus("Any");
         setListingType("Any");
         setMinPrice("");
         setMaxPrice("");
@@ -164,7 +179,7 @@ const PropertiesPage = () => {
         setSortBy(searchParams.get("sortBy") || "None");
         setLocation(searchParams.get("location") || "");
         setPropertyType(searchParams.get("propertyType") || "Any");
-        setPropertyStatus(searchParams.get("propertyStatus") || "Available");
+        setPropertyStatus(searchParams.get("propertyStatus") || "Any");
         setListingType(searchParams.get("listingType") || "Any");
         setMinPrice(searchParams.get("minPrice") || "");
         setMaxPrice(searchParams.get("maxPrice") || "");
@@ -227,7 +242,7 @@ const PropertiesPage = () => {
                                 <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
                                     <div>
                                         <div>
-                                            <h3 className="text-lg font-semibold font-sans text-text">Found Properties: {data.pagination.totalProperties}</h3>
+                                            <h3 className="text-lg font-semibold font-sans text-text">Found Properties: {data?.pagination.totalProperties ?? 0}</h3>
                                         </div>
                                         <div className="mt-5">
                                             <Tabs value={currentTab} onValueChange={(value) => setCurrentTab(value as "properties" | "map")}>
@@ -274,39 +289,63 @@ const PropertiesPage = () => {
                                 {
                                     currentTab === "properties" ? (
                                         <>
-                                            <div className="grid grid-cols-3 gap-6 mt-10">
-                                                {data.data.map((property: Property) => (
-                                                    <PropertyCard key={property._id} property={property} />
-                                                ))}
-                                            </div>
+                                            {data?.data.length === 0 ? (
+                                                <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card px-6 py-16 text-center mt-10">
+                                                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary/10">
+                                                        <SearchX className="h-7 w-7 text-secondary" strokeWidth={1.75} />
+                                                    </div>
+                                                    <h3 className="mt-4 text-lg font-semibold text-text">No properties found</h3>
+                                                    <p className="mt-1.5 max-w-sm text-sm text-text-secondary">
+                                                        We couldn't find any properties matching your filters. Try adjusting your search criteria.
+                                                    </p>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="lg"
+                                                        onClick={resetFilters}
+                                                        className="mt-5"
+                                                    >
+                                                        Reset Filters
+                                                    </Button>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    <div className="grid grid-cols-3 gap-6 mt-10">
+                                                        {data?.data.map((property: Property) => (
+                                                            <PropertyCard key={property._id} property={property} />
+                                                        ))}
+                                                    </div>
 
-                                            {/* ---- Pagination ---- */}
-                                            <div className="mt-10 flex items-center justify-center gap-5">
-                                                <Button
-                                                    variant="outline"
-                                                    size="lg"
-                                                    disabled={data.pagination.currentPage <= 1 || isPlaceholderData}
-                                                    onClick={() => goToPage(page - 1)}
-                                                >
-                                                    Previous
-                                                </Button>
+                                                    {/* ---- Pagination ---- */}
+                                                    {data && data.pagination.totalPages > 0 && (
+                                                        <div className="mt-10 flex items-center justify-center gap-5">
+                                                            <Button
+                                                                variant="outline"
+                                                                size="lg"
+                                                                disabled={data.pagination.currentPage <= 1 || isPlaceholderData}
+                                                                onClick={() => goToPage(page - 1)}
+                                                            >
+                                                                Previous
+                                                            </Button>
 
-                                                <span className="text-sm font-medium text-text">
-                                                    Page {data.pagination.currentPage} of {data.pagination.totalPages}
-                                                </span>
+                                                            <span className="text-sm font-medium text-text">
+                                                                Page {data.pagination.currentPage} of {data.pagination.totalPages}
+                                                            </span>
 
-                                                <Button
-                                                    variant="outline"
-                                                    size="lg"
-                                                    disabled={data.pagination.currentPage >= data.pagination.totalPages || isPlaceholderData}
-                                                    onClick={() => goToPage(page + 1)}
-                                                >
-                                                    Next
-                                                </Button>
-                                            </div>
+                                                            <Button
+                                                                variant="outline"
+                                                                size="lg"
+                                                                disabled={data.pagination.currentPage >= data.pagination.totalPages || isPlaceholderData}
+                                                                onClick={() => goToPage(page + 1)}
+                                                            >
+                                                                Next
+                                                            </Button>
+                                                        </div>
+                                                    )}
+                                                </>
+                                            )}
                                         </>
                                     ) : (
-                                        <PropertiesMapView properties={data.data} />
+                                        <PropertiesMapView properties={data?.data ?? []} />
                                     )
                                 }
                             </div>

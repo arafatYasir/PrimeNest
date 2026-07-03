@@ -1,5 +1,42 @@
-export const fetchAllProperties = async (page: number, sortBy: string) => {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/properties?page=${page}&sortBy=${sortBy}`);
+interface AllPropertiesParams {
+    page: number;
+    sortBy: string;
+    location: string;
+    propertyType: string;
+    propertyStatus: string;
+    listingType: string;
+    minPrice: string;
+    maxPrice: string;
+    beds: string;
+    baths: string;
+}
+
+export const fetchAllProperties = async ({
+    page,
+    sortBy,
+    location,
+    propertyType,
+    propertyStatus,
+    listingType,
+    minPrice,
+    maxPrice,
+    beds,
+    baths
+}: AllPropertiesParams) => {
+    const queries = new URLSearchParams({
+        page: String(page),
+        sortBy,
+        location,
+        propertyType,
+        propertyStatus,
+        listingType,
+        minPrice,
+        maxPrice,
+        beds,
+        baths,
+    });
+
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/properties?${queries}`);
     const data = await res.json();
 
     if (!res.ok) {

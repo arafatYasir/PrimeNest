@@ -1,6 +1,6 @@
 import { SlidersHorizontal, Search, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { bedsAndBathsFilterItems, propertyTypes } from "@/lib/data";
+import { bedsAndBathsFilterItems, listingTypes, propertyStatuses, propertyTypes } from "@/lib/data";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import type React from "react";
@@ -85,7 +85,7 @@ const PropertiesFilter = ({
                 </label>
                 <Select value={propertyType} onValueChange={(value) => setPropertyType(value ?? "Any")}>
                     <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
-                        <SelectValue placeholder="Any" />
+                        <SelectValue placeholder={propertyType} />
                     </SelectTrigger>
                     <SelectContent>
                         {propertyTypes.map((item) => (
@@ -102,14 +102,16 @@ const PropertiesFilter = ({
                 <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
                     Property Status
                 </label>
-                <Select value={propertyStatus} onValueChange={(value) => setPropertyStatus(value ?? "Available")}>
+                <Select value={propertyStatus} onValueChange={(value) => setPropertyStatus(value ?? "Any")}>
                     <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
-                        <SelectValue placeholder="Available" />
+                        <SelectValue placeholder={propertyStatus} />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="Available">Available</SelectItem>
-                        <SelectItem value="Pending">Pending</SelectItem>
-                        <SelectItem value="Sold">Sold</SelectItem>
+                        {propertyStatuses.map((item) => (
+                            <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                            </SelectItem>
+                        ))}
                     </SelectContent>
                 </Select>
             </div>
@@ -121,12 +123,14 @@ const PropertiesFilter = ({
                 </label>
                 <Select value={listingType} onValueChange={(value) => setListingType(value ?? "Any")}>
                     <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
-                        <SelectValue placeholder="Any" />
+                        <SelectValue placeholder={listingType} />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="Any">Any</SelectItem>
-                        <SelectItem value="For Sale">For Sale</SelectItem>
-                        <SelectItem value="For Rent">For Rent</SelectItem>
+                        {listingTypes.map((item) => (
+                            <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                            </SelectItem>
+                        ))}
                     </SelectContent>
                 </Select>
             </div>
@@ -169,7 +173,7 @@ const PropertiesFilter = ({
                     </label>
                     <Select value={beds} onValueChange={(value) => setBeds(value ?? "Any")}>
                         <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
-                            <SelectValue placeholder="Any" />
+                            <SelectValue placeholder={beds} />
                         </SelectTrigger>
                         <SelectContent>
                             {bedsAndBathsFilterItems.map((item) => (
@@ -186,7 +190,7 @@ const PropertiesFilter = ({
                     </label>
                     <Select value={baths} onValueChange={(value) => setBaths(value ?? "Any")}>
                         <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
-                            <SelectValue placeholder="Any" />
+                            <SelectValue placeholder={baths} />
                         </SelectTrigger>
                         <SelectContent>
                             {bedsAndBathsFilterItems.map((item) => (
