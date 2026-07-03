@@ -16,16 +16,70 @@ export async function getAllProperties(req, res, next) {
         // Getting queries
         let page = parseInt(req.query.page) || 1;
         const sortBy = req.query.sortBy || "None";
-        
+        const location = req.query.location || "";
+        const propertyType = req.query.propertyType || "Any";
+        const propertyStatus = req.query.propertyStatus || "Any";
+        const listingType = req.query.listingType || "Any";
+        const minPrice = req.query.minPrice || "";
+        const maxPrice = req.query.maxPrice || "";
+        const beds = req.query.beds || "Any";
+        const baths = req.query.baths || "Any";
+
         if (page < 1) page = 1;
-        
+
         const limit = 15;
         const skip = (page - 1) * limit;
-        const sortingQuery = sortingMap[sortBy];
+        const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
 
+        // ---- Build the filter object ----
+        const query = {};
+
+        if (location.trim() !== "") {
+            const searchTerm = location.trim();
+            query.$or = [
+                { "location.city": { $regex: searchTerm, $options: "i" } },
+                { "location.country": { $regex: searchTerm, $options: "i" } },
+                { "location.fullAddress": { $regex: searchTerm, $options: "i" } }
+            ];
+        }
+
+        if (propertyType !== "Any") {
+            query.propertyType = propertyType;
+        }
+
+        if (propertyStatus !== "Any") {
+            query.status = propertyStatus;
+        }
+
+        if (listingType !== "Any") {
+            query.listingType = listingType;
+        }
+
+        if (minPrice !== "" || maxPrice !== "") {
+            query.price = {};
+
+            if (minPrice !== "" && !isNaN(minPrice)) {
+                query.price.$gte = Number(minPrice);
+            }
+            if (maxPrice !== "" && !isNaN(maxPrice)) {
+                query.price.$lte = Number(maxPrice);
+            }
+
+            if (Object.keys(query.price).length === 0) delete query.price;
+        }
+
+        if (beds !== "Any" && !isNaN(beds)) {
+            query.beds = { $gte: Number(beds) };
+        }
+
+        if (baths !== "Any" && !isNaN(baths)) {
+            query.baths = { $gte: Number(baths) };
+        }
+
+        // Fetching actual documents with query, sorting and pagination
         const [properties, totalProperties] = await Promise.all([
-            Property.find({}).sort(sortingQuery).skip(skip).limit(limit),
-            Property.countDocuments({})
+            Property.find(query).sort(sortingQuery).skip(skip).limit(limit),
+            Property.countDocuments(query)
         ]);
 
         const totalPages = Math.ceil(totalProperties / limit);
