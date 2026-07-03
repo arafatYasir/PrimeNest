@@ -21,18 +21,19 @@ const formatPrice = (price: number, listingType: string) =>
     `$${price.toLocaleString()}${listingType === "For Rent" ? "/mo" : ""}`;
 
 const PropertiesMapView = ({ properties }: { properties: Property[] }) => {
-    const usOuterBounds: [[number, number], [number, number]] = [
-        [24.396308, -125.0],
-        [49.384358, -66.93457]
-    ];
+    const OuterBounds: [[number, number], [number, number]] = [
+  [24.396308, -125.0],
+  [70.0, -66.93457]
+];
 
     return (
         <MapContainer
             className="w-full h-[550px] mt-10 rounded-xl"
             center={[39.8283, -98.5795]}
             zoom={4}
+            minZoom={3}
             scrollWheelZoom={true}
-            maxBounds={usOuterBounds}
+            maxBounds={OuterBounds}
             maxBoundsViscosity={1.0}
             zoomControl={false}
         >
