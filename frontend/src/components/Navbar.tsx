@@ -35,7 +35,7 @@ export default function Navbar() {
                             </Button>
                         </SheetTrigger>
 
-                        <SheetContent side="left" className="w-72 p-0">
+                        <SheetContent side="left" className="w-72 p-0 z-999">
                             <SheetHeader className="border-b border-border p-4">
                                 {/* ---- Logo (sidebar) ---- */}
                                 <SheetClose>
