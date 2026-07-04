@@ -1,11 +1,10 @@
-import { Heart, MapPin, MessageSquare, ShieldCheck } from "lucide-react";
+import { Heart, MapPin, MessageSquare, ShieldCheck, Clock, Mail, Phone } from "lucide-react";
 
 export const navItems = [
     { label: "Browse Properties", to: "/properties" },
     { label: "About Us", to: "/about" },
     { label: "Contact", to: "/contact" },
 ];
-
 
 export const FEATURES = [
     {
@@ -102,3 +101,41 @@ export const sortOptions = [
     { value: "Bathrooms", label: "Bathrooms" },
     { value: "Square Feet", label: "Square Feet" },
 ];
+
+export const contactInfos = [
+    {
+        icon: Phone,
+        title: "Call or WhatsApp",
+        subtitle: "Mon-Fri from 9am to 6pm",
+        informations: [
+            { type: "phone", value: "+1 (800) 555-0199" },
+            { type: "phone", value: "+1 (800) 555-0198" }
+        ]
+    },
+    {
+        icon: Mail,
+        title: "Email Support",
+        subtitle: "We response within 24 hours",
+        informations: [
+            { type: "mail", value: "support@primenest.com" },
+            { type: "mail", value: "sales@primenest.com" }
+        ]
+    },
+    {
+        icon: MapPin,
+        title: "Headquarters Office",
+        subtitle: "Visit our physical workspace",
+        informations: [
+            { type: "text", value: "100 Pine Street, Suite 1200 San Francisco, CA 94111" }
+        ]
+    },
+    {
+        icon: Clock,
+        title: "Operating Hours",
+        subtitle: "Our digital channels are open 24/7",
+        informations: [
+            { type: "text", value: "Support: 24/7 Availability" },
+            { type: "text", value: "Sales Office: 9 AM - 6 PM EST" }
+        ]
+    }
+]

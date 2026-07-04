@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 export interface Property {
     _id: string;
     title: string;
@@ -27,4 +29,14 @@ export interface Property {
 export interface FooterColumn {
     title: string;
     links: { label: string; href: string }[];
+}
+
+export interface ContactInfo {
+    icon: LucideIcon;
+    title: string;
+    subtitle: string;
+    informations: {
+        type: string;
+        value: string;
+    }[];
 }
