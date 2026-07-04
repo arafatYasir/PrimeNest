@@ -27,6 +27,14 @@ export default function Hero() {
         }
     }
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+
+            handleSearch();
+        }
+    }
+
     return (
         <section className="relative overflow-hidden bg-linear-to-t from-secondary/5 to-secondary/30">
             <Container className="flex flex-col items-center py-14 xs:py-22 sm:py-28 lg:py-36">
@@ -59,6 +67,7 @@ export default function Hero() {
                                 className="w-full bg-transparent p-0 xs:py-1 text-[11px] xs:text-xs sm:text-sm md:text-base text-text focus:outline-none placeholder:text-text-secondary border-0"
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
+                                onKeyDown={handleKeyDown}
                             />
                         </div>
                         <Button
