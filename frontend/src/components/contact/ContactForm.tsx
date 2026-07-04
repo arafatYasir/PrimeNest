@@ -2,8 +2,99 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
+import React, { useState } from "react";
+
+interface FormData {
+    fullName: string;
+    email: string;
+    phone: string;
+    subject: string;
+    message: string;
+}
+
+interface FormErrors {
+    fullName?: string;
+    email?: string;
+    phone?: string;
+    subject?: string;
+    message?: string;
+}
 
 const ContactForm = () => {
+    // States
+    const [formData, setFormData] = useState<FormData>({
+        fullName: "", email: "", phone: "", subject: "", message: ""
+    });
+    const [errors, setErrors] = useState<FormErrors>({});
+
+    // Functions
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+
+        // Clear error when user types
+        if (errors[name as keyof FormErrors]) {
+            setErrors((prev) => ({
+                ...prev,
+                [name]: undefined
+            }));
+        }
+    }
+
+    const handleCheckErrors = (): boolean => {
+        const newErrors: FormErrors = {};
+
+        // Full Name Validation
+        if (!formData.fullName.trim()) {
+            newErrors.fullName = "Full name is required.";
+        } else if (formData.fullName.trim().length < 3) {
+            newErrors.fullName = "Full name must be at least 3 characters.";
+        }
+
+        // Email Validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email.trim()) {
+            newErrors.email = "Email address is required.";
+        } else if (!emailRegex.test(formData.email)) {
+            newErrors.email = "Please enter a valid email address.";
+        }
+
+        // Phone Validation
+        if (formData.phone.trim() && formData.phone.trim().length < 7) {
+            newErrors.phone = "Phone number must be at least 7 characters.";
+        }
+
+        // Subject Validation
+        if (!formData.subject.trim()) {
+            newErrors.subject = "Subject is required.";
+        } else if (formData.subject.trim().length < 3) {
+            newErrors.subject = "Subject must be at least 3 characters.";
+        }
+
+        // Message Validation
+        if (!formData.message.trim()) {
+            newErrors.message = "Message is required.";
+        } else if (formData.message.trim().length < 10) {
+            newErrors.message = "Message must be at least 10 characters.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
+
+    const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
+        const isValid = handleCheckErrors();
+
+        if (isValid) {
+            // Form submission logic coming soon
+        }
+    }
+
     return (
         <div className="lg:col-span-7">
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 md:p-10 shadow-lg shadow-primary/5">
@@ -16,7 +107,7 @@ const ContactForm = () => {
                     </p>
                 </div>
 
-                <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-5" onSubmit={handleSubmit}>
                     {/* ---- Name & Email ---- */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -30,8 +121,14 @@ const ContactForm = () => {
                                 type="text"
                                 placeholder="John Doe"
                                 id="fullName"
-                                required
+                                name="fullName"
+                                value={formData.fullName}
+                                onChange={handleChange}
+                                className={errors.fullName ? "border-destructive focus-visible:ring-destructive" : ""}
                             />
+                            {errors.fullName && (
+                                <p className="text-xs text-destructive">{errors.fullName}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <label
@@ -44,8 +141,14 @@ const ContactForm = () => {
                                 type="email"
                                 placeholder="john@example.com"
                                 id="email"
-                                required
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className={errors.email ? "border-destructive focus-visible:ring-destructive" : ""}
                             />
+                            {errors.email && (
+                                <p className="text-xs text-destructive">{errors.email}</p>
+                            )}
                         </div>
                     </div>
 
@@ -62,7 +165,14 @@ const ContactForm = () => {
                                 type="tel"
                                 placeholder="+1 (555) 000-0000"
                                 id="phone"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className={errors.phone ? "border-destructive focus-visible:ring-destructive" : ""}
                             />
+                            {errors.phone && (
+                                <p className="text-xs text-destructive">{errors.phone}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <label
@@ -75,8 +185,14 @@ const ContactForm = () => {
                                 type="text"
                                 placeholder="e.g. Property valuation"
                                 id="subject"
-                                required
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleChange}
+                                className={errors.subject ? "border-destructive focus-visible:ring-destructive" : ""}
                             />
+                            {errors.subject && (
+                                <p className="text-xs text-destructive">{errors.subject}</p>
+                            )}
                         </div>
                     </div>
 
@@ -90,11 +206,16 @@ const ContactForm = () => {
                         </label>
                         <Textarea
                             rows={6}
-                            className="py-2.5 resize-none"
+                            className={`py-2.5 resize-none ${errors.message ? "border-destructive focus-visible:ring-destructive" : ""}`}
                             placeholder="Write your message here..."
                             id="message"
-                            required
+                            name="message"
+                            value={formData.message}
+                            onChange={handleChange}
                         />
+                        {errors.message && (
+                            <p className="text-xs text-destructive">{errors.message}</p>
+                        )}
                     </div>
 
                     {/* ---- Button ---- */}
@@ -109,7 +230,7 @@ const ContactForm = () => {
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ContactForm
+export default ContactForm;

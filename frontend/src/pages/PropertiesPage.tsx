@@ -270,7 +270,7 @@ const PropertiesPage = () => {
                                                 applySort(value ?? "None");
                                             }}
                                         >
-                                            <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
+                                            <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                                                 <SelectValue placeholder="Sort By" />
                                             </SelectTrigger>
                                             <SelectContent>
