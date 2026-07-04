@@ -11,16 +11,16 @@ const PropertiesFilterSkeleton = () => {
             {Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="mb-5">
                     <Skeleton className="h-4 w-24 mb-2 rounded" />
-                    <Skeleton className="h-10 w-full rounded-xl" />
+                    <Skeleton className="h-10 w-full rounded-lg" />
                 </div>
             ))}
 
             <div className="mb-5">
                 <Skeleton className="h-4 w-24 mb-2 rounded" />
                 <div className="flex items-center gap-2">
-                    <Skeleton className="h-10 flex-1 rounded-xl" />
+                    <Skeleton className="h-10 flex-1 rounded-lg" />
                     <span className="text-text-secondary font-medium">-</span>
-                    <Skeleton className="h-10 flex-1 rounded-xl" />
+                    <Skeleton className="h-10 flex-1 rounded-lg" />
                 </div>
             </div>
 
@@ -28,7 +28,7 @@ const PropertiesFilterSkeleton = () => {
                 {Array.from({ length: 2 }).map((_, i) => (
                     <div key={i}>
                         <Skeleton className="h-4 w-16 mb-2 rounded" />
-                        <Skeleton className="h-10 w-full rounded-xl" />
+                        <Skeleton className="h-10 w-full rounded-lg" />
                     </div>
                 ))}
             </div>

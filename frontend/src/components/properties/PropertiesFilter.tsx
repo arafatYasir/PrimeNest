@@ -84,7 +84,7 @@ const PropertiesFilter = ({
                     Property Type
                 </label>
                 <Select value={propertyType} onValueChange={(value) => setPropertyType(value ?? "Any")}>
-                    <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
+                    <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                         <SelectValue placeholder={propertyType} />
                     </SelectTrigger>
                     <SelectContent>
@@ -103,7 +103,7 @@ const PropertiesFilter = ({
                     Property Status
                 </label>
                 <Select value={propertyStatus} onValueChange={(value) => setPropertyStatus(value ?? "Any")}>
-                    <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
+                    <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                         <SelectValue placeholder={propertyStatus} />
                     </SelectTrigger>
                     <SelectContent>
@@ -122,7 +122,7 @@ const PropertiesFilter = ({
                     Listing Type
                 </label>
                 <Select value={listingType} onValueChange={(value) => setListingType(value ?? "Any")}>
-                    <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
+                    <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                         <SelectValue placeholder={listingType} />
                     </SelectTrigger>
                     <SelectContent>
@@ -172,7 +172,7 @@ const PropertiesFilter = ({
                         Bedrooms
                     </label>
                     <Select value={beds} onValueChange={(value) => setBeds(value ?? "Any")}>
-                        <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
+                        <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                             <SelectValue placeholder={beds} />
                         </SelectTrigger>
                         <SelectContent>
@@ -189,7 +189,7 @@ const PropertiesFilter = ({
                         Bathrooms
                     </label>
                     <Select value={baths} onValueChange={(value) => setBaths(value ?? "Any")}>
-                        <SelectTrigger className="w-full h-10! rounded-xl border-border px-3.5 text-sm! text-text">
+                        <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                             <SelectValue placeholder={baths} />
                         </SelectTrigger>
                         <SelectContent>

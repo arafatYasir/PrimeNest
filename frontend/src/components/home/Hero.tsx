@@ -58,7 +58,7 @@ export default function Hero() {
 
                 {/* ---- Search Bar ---- */}
                 <div className="mt-5 sm:mt-10 w-full max-w-xl">
-                    <div className="flex items-center gap-2 rounded-2xl border border-border bg-card p-1 xs:p-2 shadow-lg shadow-primary/5 transition-shadow focus-within:shadow-xl focus-within:shadow-primary/10">
+                    <div className="flex items-center gap-2 rounded-xl border border-border bg-card p-1 xs:p-2 shadow-lg shadow-primary/5 transition-shadow focus-within:shadow-xl focus-within:shadow-primary/10">
                         <div className="flex flex-1 items-center gap-2 pl-1 xs:pl-3">
                             <MapPin className="size-3.5 xs:size-4 sm:size-5 shrink-0 text-text-secondary" />
                             <input
