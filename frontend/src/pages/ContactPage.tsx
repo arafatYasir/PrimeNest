@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Container from "@/components/Container";
 import ContactHero from "@/components/contact/ContactHero";
 import ContactInfos from "@/components/contact/ContactInfos";
+import ContactForm from "@/components/contact/ContactForm";
 
 export default function ContactPage() {
     // Scroll to the top on first page render
@@ -22,7 +23,7 @@ export default function ContactPage() {
                         <ContactInfos />
 
                         {/* ---- Right Column: Contact Form ---- */}
-                        <></>
+                        <ContactForm />
                     </div>
                 </Container>
             </section>
