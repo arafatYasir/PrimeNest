@@ -39,7 +39,7 @@ export default function Hero() {
         <section className="relative overflow-hidden bg-linear-to-t from-secondary/5 to-secondary/30">
             <Container className="flex flex-col items-center py-14 xs:py-22 sm:py-28 lg:py-36">
                 {/* ---- Badge ---- */}
-                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-2 xs:px-4 py-1.5 text-[10px] xs:text-xs sm:text-sm font-medium text-text-secondary shadow-sm">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-2 xs:px-4 py-1 text-[10px] xs:text-xs sm:text-sm font-medium text-text-secondary shadow-sm">
                     <Home className="size-3 xs:size-3.5 sm:size-4 text-accent" />
                     Thousands of verified properties
                 </div>
