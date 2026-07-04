@@ -2,7 +2,6 @@ import { Search, MapPin, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Container from "../Container";
 import { useState } from "react";
-import { Input } from "../ui/input";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
