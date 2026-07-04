@@ -1,8 +1,33 @@
 import { Search, MapPin, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Container from "../Container";
+import { useState } from "react";
+import { Input } from "../ui/input";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export default function Hero() {
+    // States
+    const [location, setLocation] = useState("");
+
+    // Extra hooks
+    const navigate = useNavigate();
+
+    // Functions
+    const handleSearch = () => {
+        if (location.trim() !== "") {
+            navigate({
+                pathname: "/properties",
+                search: `?location=${location}`
+            });
+        }
+        else {
+            toast.warning("Please enter a valid location", {
+                className: "text-accent!"
+            });
+        }
+    }
+
     return (
         <section className="relative overflow-hidden bg-linear-to-t from-secondary/5 to-secondary/30">
             <Container className="flex flex-col items-center py-14 xs:py-22 sm:py-28 lg:py-36">
@@ -29,14 +54,17 @@ export default function Hero() {
                     <div className="flex items-center gap-2 rounded-2xl border border-border bg-card p-1 xs:p-2 shadow-lg shadow-primary/5 transition-shadow focus-within:shadow-xl focus-within:shadow-primary/10">
                         <div className="flex flex-1 items-center gap-2 pl-1 xs:pl-3">
                             <MapPin className="size-3.5 xs:size-4 sm:size-5 shrink-0 text-text-secondary" />
-                            <input
+                            <Input
                                 type="text"
                                 placeholder="Search by city, neighborhood, or address"
-                                className="w-full bg-transparent p-0 xs:py-1 text-[11px] xs:text-xs sm:text-sm md:text-base text-text placeholder:text-text-secondary focus:outline-none"
+                                className="w-full bg-transparent p-0 xs:py-1 text-[11px] xs:text-xs sm:text-sm md:text-base text-text placeholder:text-text-secondary border-0"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
                             />
                         </div>
                         <Button
                             size="lg"
+                            onClick={handleSearch}
                         >
                             <Search className="size-3 xs:size-3.5 sm:size-4" />
                             <span className="hidden xs:inline">Search</span>
