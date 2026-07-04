@@ -54,10 +54,10 @@ export default function Hero() {
                     <div className="flex items-center gap-2 rounded-2xl border border-border bg-card p-1 xs:p-2 shadow-lg shadow-primary/5 transition-shadow focus-within:shadow-xl focus-within:shadow-primary/10">
                         <div className="flex flex-1 items-center gap-2 pl-1 xs:pl-3">
                             <MapPin className="size-3.5 xs:size-4 sm:size-5 shrink-0 text-text-secondary" />
-                            <Input
+                            <input
                                 type="text"
                                 placeholder="Search by city, neighborhood, or address"
-                                className="w-full bg-transparent p-0 xs:py-1 text-[11px] xs:text-xs sm:text-sm md:text-base text-text placeholder:text-text-secondary border-0"
+                                className="w-full bg-transparent p-0 xs:py-1 text-[11px] xs:text-xs sm:text-sm md:text-base text-text focus:outline-none placeholder:text-text-secondary border-0"
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
                             />
