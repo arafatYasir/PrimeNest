@@ -39,10 +39,10 @@ export const FOOTER_COLUMNS = [
         title: "Browse",
         links: [
             { label: "All Properties", href: "/properties" },
-            { label: "Houses", href: "/properties" },
-            { label: "Apartments", href: "/properties" },
-            { label: "Condos", href: "/properties" },
-            { label: "Lands", href: "/properties" },
+            { label: "Houses", href: "/properties?propertyType=House" },
+            { label: "Apartments", href: "/properties?propertyType=Apartment" },
+            { label: "Condos", href: "/properties?propertyType=Condo" },
+            { label: "Lands", href: "/properties?propertyType=Land" },
         ],
     },
     {

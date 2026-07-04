@@ -77,7 +77,6 @@ const PropertiesPage = () => {
             next.set("page", String(page));
             return next;
         });
-        window.scrollTo({ top: 0 });
     }
 
     const applySort = (value: string) => {
@@ -165,7 +164,7 @@ const PropertiesPage = () => {
     // Scrolling to the top of the page on first load
     useEffect(() => {
         window.scrollTo({ top: 0 });
-    }, []);
+    }, [searchParams]);
 
     // Handling if user manually sets a page number in the url search params which doesn't exist
     useEffect(() => {
