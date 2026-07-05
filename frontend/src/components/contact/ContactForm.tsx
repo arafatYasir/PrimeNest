@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Send } from "lucide-react";
+import { LoaderCircle, Send } from "lucide-react";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 interface FormData {
     fullName: string;
@@ -26,6 +27,7 @@ const ContactForm = () => {
         fullName: "", email: "", phone: "", subject: "", message: ""
     });
     const [errors, setErrors] = useState<FormErrors>({});
+    const [loading, setLoading] = useState(false);
 
     // Functions
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -86,12 +88,49 @@ const ContactForm = () => {
         return Object.keys(newErrors).length === 0;
     }
 
-    const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = (e) => {
+    const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
+
+        setLoading(true);
+
         const isValid = handleCheckErrors();
 
-        if (isValid) {
-            // Form submission logic coming soon
+        // If any error occured then return
+        if (!isValid) {
+            setLoading(false);
+            return;
+        }
+
+        // Form submission via web3forms
+        try {
+            const formData = new FormData(e.target);
+            formData.append("access_key", "bdf0d575-9bb6-4fe1-a9ff-4663778618aa");
+
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                toast.success("Message Sent Successfully!", {
+                    className: "text-success!"
+                });
+
+                // Reset the form input values
+                setFormData({
+                    fullName: "", email: "", phone: "", subject: "", message: ""
+                });
+            } else {
+                toast.error("Message Sending Failed!", {
+                    className: "text-error"
+                });
+            }
+        } catch (e: any) {
+            console.error("Contact form error: ", e.message);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -223,13 +262,24 @@ const ContactForm = () => {
                         type="submit"
                         size="lg"
                         className="w-full bg-secondary hover:bg-secondary-hover text-white shadow-xs py-3 mt-2 h-11"
+                        disabled={loading}
                     >
-                        <Send className="size-4 mr-2" />
-                        Send Message
+                        {
+                            loading ? (
+                                <>
+                                    <LoaderCircle className="size-4 mr-1 animate-spin" />
+                                    Sending...
+                                </>
+                            ) : (
+                                <>
+                                    <Send className="size-4 mr-1" />
+                                    Send Message</>
+                            )
+                        }
                     </Button>
                 </form>
             </div>
-        </div>
+        </div >
     );
 };
 

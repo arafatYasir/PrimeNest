@@ -22,7 +22,7 @@ export default function Hero() {
         }
         else {
             toast.warning("Please enter a valid location", {
-                className: "text-accent!"
+                className: "text-warning!"
             });
         }
     }
