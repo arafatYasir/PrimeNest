@@ -3,6 +3,7 @@ import RootLayout from "./layouts/RootLayout"
 import HomePage from "./pages/HomePage"
 import PropertiesPage from "./pages/PropertiesPage"
 import ContactPage from "./pages/ContactPage"
+import AboutPage from "./pages/AboutPage"
 import { Toaster } from "@/components/ui/sonner"
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path="/properties" element={<PropertiesPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
         </Route>
       </Routes>
 
