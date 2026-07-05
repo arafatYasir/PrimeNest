@@ -138,10 +138,10 @@ const ContactForm = () => {
         <div className="lg:col-span-7">
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 md:p-10 shadow-lg shadow-primary/5">
                 <div className="mb-6">
-                    <h3 className="font-heading text-xl font-bold text-text">
+                    <h3 className="font-heading text-lg xs:text-xl font-bold text-text">
                         Send Message
                     </h3>
-                    <p className="text-sm text-text-secondary mt-1">
+                    <p className="text-xs xs:text-sm text-text-secondary mt-1">
                         Fill out the form below, and our agent will follow up shortly.
                     </p>
                 </div>
@@ -151,7 +151,7 @@ const ContactForm = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label
-                                className="text-xs block font-semibold uppercase tracking-wider text-text-secondary"
+                                className="text-[11px] xs:text-xs block font-semibold uppercase tracking-wider text-text-secondary"
                                 htmlFor="fullName"
                             >
                                 Full Name
@@ -166,12 +166,12 @@ const ContactForm = () => {
                                 className={errors.fullName ? "border-destructive focus-visible:ring-destructive" : ""}
                             />
                             {errors.fullName && (
-                                <p className="text-xs text-destructive">{errors.fullName}</p>
+                                <p className="text-[11px] xs:text-xs text-destructive">{errors.fullName}</p>
                             )}
                         </div>
                         <div className="space-y-2">
                             <label
-                                className="text-xs block font-semibold uppercase tracking-wider text-text-secondary"
+                                className="text-[11px] xs:text-xs block font-semibold uppercase tracking-wider text-text-secondary"
                                 htmlFor="email"
                             >
                                 Email Address
@@ -186,7 +186,7 @@ const ContactForm = () => {
                                 className={errors.email ? "border-destructive focus-visible:ring-destructive" : ""}
                             />
                             {errors.email && (
-                                <p className="text-xs text-destructive">{errors.email}</p>
+                                <p className="text-[11px] xs:text-xs text-destructive">{errors.email}</p>
                             )}
                         </div>
                     </div>
@@ -195,7 +195,7 @@ const ContactForm = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label
-                                className="text-xs block font-semibold uppercase tracking-wider text-text-secondary"
+                                className="text-[11px] xs:text-xs block font-semibold uppercase tracking-wider text-text-secondary"
                                 htmlFor="phone"
                             >
                                 Phone Number
@@ -210,12 +210,12 @@ const ContactForm = () => {
                                 className={errors.phone ? "border-destructive focus-visible:ring-destructive" : ""}
                             />
                             {errors.phone && (
-                                <p className="text-xs text-destructive">{errors.phone}</p>
+                                <p className="text-[11px] xs:text-xs text-destructive">{errors.phone}</p>
                             )}
                         </div>
                         <div className="space-y-2">
                             <label
-                                className="text-xs block font-semibold uppercase tracking-wider text-text-secondary"
+                                className="text-[11px] xs:text-xs block font-semibold uppercase tracking-wider text-text-secondary"
                                 htmlFor="subject"
                             >
                                 Subject
@@ -230,7 +230,7 @@ const ContactForm = () => {
                                 className={errors.subject ? "border-destructive focus-visible:ring-destructive" : ""}
                             />
                             {errors.subject && (
-                                <p className="text-xs text-destructive">{errors.subject}</p>
+                                <p className="text-[11px] xs:text-xs text-destructive">{errors.subject}</p>
                             )}
                         </div>
                     </div>
@@ -238,7 +238,7 @@ const ContactForm = () => {
                     {/* Message */}
                     <div className="space-y-2">
                         <label
-                            className="text-xs block font-semibold uppercase tracking-wider text-text-secondary"
+                            className="text-[11px] xs:text-xs block font-semibold uppercase tracking-wider text-text-secondary"
                             htmlFor="message"
                         >
                             Message
@@ -253,7 +253,7 @@ const ContactForm = () => {
                             onChange={handleChange}
                         />
                         {errors.message && (
-                            <p className="text-xs text-destructive">{errors.message}</p>
+                            <p className="text-[11px] xs:text-xs text-destructive">{errors.message}</p>
                         )}
                     </div>
 
@@ -261,18 +261,18 @@ const ContactForm = () => {
                     <Button
                         type="submit"
                         size="lg"
-                        className="w-full bg-secondary hover:bg-secondary-hover text-white shadow-xs py-3 mt-2 h-11"
+                        className="w-full bg-secondary hover:bg-secondary-hover text-white shadow-xs h-10"
                         disabled={loading}
                     >
                         {
                             loading ? (
                                 <>
-                                    <LoaderCircle className="size-4 mr-1 animate-spin" />
+                                    <LoaderCircle className="size-3.5 xs:size-4 mr-1 animate-spin" />
                                     Sending...
                                 </>
                             ) : (
                                 <>
-                                    <Send className="size-4 mr-1" />
+                                    <Send className="size-3.5 xs:size-4 mr-1" />
                                     Send Message</>
                             )
                         }
