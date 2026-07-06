@@ -45,7 +45,7 @@ export default function FeaturedProperties() {
                             size="lg"
                         >
                             View All Properties
-                            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                            <ArrowRight className="size-4" />
                         </Button>
                     </Link>
                 </div>
