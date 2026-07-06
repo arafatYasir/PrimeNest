@@ -46,3 +46,9 @@ export interface AboutUsProblem {
     title: string;
     description: string;
 }
+
+export interface AboutUsCorePillar {
+    icon: LucideIcon,
+    title: string;
+    description: string;
+}

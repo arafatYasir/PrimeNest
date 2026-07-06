@@ -1,4 +1,4 @@
-import { Heart, MapPin, MessageSquare, ShieldCheck, Clock, Mail, Phone, AlertCircle } from "lucide-react";
+import { Heart, MapPin, MessageSquare, ShieldCheck, Clock, Mail, Phone, AlertCircle, Users } from "lucide-react";
 
 export const navItems = [
     { label: "Browse Properties", to: "/properties" },
@@ -162,3 +162,21 @@ export const aboutUsProblems = [
         description: "A journey that often feels complex and overwhelming."
     },
 ];
+
+export const aboutUsCorePillars = [
+    {
+        icon: ShieldCheck,
+        title: "Verified Listings",
+        description: "Every property submitted to PrimeNest goes through an administrative review before appearing on the marketplace, helping maintain a more trustworthy browsing experience."
+    },
+    {
+        icon: MessageSquare,
+        title: "Transparent Communication",
+        description: "Private conversations between buyers and sellers allow negotiations to happen directly, making discussions clearer and more efficient."
+    },
+    {
+        icon: Users,
+        title: "Built for Both Buyers & Sellers",
+        description: "PrimeNest is designed as a balanced marketplace where both buyers and sellers have the tools they need to make informed decisions and complete transactions with confidence."
+    }
+]

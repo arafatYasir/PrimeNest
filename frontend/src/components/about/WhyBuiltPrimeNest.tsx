@@ -4,8 +4,8 @@ import type { AboutUsProblem } from "@/types/global"
 
 const WhyBuiltPrimeNest = () => {
     return (
-        <section className="py-16 sm:py-24 border-b border-border bg-linear-to-b from-transparent to-section/30">
-            <Container className="py-0!">
+        <section className="border-b border-border bg-linear-to-b from-transparent to-section/30">
+            <Container>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
                     {/* ---- Left Column ---- */}
                     <div className="lg:col-span-6 space-y-5">
@@ -23,7 +23,7 @@ const WhyBuiltPrimeNest = () => {
                         {/* ---- Problem Cards ---- */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {aboutUsProblems.map(({ icon: Icon, title, description }: AboutUsProblem) => (
-                                <div className="flex gap-3 p-4 rounded-xl bg-card border border-border hover:border-error/25 hover:shadow-xs transition-all duration-200">
+                                <div key={title} className="flex gap-3 p-4 rounded-xl bg-card border border-border hover:border-error/25 hover:shadow-xs transition-all duration-200">
                                     <Icon className="size-5 text-error shrink-0 mt-0.5" />
                                     <div>
                                         <h4 className="text-sm font-semibold text-text">{title}</h4>

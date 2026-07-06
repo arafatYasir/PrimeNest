@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import AboutHero from "@/components/about/AboutHero";
 import WhyBuiltPrimeNest from "@/components/about/WhyBuiltPrimeNest";
+import WhatMakesUsDifferent from "@/components/about/WhatMakesUsDifferent";
 
 export default function AboutPage() {
     // Scroll to the top on first page render
@@ -15,6 +16,9 @@ export default function AboutPage() {
 
             {/* ---- Why We Built PrimeNest ---- */}
             <WhyBuiltPrimeNest />
+
+            {/* ---- What Makes Us Different ---- */}
+            <WhatMakesUsDifferent />
         </main>
     );
 }
