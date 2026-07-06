@@ -4,7 +4,7 @@ import type { AboutUsCorePillar } from "@/types/global"
 
 const WhatMakesUsDifferent = () => {
     return (
-        <section className="bg-card border-b border-border">
+        <section>
             <Container>
                 <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
                     <span className="text-sm font-semibold tracking-wide text-secondary uppercase">Core Pillars</span>
@@ -18,7 +18,7 @@ const WhatMakesUsDifferent = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                     {aboutUsCorePillars.map(({icon: Icon, title, description}: AboutUsCorePillar) => (
-                        <div key={title} className="group relative flex flex-col p-6 sm:p-8 rounded-2xl border border-border bg-background hover:border-secondary/25 transition-all duration-300">
+                        <div key={title} className="group relative flex flex-col p-6 sm:p-8 rounded-2xl border border-border bg-card hover:border-secondary/25 transition-all duration-300">
                             <div className="flex size-12 items-center justify-center rounded-xl bg-secondary/10 text-secondary mb-6">
                                 <Icon className="size-6" />
                             </div>

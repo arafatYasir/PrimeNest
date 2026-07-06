@@ -4,7 +4,7 @@ import type { AboutUsProblem } from "@/types/global"
 
 const WhyBuiltPrimeNest = () => {
     return (
-        <section className="border-b border-border bg-linear-to-b from-transparent to-section/30">
+        <section>
             <Container>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
                     {/* ---- Left Column ---- */}

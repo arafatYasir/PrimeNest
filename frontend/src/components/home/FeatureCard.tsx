@@ -9,12 +9,10 @@ interface FeatureCardProps {
 function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
     return (
         <div
-            className="flex flex-col items-start rounded-2xl border border-border/60 bg-card p-6
-                 transition-all duration-300 ease-out
-                 hover:shadow-lg hover:shadow-black/6 hover:border-border"
+            className="flex flex-col items-start rounded-2xl border border-border/60 bg-card p-6 transition-all duration-300 ease-out hover:border-secondary/25"
         >
-            <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10">
-                <Icon className="size-5 text-primary" strokeWidth={2} />
+            <div className="flex size-10 items-center justify-center rounded-xl bg-secondary/10">
+                <Icon className="size-5 text-secondary" strokeWidth={2} />
             </div>
 
             <h3 className="mt-4 text-sm xs:text-[15px] font-semibold text-text leading-snug">

@@ -8,7 +8,7 @@ function WhyChooseUs() {
             <Container>
                 {/* ---- Header ---- */}
                 <div className="text-center">
-                    <span className="text-sm font-semibold tracking-wide text-accent uppercase">
+                    <span className="text-sm font-semibold tracking-wide text-secondary uppercase">
                         Why PrimeNest
                     </span>
                     <h2 className="mt-2 font-heading text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text">
