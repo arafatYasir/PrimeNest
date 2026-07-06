@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import AboutHero from "@/components/about/AboutHero";
+import WhyBuiltPrimeNest from "@/components/about/WhyBuiltPrimeNest";
 
 export default function AboutPage() {
     // Scroll to the top on first page render
@@ -9,8 +10,11 @@ export default function AboutPage() {
 
     return (
         <main className="bg-background min-h-screen">
-            {/* ---- About Hero Section ---- */}
+            {/* ---- Hero ---- */}
             <AboutHero />
+
+            {/* ---- Why We Built PrimeNest ---- */}
+            <WhyBuiltPrimeNest />
         </main>
     );
 }

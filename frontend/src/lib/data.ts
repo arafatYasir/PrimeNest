@@ -1,4 +1,4 @@
-import { Heart, MapPin, MessageSquare, ShieldCheck, Clock, Mail, Phone } from "lucide-react";
+import { Heart, MapPin, MessageSquare, ShieldCheck, Clock, Mail, Phone, AlertCircle } from "lucide-react";
 
 export const navItems = [
     { label: "Browse Properties", to: "/properties" },
@@ -138,4 +138,27 @@ export const contactInfos = [
             { type: "text", value: "Sales Office: 9 AM - 6 PM EST" }
         ]
     }
-]
+];
+
+export const aboutUsProblems = [
+    {
+        icon: AlertCircle,
+        title: "Uncertainty",
+        description: "Not knowing whether online property listings are genuine."
+    },
+    {
+        icon: AlertCircle,
+        title: "Unreliable Info",
+        description: "Difficulty finding complete and reliable information."
+    },
+    {
+        icon: AlertCircle,
+        title: "Scattered Chat",
+        description: "Communication scattered across different channels."
+    },
+    {
+        icon: AlertCircle,
+        title: "Stressful Process",
+        description: "A journey that often feels complex and overwhelming."
+    },
+];

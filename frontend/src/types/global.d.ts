@@ -40,3 +40,9 @@ export interface ContactInfo {
         value: string;
     }[];
 }
+
+export interface AboutUsProblem {
+    icon: LucideIcon,
+    title: string;
+    description: string;
+}
