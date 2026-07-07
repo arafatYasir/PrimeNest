@@ -2,7 +2,7 @@ import Container from "@/components/Container";
 import PropertiesFilter from "@/components/properties/PropertiesFilter";
 import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Grid3x3, MapPin, SearchX } from "lucide-react";
+import { Grid3x3, MapPin, SearchX, SlidersHorizontal } from "lucide-react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchAllProperties } from "@/lib/apiCalls";
 import PropertiesPageSkeleton from "@/components/properties/PropertiesPageSkeleton";
@@ -238,7 +238,7 @@ const PropertiesPage = () => {
                             {/* ---- Property Cards / Map ---- */}
                             <div className="lg:col-span-3">
                                 {/* ---- Tabs / Sort ---- */}
-                                <div className="flex flex-col xs:flex-row xs:items-end xs:justify-between gap-4">
+                                <div className="flex flex-col xs:flex-row xs:items-end xs:justify-between gap-y-8">
                                     <div>
                                         <div>
                                             <h3 className="text-base xs:text-lg font-semibold font-sans text-text">Found Properties: {data?.pagination.totalProperties ?? 0}</h3>
@@ -312,7 +312,7 @@ const PropertiesPage = () => {
                                                 </div>
                                             ) : (
                                                 <>
-                                                    <div className="grid gap-4 sm:gap-6 mt-10" style={{gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))"}}>
+                                                    <div className="grid gap-4 sm:gap-6 mt-10" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
                                                         {data?.data.map((property: Property) => (
                                                             <PropertyCard key={property._id} property={property} />
                                                         ))}
@@ -356,6 +356,11 @@ const PropertiesPage = () => {
                     )
                 }
             </Container>
+
+            {/* ---- Filter Toggle Button For Smaller Devices ---- */}
+            <Button size="icon-lg" className="fixed bottom-10 right-10 z-999 lg:hidden rounded-full size-11">
+                <SlidersHorizontal className="size-5" />
+            </Button>
         </main>
     );
 };
