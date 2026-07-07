@@ -10,7 +10,7 @@ const AboutCTA = () => {
                 <div className="relative overflow-hidden rounded-2xl bg-card p-6 xs:p-8 sm:p-10 md:p-12 lg:p-20 text-center border-2 border-border">
                     <div className="relative z-10 max-w-3xl mx-auto space-y-6">
                         <span className="text-sm font-semibold tracking-wide text-accent uppercase">Looking Ahead</span>
-                        <h2 className="mt-1 font-heading text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-text">
+                        <h2 className="mt-1 font-heading text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text">
                             Building the Future of Real Estate
                         </h2>
 
@@ -18,7 +18,7 @@ const AboutCTA = () => {
                             We are building more than just another real estate marketplace. PrimeNest aims to create a trusted ecosystem where technology makes property transactions simpler, safer, and more transparent for everyone.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+                        <div className="flex flex-col xs:flex-row items-center justify-center gap-2 sm:gap-4 py-2">
                             <Link to="/properties" className="w-full sm:w-auto">
                                 <Button
                                     size="lg"

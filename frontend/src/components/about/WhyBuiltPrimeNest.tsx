@@ -6,7 +6,7 @@ const WhyBuiltPrimeNest = () => {
     return (
         <section>
             <Container>
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
                     {/* ---- Left Column ---- */}
                     <div className="lg:col-span-6 space-y-5">
                         <div>
