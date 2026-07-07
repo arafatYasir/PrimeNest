@@ -57,7 +57,7 @@ const PropertiesFilter = ({
         setter(cleaned);
     };
     return (
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-xs">
+        <div className="sticky top-[65px] rounded-2xl border border-border bg-card p-6 shadow-xs">
             {/* Filter Title */}
             <div className="flex items-center gap-2 text-base font-bold text-text border-b border-border pb-4 mb-5">
                 <SlidersHorizontal className="size-4.5 text-secondary" />

@@ -192,15 +192,15 @@ const PropertiesPage = () => {
                 {/* ---- Header Section ---- */}
                 <div className="mb-8 sm:mb-10">
                     <nav className="mb-3 flex items-center gap-1.5 text-xs font-semibold text-text-secondary tracking-wide uppercase">
-                        <a href="/" className="hover:text-text transition-colors">Home</a>
+                        <a href="/" className="hover:text-text active:text-text transition-colors">Home</a>
                         <span className="text-text">/</span>
                         <span className="text-text">Properties</span>
                     </nav>
 
-                    <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-text">
+                    <h1 className="font-heading text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text">
                         Browse Properties
                     </h1>
-                    <p className="mt-2 text-sm sm:text-base text-text-secondary max-w-xl">
+                    <p className="mt-2 text-sm sm:text-base text-text-secondary">
                         Find your prime nest from our curated selection of properties.
                     </p>
                 </div>
@@ -212,7 +212,7 @@ const PropertiesPage = () => {
                     ) : (
                         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                             {/* ---- Filters Sidebar ---- */}
-                            <div className="lg:col-span-1">
+                            <div className="hidden lg:block lg:col-span-1">
                                 <PropertiesFilter
                                     location={location}
                                     setLocation={setLocation}
@@ -238,12 +238,12 @@ const PropertiesPage = () => {
                             {/* ---- Property Cards / Map ---- */}
                             <div className="lg:col-span-3">
                                 {/* ---- Tabs / Sort ---- */}
-                                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                                <div className="flex flex-col xs:flex-row xs:items-end xs:justify-between gap-4">
                                     <div>
                                         <div>
-                                            <h3 className="text-lg font-semibold font-sans text-text">Found Properties: {data?.pagination.totalProperties ?? 0}</h3>
+                                            <h3 className="text-base xs:text-lg font-semibold font-sans text-text">Found Properties: {data?.pagination.totalProperties ?? 0}</h3>
                                         </div>
-                                        <div className="mt-5">
+                                        <div className="mt-5 font-sans">
                                             <Tabs value={currentTab} onValueChange={(value) => setCurrentTab(value as "properties" | "map")}>
                                                 <TabsList className="gap-1">
                                                     <TabsTrigger value="properties">
@@ -259,8 +259,8 @@ const PropertiesPage = () => {
                                         </div>
                                     </div>
 
-                                    <div className="w-full md:w-56">
-                                        <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
+                                    <div className="w-full xs:w-56">
+                                        <label className="text-xs font-sans font-bold text-text uppercase tracking-wider mb-2 block">
                                             Sort By
                                         </label>
                                         <Select
@@ -270,12 +270,16 @@ const PropertiesPage = () => {
                                                 applySort(value ?? "None");
                                             }}
                                         >
-                                            <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
+                                            <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text font-sans">
                                                 <SelectValue placeholder="Sort By" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {sortOptions.map((item) => (
-                                                    <SelectItem key={item.value} value={item.value}>
+                                                    <SelectItem
+                                                        key={item.value}
+                                                        value={item.value}
+                                                        className="font-sans"
+                                                    >
                                                         {item.label}
                                                     </SelectItem>
                                                 ))}
@@ -289,9 +293,9 @@ const PropertiesPage = () => {
                                     currentTab === "properties" ? (
                                         <>
                                             {data?.data.length === 0 ? (
-                                                <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card px-6 py-16 text-center mt-10">
-                                                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary/10">
-                                                        <SearchX className="h-7 w-7 text-secondary" strokeWidth={1.75} />
+                                                <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card px-4 xs:px-6 py-10 xs:py-16 text-center mt-10">
+                                                    <div className="flex size-12 xs:size-14 items-center justify-center rounded-full bg-error/10">
+                                                        <SearchX className="size-6 xs:size-7 text-error" strokeWidth={1.75} />
                                                     </div>
                                                     <h3 className="mt-4 text-lg font-semibold text-text">No properties found</h3>
                                                     <p className="mt-1.5 max-w-sm text-sm text-text-secondary">
@@ -308,7 +312,7 @@ const PropertiesPage = () => {
                                                 </div>
                                             ) : (
                                                 <>
-                                                    <div className="grid grid-cols-3 gap-6 mt-10">
+                                                    <div className="grid gap-4 sm:gap-6 mt-10" style={{gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))"}}>
                                                         {data?.data.map((property: Property) => (
                                                             <PropertyCard key={property._id} property={property} />
                                                         ))}
