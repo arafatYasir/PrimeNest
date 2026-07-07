@@ -313,7 +313,7 @@ const PropertiesPage = () => {
                                                 </div>
                                             ) : (
                                                 <>
-                                                    <div className="grid gap-4 sm:gap-6 mt-10" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mt-10">
                                                         {data?.data.map((property: Property) => (
                                                             <PropertyCard key={property._id} property={property} />
                                                         ))}

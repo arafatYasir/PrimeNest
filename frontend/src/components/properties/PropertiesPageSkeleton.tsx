@@ -12,7 +12,7 @@ const PropertiesPageSkeleton = () => {
 
             {/* Content */}
             <div className="lg:col-span-3">
-                <div className="flex flex-col xs:flex-row xs:items-end xs:justify-between gap-4">
+                <div className="flex flex-col xs:flex-row xs:items-end xs:justify-between gap-8">
                     <div>
                         {/* Heading */}
                         <Skeleton className="h-6 xs:h-7 w-50 rounded" />
@@ -33,7 +33,7 @@ const PropertiesPageSkeleton = () => {
                 </div>
 
                 {/* Property Cards */}
-                <div className="grid gap-4 sm:gap-6 mt-10" style={{gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))"}}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mt-10">
                     {Array.from({ length: 6 }).map((_, i) => (
                         <PropertyCardSkeleton key={i} />
                     ))}
