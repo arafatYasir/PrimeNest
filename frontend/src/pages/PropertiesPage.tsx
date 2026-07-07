@@ -2,7 +2,7 @@ import Container from "@/components/Container";
 import PropertiesFilter from "@/components/properties/PropertiesFilter";
 import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Grid3x3, MapPin, SearchX, SlidersHorizontal } from "lucide-react";
+import { Grid3x3, MapPin, SearchX } from "lucide-react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchAllProperties } from "@/lib/apiCalls";
 import PropertiesPageSkeleton from "@/components/properties/PropertiesPageSkeleton";
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { sortOptions } from "@/lib/data";
 import PropertiesMapView from "@/components/properties/PropertiesMapView";
+import PropertiesFilterSidebar from "@/components/properties/PropertiesFilterSidebar";
 
 const PropertiesPage = () => {
     // States
@@ -357,10 +358,27 @@ const PropertiesPage = () => {
                 }
             </Container>
 
-            {/* ---- Filter Toggle Button For Smaller Devices ---- */}
-            <Button size="icon-lg" className="fixed bottom-10 right-10 z-999 lg:hidden rounded-full size-11">
-                <SlidersHorizontal className="size-5" />
-            </Button>
+            {/* ---- Filter Sidebar For Smaller Devices ---- */}
+            <PropertiesFilterSidebar
+                location={location}
+                setLocation={setLocation}
+                propertyType={propertyType}
+                setPropertyType={setPropertyType}
+                propertyStatus={propertyStatus}
+                setPropertyStatus={setPropertyStatus}
+                listingType={listingType}
+                setListingType={setListingType}
+                minPrice={minPrice}
+                setMinPrice={setMinPrice}
+                maxPrice={maxPrice}
+                setMaxPrice={setMaxPrice}
+                beds={beds}
+                setBeds={setBeds}
+                baths={baths}
+                setBaths={setBaths}
+                applyFilters={applyFilters}
+                resetFilters={resetFilters}
+            />
         </main>
     );
 };
