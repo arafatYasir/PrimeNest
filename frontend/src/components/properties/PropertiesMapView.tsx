@@ -22,9 +22,9 @@ const formatPrice = (price: number, listingType: string) =>
 
 const PropertiesMapView = ({ properties }: { properties: Property[] }) => {
     const OuterBounds: [[number, number], [number, number]] = [
-  [24.396308, -125.0],
-  [70.0, -66.93457]
-];
+        [24.396308, -125.0],
+        [70.0, -66.93457]
+    ];
 
     return (
         <MapContainer
@@ -39,10 +39,15 @@ const PropertiesMapView = ({ properties }: { properties: Property[] }) => {
         >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                updateWhenZooming={false}
+                updateWhenIdle={true}
+                keepBuffer={4}
+                maxNativeZoom={19}
+                maxZoom={19}
             />
 
             {properties.map((property) => (
-                <Marker position={[property.location.lat, property.location.lon]}>
+                <Marker key={property._id} position={[property.location.lat, property.location.lon]}>
                     <Popup className="property-popup" closeButton={false} maxWidth={260} minWidth={260}>
                         <div className="w-[260px] overflow-hidden bg-card font-sans">
                             {/* ---- Image ---- */}
