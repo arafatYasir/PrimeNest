@@ -103,6 +103,17 @@ export async function getProperty(req, res, next) {
     try {
         const { id } = req.params;
 
+        if (!id) {
+            const error = new Error("Property id is missing");
+            error.statusCode = 401;
+            throw error;
+        }
+        else if (id.trim() === "") {
+            const error = new Error("Property id is empty");
+            error.statusCode = 401;
+            throw error;
+        }
+
         const property = await Property.findOne({ _id: id });
 
         if (!property) {

@@ -10,7 +10,8 @@ const PropertyDetailsPage = () => {
     // Fetch the property details
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["property", id],
-        queryFn: () => fetchProperty(id)
+        queryFn: () => fetchProperty(id!),
+        enabled: !!id
     });
 
     if (isLoading) return <div className="text-3xl text-text font-bold text-center">Loading.....</div>
