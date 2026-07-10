@@ -3,6 +3,8 @@ import { fetchProperty } from "@/lib/apiCalls";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import PropertyImageSlider from "@/components/property details/PropertyImageSlider";
+import PropertySummary from "@/components/property details/PropertySummary";
+import PropertyFeatures from "@/components/property details/PropertyFeatures";
 
 const PropertyDetailsPage = () => {
     // Get the property id
@@ -38,7 +40,7 @@ const PropertyDetailsPage = () => {
                 {/* ---- Two Column Layout ---- */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                     {/* ---- Left Side ---- */}
-                    <div className="lg:col-span-9">
+                    <div className="lg:col-span-9 space-y-8">
                         {/* ---- Property Image Slider / Single Image ---- */}
                         {
                             data.images.length > 1 ? (
@@ -55,6 +57,12 @@ const PropertyDetailsPage = () => {
                                 </div>
                             )
                         }
+
+                        {/* ---- Property Summary ---- */}
+                        <PropertySummary property={data} />
+
+                        {/* ---- Property Features ---- */}
+                        <PropertyFeatures property={data} />
                     </div>
 
                     {/* ---- Right Side ---- */}
