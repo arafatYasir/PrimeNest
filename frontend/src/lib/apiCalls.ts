@@ -36,7 +36,7 @@ export const fetchAllProperties = async ({
         baths,
     });
 
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/properties?${queries}`);
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties?${queries}`);
     const data = await res.json();
 
     if (!res.ok) {
@@ -46,8 +46,19 @@ export const fetchAllProperties = async ({
     return data;
 }
 
+export async function fetchProperty(id: string) {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/${id}`);
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to fetch the property");
+    }
+
+    return data.data;
+}
+
 export const fetchFeaturedProperties = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/properties/featured`);
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/featured`);
     const data = await res.json();
 
     if (!res.ok) {

@@ -99,6 +99,27 @@ export async function getAllProperties(req, res, next) {
     }
 }
 
+export async function getProperty(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        const property = await Property.findOne({ _id: id });
+
+        if (!property) {
+            const error = new Error("Property is not found!");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        res.status(200).json({
+            success: true,
+            data: property
+        });
+    } catch (e) {
+        next(e);
+    }
+}
+
 export async function getFeaturedProperties(req, res, next) {
     try {
         const properties = await Property.find({ status: "Available" }).limit(8).sort({ createdAt: -1 });
