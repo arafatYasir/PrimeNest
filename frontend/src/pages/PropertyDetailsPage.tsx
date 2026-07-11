@@ -8,6 +8,7 @@ import PropertyFeatures from "@/components/property details/PropertyFeatures";
 import SellerInformations from "@/components/property details/SellerInformations";
 import PropertyMapLocation from "@/components/property details/PropertyMapLocation";
 import RelevantProperties from "@/components/property details/RelevantProperties";
+import PropertyDetailsSkeleton from "@/components/property details/PropertyDetailsSkeleton";
 
 const PropertyDetailsPage = () => {
     // Get the property id
@@ -21,7 +22,7 @@ const PropertyDetailsPage = () => {
     });
 
 
-    if (isLoading) return <div className="text-3xl text-text font-bold text-center">Loading.....</div>
+    if (isLoading) return <PropertyDetailsSkeleton />
 
     if (isError) {
         return <div className="text-error text-3xl text-center font-semibold">{error.message}</div>
@@ -34,7 +35,7 @@ const PropertyDetailsPage = () => {
             <Container className="py-8 sm:py-12">
                 {/* ---- Header Section ---- */}
                 <div className="mb-8 sm:mb-10">
-                    <nav className="mb-3 flex flex-wrap items-center gap-1.5 text-xs font-semibold text-text-secondary tracking-wide uppercase">
+                    <nav className="flex flex-wrap items-center gap-1.5 text-xs font-semibold text-text-secondary tracking-wide uppercase">
                         <a href="/" className="hover:text-text active:text-text transition-colors">Home</a>
                         <span className="text-text">/</span>
                         <a href="/properties" className="hover:text-text active:text-text transition-colors">Properties</a>
