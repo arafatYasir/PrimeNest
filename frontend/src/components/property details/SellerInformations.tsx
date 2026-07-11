@@ -30,11 +30,11 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
     }).format(new Date(createdAt));
 
     return (
-        <div className="bg-card rounded-2xl border border-border p-6 space-y-4 sticky top-[65px]">
+        <div className="bg-card rounded-2xl border border-border p-4 xs:p-6 space-y-4 lg:sticky lg:top-[65px]">
             {/* ---- Profile Header ---- */}
             <div className="flex items-center gap-4">
                 {profilePic ? (
-                    <div className="size-15 overflow-hidden border border-border rounded-full">
+                    <div className="size-13 xs:size-14 sm:size-15 overflow-hidden border border-border rounded-full">
                         <img
                             src={profilePic}
                             alt={fullName}
@@ -42,17 +42,17 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
                         />
                     </div>
                 ) : (
-                    <div className="flex size-15 items-center justify-center rounded-full bg-section border border-border text-text-secondary font-bold text-2xl">
+                    <div className="flex size-13 xs:size-14 sm:size-15 items-center justify-center rounded-full bg-section border border-border text-text-secondary font-bold text-2xl">
                         {fullName.charAt(0)}
                     </div>
                 )}
 
                 <div>
-                    <h4 className="font-semibold text-text text-lg leading-tight">
+                    <h4 className="font-semibold text-text text-base xs:text-lg leading-tight">
                         {fullName}
                     </h4>
-                    <span className="text-sm text-text-secondary font-medium flex items-center gap-1 mt-1">
-                        <Calendar className="size-3.5" />
+                    <span className="text-xs xs:text-sm text-text-secondary font-medium flex items-center gap-1 mt-1">
+                        <Calendar className="size-3 xs:size-3.5" />
                         Member since {memberSince}
                     </span>
                 </div>
@@ -60,23 +60,23 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
 
             {/* ---- Bio Section ---- */}
             {(bio && bio.trim() !== "") && (
-                <p className="text-sm text-text-secondary">
+                <p className="text-xs xs:text-sm font-medium text-text-secondary">
                     {bio.trim()}
                 </p>
             )}
 
             {/* ---- Contact Details ---- */}
             <div className="space-y-3">
-                <div className="flex items-center gap-3 text-sm text-text-secondary hover:text-text transition-colors">
-                    <div className="flex size-8 items-center justify-center rounded-lg bg-section border border-border/50">
-                        <Mail className="size-4 text-secondary" />
+                <div className="flex items-center gap-2 xs:gap-3 text-xs xs:text-sm text-text-secondary hover:text-text transition-colors">
+                    <div className="flex size-7 xs:size-8 items-center justify-center rounded-lg bg-section border border-border/50">
+                        <Mail className="size-3.5 xs:size-4 text-secondary" />
                     </div>
                     <span className="font-medium truncate">{email}</span>
                 </div>
 
-                <div className="flex items-center gap-3 text-sm text-text-secondary hover:text-text transition-colors">
-                    <div className="flex size-8 items-center justify-center rounded-lg bg-section border border-border/50">
-                        <Phone className="size-4 text-secondary" />
+                <div className="flex items-center gap-2 xs:gap-3 text-xs xs:text-sm text-text-secondary hover:text-text transition-colors">
+                    <div className="flex size-7 xs:size-8 items-center justify-center rounded-lg bg-section border border-border/50">
+                        <Phone className="size-3.5 xs:size-4 text-secondary" />
                     </div>
                     <span className="font-medium">
                         {phone && phone.trim() !== "" ? phone : "Not Provided"}
@@ -85,10 +85,10 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
             </div>
 
             {/* ---- Action Buttons ---- */}
-            <div className="pt-2 space-y-2.5">
+            <div className="pt-2">
                 <Button
                     size="lg"
-                    className="w-full h-10"
+                    className="w-full h-9 xs:h-10"
                 >
                     <MessageSquare className="size-4 mr-1" />
                     Contact Agent

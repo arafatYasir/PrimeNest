@@ -50,11 +50,11 @@ const PropertyImageSlider = ({ images, title }: PropertyImageSliderProps) => {
                 </CarouselContent>
 
                 {/* ---- Slider Controll Buttons --- */}
-                <CarouselPrevious className="left-4 size-10 bg-white/90! hover:bg-white! text-primary! border border-border/40 shadow-lg transition-all duration-200 hover:scale-105 active:scale-100 disabled:opacity-0 disabled:pointer-events-none" />
-                <CarouselNext className="right-4 size-10 bg-white/90! hover:bg-white! text-primary! border border-border/40 shadow-lg transition-all duration-200 hover:scale-105 active:scale-100 disabled:opacity-0 disabled:pointer-events-none" />
+                <CarouselPrevious className="left-4 size-6 xs:size-8 sm:size-10 bg-white/90! hover:bg-white! text-primary! transition-all duration-200 hover:scale-105 active:scale-100 disabled:opacity-0 disabled:pointer-events-none" />
+                <CarouselNext className="right-4 size-6 xs:size-8 sm:size-10 bg-white/90! hover:bg-white! text-primary! transition-all duration-200 hover:scale-105 active:scale-100 disabled:opacity-0 disabled:pointer-events-none" />
 
                 {/* ---- Count Indicator ---- */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 inline-flex items-center justify-center rounded-full bg-primary/80 backdrop-blur-xs px-3.5 py-1.5 text-xs font-semibold text-white tracking-wider shadow-md border border-white/20 select-none">
+                <div className="absolute bottom-2 xs:bottom-4 left-1/2 -translate-x-1/2 z-10 inline-flex items-center justify-center rounded-full bg-primary/80 backdrop-blur-xs px-3 xs:px-3.5 py-1 xs:py-1.5 text-[10px] xs:text-xs font-semibold text-white tracking-wider shadow-md border border-white/20 select-none">
                     {current} / {count}
                 </div>
             </Carousel>

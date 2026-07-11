@@ -34,7 +34,7 @@ const PropertyDetailsPage = () => {
             <Container className="py-8 sm:py-12">
                 {/* ---- Header Section ---- */}
                 <div className="mb-8 sm:mb-10">
-                    <nav className="mb-3 flex items-center gap-1.5 text-xs font-semibold text-text-secondary tracking-wide uppercase">
+                    <nav className="mb-3 flex flex-wrap items-center gap-1.5 text-xs font-semibold text-text-secondary tracking-wide uppercase">
                         <a href="/" className="hover:text-text active:text-text transition-colors">Home</a>
                         <span className="text-text">/</span>
                         <a href="/properties" className="hover:text-text active:text-text transition-colors">Properties</a>
@@ -64,7 +64,7 @@ const PropertyDetailsPage = () => {
                             )
                         }
 
-                        <div className="space-y-8 bg-card rounded-2xl border border-border p-6 md:p-8">
+                        <div className="space-y-6 xs:space-y-8 bg-card rounded-2xl border border-border p-4 sm:p-6 md:p-8">
                             {/* ---- Property Summary ---- */}
                             <PropertySummary property={property} />
 

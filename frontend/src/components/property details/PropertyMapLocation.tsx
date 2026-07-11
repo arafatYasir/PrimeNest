@@ -22,7 +22,7 @@ const PropertyMapLocation = ({ lat, lon }: PropertyMapLocationProps) => {
     const isValid = lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
 
     if (!isValid) {
-        return <div className="w-full h-[300px] mt-8 flex items-center justify-center bg-gray-100 rounded-xl text-gray-500">Location Not Found.</div>;
+        return <div className="w-full h-[250px] xs:h-[300px] mt-8 flex items-center justify-center bg-gray-100 rounded-xl text-gray-500">Location Not Found.</div>;
     }
 
     const outerBounds: [[number, number], [number, number]] = [
@@ -32,7 +32,7 @@ const PropertyMapLocation = ({ lat, lon }: PropertyMapLocationProps) => {
 
     return (
         <MapContainer
-            className="w-full h-[300px] mt-8 rounded-xl"
+            className="w-full h-[250px] xs:h-[300px] mt-8 rounded-xl"
             center={[lat, lon]}
             zoom={16}
             minZoom={7}
