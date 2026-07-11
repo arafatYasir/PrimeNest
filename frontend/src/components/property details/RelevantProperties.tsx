@@ -43,7 +43,7 @@ const RelevantProperties = ({ propertyType, currentPropertyId }: RelevantPropert
             <h3 className="font-heading text-xl xs:text-2xl font-bold tracking-tight text-text mb-6">
                 Relevant Properties
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {
                     isLoading ? (
                         Array.from({ length: 4 }).map((_, i) => (
