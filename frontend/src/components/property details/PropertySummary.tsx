@@ -43,7 +43,7 @@ export default function PropertySummary({ property }: { property: Property }) {
     }[status] || "bg-blue-50 text-blue-700 border-blue-200";
 
     return (
-        <div className="space-y-8 bg-card rounded-2xl border border-border p-6 md:p-8 shadow-sm">
+        <div className="space-y-8">
             {/* ---- Top Header Section: Title, Price, Status ---- */}
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 pb-6 border-b border-border">
                 <div className="space-y-2">
@@ -134,7 +134,7 @@ export default function PropertySummary({ property }: { property: Property }) {
 
             {/* ---- Property Description ---- */}
             <div>
-                <h2 className="font-heading text-lg font-bold text-text mb-4 border-b border-border/30 pb-2">
+                <h2 className="font-heading text-lg font-bold text-text mb-4 border-b border-border pb-2">
                     Description
                 </h2>
                 <p className="text-text-secondary leading-relaxed text-base whitespace-pre-line">

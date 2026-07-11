@@ -1,5 +1,5 @@
 import type { Property } from "@/types/global";
-import { Sparkles, CheckCircle } from "lucide-react";
+import { Sparkles, CheckCircle2 } from "lucide-react";
 
 export default function PropertyFeatures({ property }: { property: Property }) {
     const features = property.features || [];
@@ -7,7 +7,7 @@ export default function PropertyFeatures({ property }: { property: Property }) {
     if (features.length === 0) return null;
 
     return (
-        <div className="bg-card rounded-2xl border border-border p-6 md:p-8 shadow-sm space-y-6">
+        <div className="space-y-4">
             <h2 className="font-heading text-lg font-bold text-text flex items-center gap-2 border-b border-border pb-2">
                 <Sparkles className="h-5 w-5 text-secondary animate-pulse" />
                 Premium Amenities & Features
@@ -20,7 +20,7 @@ export default function PropertyFeatures({ property }: { property: Property }) {
                             className="flex items-center gap-3 p-2 rounded-xl bg-section/50 border border-border/50 hover:border-secondary/50 hover:bg-secondary/5 transition-all duration-250 group"
                         >
                             <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white shadow-xs border border-border/50 group-hover:bg-secondary group-hover:text-white transition-colors duration-250">
-                                <CheckCircle className="size-4 text-secondary group-hover:text-white transition-colors duration-250" strokeWidth={1.75} />
+                                <CheckCircle2 className="size-4.5 text-secondary group-hover:text-white transition-colors duration-250" strokeWidth={2} />
                             </div>
                             <span className="text-sm font-semibold text-text group-hover:text-primary transition-colors duration-250">
                                 {feature}

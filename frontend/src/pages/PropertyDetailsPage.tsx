@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import PropertyImageSlider from "@/components/property details/PropertyImageSlider";
 import PropertySummary from "@/components/property details/PropertySummary";
 import PropertyFeatures from "@/components/property details/PropertyFeatures";
+import SellerInformations from "@/components/property details/SellerInformations";
 
 const PropertyDetailsPage = () => {
     // Get the property id
@@ -17,11 +18,14 @@ const PropertyDetailsPage = () => {
         enabled: !!id
     });
 
+
     if (isLoading) return <div className="text-3xl text-text font-bold text-center">Loading.....</div>
 
     if (isError) {
         return <div className="text-error text-3xl text-center font-semibold">{error.message}</div>
     }
+
+    const { seller: sellerInfo, ...property } = data;
 
     return (
         <main>
@@ -33,41 +37,43 @@ const PropertyDetailsPage = () => {
                         <span className="text-text">/</span>
                         <a href="/properties" className="hover:text-text active:text-text transition-colors">Properties</a>
                         <span className="text-text">/</span>
-                        <span className="text-text">{data.title || "Property Name"}</span>
+                        <span className="text-text">{property.title || "Property Name"}</span>
                     </nav>
                 </div>
 
                 {/* ---- Two Column Layout ---- */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
                     {/* ---- Left Side ---- */}
-                    <div className="lg:col-span-9 space-y-8">
+                    <div className="lg:col-span-8 space-y-8">
                         {/* ---- Property Image Slider / Single Image ---- */}
                         {
-                            data.images.length > 1 ? (
+                            property.images.length > 1 ? (
                                 // Image Slider
-                                <PropertyImageSlider images={data.images} title={data.title} />
+                                <PropertyImageSlider images={property.images} title={property.title} />
                             ) : (
                                 // Single Image
                                 <div className="overflow-hidden rounded-2xl border border-border/80">
                                     <img
-                                        src={data.images[0]}
-                                        alt={data.title}
+                                        src={property.images[0]}
+                                        alt={property.title}
                                         className="w-full aspect-video object-cover transition-all duration-500 hover:scale-[1.01]"
                                     />
                                 </div>
                             )
                         }
 
-                        {/* ---- Property Summary ---- */}
-                        <PropertySummary property={data} />
+                        <div className="space-y-8 bg-card rounded-2xl border border-border p-6 md:p-8">
+                            {/* ---- Property Summary ---- */}
+                            <PropertySummary property={property} />
 
-                        {/* ---- Property Features ---- */}
-                        <PropertyFeatures property={data} />
+                            {/* ---- Property Features ---- */}
+                            <PropertyFeatures property={property} />
+                        </div>
                     </div>
 
                     {/* ---- Right Side ---- */}
-                    <div>
-                        HELLO World
+                    <div className="lg:col-span-4">
+                        <SellerInformations seller={sellerInfo} />
                     </div>
                 </div>
             </Container>
