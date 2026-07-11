@@ -1,4 +1,5 @@
-import { Mail, Phone, Calendar, User, MessageSquare } from "lucide-react";
+import { Mail, Phone, Calendar, MessageSquare } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface SellerInfo {
     _id: string;
@@ -58,14 +59,14 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
             </div>
 
             {/* ---- Bio Section ---- */}
-            {!bio && bio.trim() === "" && (
+            {(bio && bio.trim() !== "") && (
                 <p className="text-sm text-text-secondary">
-                    No one can beat me in any game that I have ever played in my whole life.
+                    {bio.trim()}
                 </p>
             )}
 
             {/* ---- Contact Details ---- */}
-            <div className="space-y-3.5 pt-2">
+            <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm text-text-secondary hover:text-text transition-colors">
                     <div className="flex size-8 items-center justify-center rounded-lg bg-section border border-border/50">
                         <Mail className="size-4 text-secondary" />
@@ -85,13 +86,13 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
 
             {/* ---- Action Buttons ---- */}
             <div className="pt-2 space-y-2.5">
-                <button
-                    onClick={() => window.location.href = `mailto:${email}`}
-                    className="w-full flex items-center justify-center gap-2 bg-primary text-white hover:bg-primary-hover font-semibold py-3 px-4 rounded-xl shadow-xs transition-all duration-200 active:scale-98 cursor-pointer text-sm"
+                <Button
+                    size="lg"
+                    className="w-full h-10"
                 >
-                    <MessageSquare className="size-4" />
+                    <MessageSquare className="size-4 mr-1" />
                     Contact Agent
-                </button>
+                </Button>
             </div>
         </div>
     );
