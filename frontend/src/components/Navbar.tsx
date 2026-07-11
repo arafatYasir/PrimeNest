@@ -20,7 +20,7 @@ export default function Navbar() {
 
     return (
         <header className="sticky top-0 z-999 w-full border-b border-border bg-background/80 backdrop-blur-sm supports-backdrop-filter:bg-background/50">
-            <nav className="max-w-[1360px] mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
+            <nav className="max-w-[1536px] mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
                 {/* ---- Left: Hamburger ---- */}
                 <div className="flex items-center gap-3 lg:gap-0">
                     {/* ---- Mobile menu trigger ---- */}

@@ -114,7 +114,7 @@ export async function getProperty(req, res, next) {
             throw error;
         }
 
-        const property = await Property.findOne({ _id: id });
+        const property = await Property.findOne({ _id: id }).populate("seller", "-clerkId");
 
         if (!property) {
             const error = new Error("Property is not found!");
