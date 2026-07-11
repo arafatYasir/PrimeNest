@@ -19,6 +19,12 @@ interface PropertyMapLocationProps {
 }
 
 const PropertyMapLocation = ({ lat, lon }: PropertyMapLocationProps) => {
+    const isValid = lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
+
+    if (!isValid) {
+        return <div className="w-full h-[300px] mt-8 flex items-center justify-center bg-gray-100 rounded-xl text-gray-500">Location Not Found.</div>;
+    }
+
     const outerBounds: [[number, number], [number, number]] = [
         [lat - 1, lon - 1],
         [lat + 1, lon + 1]
@@ -28,12 +34,12 @@ const PropertyMapLocation = ({ lat, lon }: PropertyMapLocationProps) => {
         <MapContainer
             className="w-full h-[300px] mt-8 rounded-xl"
             center={[lat, lon]}
-            zoom={19}
+            zoom={16}
             minZoom={7}
             scrollWheelZoom={true}
             maxBounds={outerBounds}
             maxBoundsViscosity={1.0}
-            zoomControl={false}
+            zoomControl={true}
         >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
