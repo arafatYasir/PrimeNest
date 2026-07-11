@@ -6,6 +6,7 @@ import PropertyImageSlider from "@/components/property details/PropertyImageSlid
 import PropertySummary from "@/components/property details/PropertySummary";
 import PropertyFeatures from "@/components/property details/PropertyFeatures";
 import SellerInformations from "@/components/property details/SellerInformations";
+import PropertyMapLocation from "@/components/property details/PropertyMapLocation";
 
 const PropertyDetailsPage = () => {
     // Get the property id
@@ -69,6 +70,9 @@ const PropertyDetailsPage = () => {
                             {/* ---- Property Features ---- */}
                             <PropertyFeatures property={property} />
                         </div>
+
+                        {/* ---- Property Marker On Map ---- */}
+                        <PropertyMapLocation lat={property.location.lat} lon={property.location.lon} />
                     </div>
 
                     {/* ---- Right Side ---- */}
