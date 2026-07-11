@@ -7,6 +7,7 @@ import PropertySummary from "@/components/property details/PropertySummary";
 import PropertyFeatures from "@/components/property details/PropertyFeatures";
 import SellerInformations from "@/components/property details/SellerInformations";
 import PropertyMapLocation from "@/components/property details/PropertyMapLocation";
+import RelevantProperties from "@/components/property details/RelevantProperties";
 
 const PropertyDetailsPage = () => {
     // Get the property id
@@ -80,6 +81,9 @@ const PropertyDetailsPage = () => {
                         <SellerInformations seller={sellerInfo} />
                     </div>
                 </div>
+
+                {/* ---- Relevant Properties ---- */}
+                <RelevantProperties propertyType={property.propertyType} currentPropertyId={property._id} />
             </Container>
         </main>
     )

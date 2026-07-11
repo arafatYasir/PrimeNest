@@ -24,15 +24,20 @@ export async function getAllProperties(req, res, next) {
         const maxPrice = req.query.maxPrice || "";
         const beds = req.query.beds || "Any";
         const baths = req.query.baths || "Any";
+        const limit = parseInt(req.query.limit) || 15;
+        const excludeId = req.query.excludeId || "";
 
         if (page < 1) page = 1;
 
-        const limit = 15;
         const skip = (page - 1) * limit;
         const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
 
         // ---- Build the filter object ----
         const query = {};
+
+        if (excludeId) {
+            query._id = { $ne: excludeId };
+        }
 
         if (location.trim() !== "") {
             const searchTerm = location.trim();

@@ -1,29 +1,33 @@
 interface AllPropertiesParams {
-    page: number;
-    sortBy: string;
-    location: string;
-    propertyType: string;
-    propertyStatus: string;
-    listingType: string;
-    minPrice: string;
-    maxPrice: string;
-    beds: string;
-    baths: string;
+    page?: number;
+    sortBy?: string;
+    location?: string;
+    propertyType?: string;
+    propertyStatus?: string;
+    listingType?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    beds?: string;
+    baths?: string;
+    excludeId?: string;
+    limit?: number;
 }
 
 export const fetchAllProperties = async ({
-    page,
-    sortBy,
-    location,
-    propertyType,
-    propertyStatus,
-    listingType,
-    minPrice,
-    maxPrice,
-    beds,
-    baths
+    page = 1,
+    sortBy = "None",
+    location = "",
+    propertyType = "Any",
+    propertyStatus = "Any",
+    listingType = "Any",
+    minPrice = "",
+    maxPrice = "",
+    beds = "Any",
+    baths = "Any",
+    excludeId = "",
+    limit
 }: AllPropertiesParams) => {
-    const queries = new URLSearchParams({
+    const queryParams: Record<string, string> = {
         page: String(page),
         sortBy,
         location,
@@ -34,7 +38,17 @@ export const fetchAllProperties = async ({
         maxPrice,
         beds,
         baths,
-    });
+    };
+
+    if (excludeId) {
+        queryParams.excludeId = excludeId;
+    }
+
+    if (limit !== undefined) {
+        queryParams.limit = String(limit);
+    }
+
+    const queries = new URLSearchParams(queryParams);
 
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties?${queries}`);
     const data = await res.json();
