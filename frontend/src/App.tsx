@@ -6,7 +6,7 @@ import ContactPage from "./pages/ContactPage"
 import AboutPage from "./pages/AboutPage"
 import { Toaster } from "@/components/ui/sonner"
 import PropertyDetailsPage from "./pages/PropertyDetailsPage"
-import AuthContainer from "./components/AuthContainer"
+import DashboardLayout from "./components/dashboard/DashboardLayout"
 import DashboardOverviewPage from "./pages/DashboardOverviewPage"
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/about" element={<AboutPage />} />
         </Route>
 
-        <Route path="/dashboard" element={<AuthContainer />}>
+        <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardOverviewPage />} />
         </Route>
       </Routes>

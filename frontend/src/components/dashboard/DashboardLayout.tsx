@@ -2,7 +2,8 @@ import { Navigate, Outlet } from "react-router"
 import { useUser } from '@clerk/react'
 import { Loader } from "lucide-react";
 
-const AuthContainer = () => {
+const DashboardLayout = () => {
+    // Authentication Checking
     const { isSignedIn, isLoaded } = useUser();
 
     if (!isLoaded) {
@@ -27,9 +28,15 @@ const AuthContainer = () => {
 
     return (
         <>
-            {isSignedIn ? <Outlet /> : <Navigate to="/" />}
+            {
+                isSignedIn ? (
+                    <Outlet />
+                ) : (
+                    <Navigate to="/" />
+                )
+            }
         </>
     )
 }
 
-export default AuthContainer
+export default DashboardLayout
