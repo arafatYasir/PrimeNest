@@ -2,11 +2,18 @@ import { Building2, CheckCircle2, Clock, Handshake } from "lucide-react";
 import StatsCard from "./StatsCard";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPropertyStatuses } from "@/lib/apiCalls";
+import { useAuth } from "@clerk/react";
 
 export default function StatsCards() {
+  // Getting user token from clerk
+  const { getToken } = useAuth();
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["property-statuses"],
-    queryFn: fetchPropertyStatuses
+    queryFn: async () => {
+      const token = await getToken();
+      return fetchPropertyStatuses(token ?? undefined);
+    }
   });
 
   if (isLoading) {

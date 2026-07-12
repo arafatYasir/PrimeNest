@@ -82,9 +82,15 @@ export const fetchFeaturedProperties = async () => {
     return data;
 }
 
-export const fetchPropertyStatuses = async () => {
+export const fetchPropertyStatuses = async (token?: string) => {
+    const headers: HeadersInit = {};
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/statuses`, {
-        credentials: "include"
+        headers,
+        credentials: token ? "omit" : "include"
     });
     const data = await res.json();
 
