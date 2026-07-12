@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router"
 import { useUser } from '@clerk/react'
 import { Loader } from "lucide-react";
+import { Sidebar } from "./Sidebar";
 
 const DashboardLayout = () => {
     // Authentication Checking
@@ -30,7 +31,12 @@ const DashboardLayout = () => {
         <>
             {
                 isSignedIn ? (
-                    <Outlet />
+                    <div className="flex min-h-screen">
+                        <Sidebar />
+                        <main className="flex-1 p-10">
+                            <Outlet />
+                        </main>
+                    </div>
                 ) : (
                     <Navigate to="/" />
                 )
