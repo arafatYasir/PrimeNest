@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router"
 import { useUser } from '@clerk/react'
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Sidebar } from "./Sidebar";
 
 const DashboardLayout = () => {
@@ -16,7 +16,7 @@ const DashboardLayout = () => {
             >
                 <div className="flex items-center gap-2">
                     {/* Spinner */}
-                    <Loader className="animate-spin text-secondary size-6" strokeWidth={2} />
+                    <Loader2 className="animate-spin text-secondary size-6" strokeWidth={2} />
 
                     {/* Brand text */}
                     <span className="font-heading font-semibold tracking-widest uppercase text-text-secondary">
