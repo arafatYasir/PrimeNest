@@ -1,6 +1,11 @@
+import StatsCards from "@/components/dashboard/StatsCards"
+
 const DashboardOverviewPage = () => {
     return (
-        <div>DashboardOverviewPage</div>
+        <>
+            {/* ---- Status Cards ---- */}
+            <StatsCards />
+        </>
     )
 }
 
