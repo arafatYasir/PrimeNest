@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import {
     LayoutDashboard,
     Building2,
@@ -114,18 +114,16 @@ export const Sidebar = () => {
                     </nav>
 
                     <div className="border-t border-border p-3">
-                        <NavLink
+                        <Link
                             to="/"
-                            className={cn(
-                                'group flex items-center rounded-lg text-sm/relaxed font-medium transition-all duration-200 bg-primary text-white hover:bg-primary-hover',
-                                isCollapsed ? 'justify-center py-2.5' : 'justify-start gap-3 px-3 py-2.5'
-                            )}
                             title='Back to site'
                         >
-                            <ArrowLeft className="size-5 shrink-0" />
+                            <Button size="lg">
+                                <ArrowLeft className="size-4 shrink-0" />
 
-                            {!isCollapsed && <span>Back to site</span>}
-                        </NavLink>
+                                {!isCollapsed && <span>Back to site</span>}
+                            </Button>
+                        </Link>
                     </div>
                 </SheetContent>
             </Sheet>
@@ -134,7 +132,7 @@ export const Sidebar = () => {
             <aside
                 className={cn(
                     'hidden lg:flex h-screen flex-col border-r border-border bg-card text-text transition-all duration-300 ease-in-out',
-                    isCollapsed ? 'w-22' : 'w-[18%]'
+                    isCollapsed ? 'w-22' : 'w-full min-w-[240px] max-w-[18%]'
                 )}
             >
                 <div
@@ -174,18 +172,16 @@ export const Sidebar = () => {
                 </nav>
 
                 <div className="border-t border-border py-4 px-6">
-                    <NavLink
+                    <Link
                         to="/"
-                        className={cn(
-                            'group flex items-center rounded-lg text-sm/relaxed font-medium transition-all duration-200 bg-primary text-white hover:bg-primary-hover',
-                            isCollapsed ? 'justify-center py-2.5' : 'justify-start gap-3 px-3 py-2.5'
-                        )}
                         title='Back to site'
                     >
-                        <ArrowLeft className="size-5 shrink-0" />
+                        <Button size="lg">
+                            <ArrowLeft className="size-4 shrink-0" />
 
-                        {!isCollapsed && <span>Back to site</span>}
-                    </NavLink>
+                            {!isCollapsed && <span>Back to site</span>}
+                        </Button>
+                    </Link>
                 </div>
             </aside>
         </>
