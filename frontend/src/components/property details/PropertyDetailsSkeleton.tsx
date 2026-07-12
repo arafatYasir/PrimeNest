@@ -36,7 +36,7 @@ export default function PropertyDetailsSkeleton() {
                                             <Skeleton className="h-[22px] w-20 rounded-md" />
                                             <Skeleton className="h-[22px] w-20 rounded-md" />
                                         </div>
-                                        <Skeleton className="h-8 xs:h-9 w-3/4 rounded-lg" />
+                                        <Skeleton className="h-6 xs:h-9 w-3/4 rounded-lg" />
                                         <div className="flex items-center gap-1.5 mt-1">
                                             <Skeleton className="h-5 w-4 rounded-full shrink-0" />
                                             <Skeleton className="h-5 w-1/2 rounded" />
