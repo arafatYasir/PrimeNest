@@ -81,3 +81,16 @@ export const fetchFeaturedProperties = async () => {
 
     return data;
 }
+
+export const fetchPropertyStatuses = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/statuses`, {
+        credentials: "include"
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to fetch property statuses");
+    }
+
+    return data.data;
+}

@@ -145,3 +145,28 @@ export async function getFeaturedProperties(req, res, next) {
         next(e);
     }
 }
+
+export async function getPropertiesStatuses(req, res, next) {
+    try {
+        const userId = req.user._id;
+
+        const [total, available, pending, sold] = await Promise.all([
+            Property.countDocuments({ seller: userId }),
+            Property.countDocuments({ seller: userId, status: "Available" }),
+            Property.countDocuments({ seller: userId, status: "Pending" }),
+            Property.countDocuments({ seller: userId, status: "Sold" })
+        ])
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                total,
+                available,
+                pending,
+                sold
+            }
+        });
+    } catch (e) {
+        next(e);
+    }
+}

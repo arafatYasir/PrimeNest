@@ -39,7 +39,7 @@ const PropertyMapLocation = ({ lat, lon }: PropertyMapLocationProps) => {
             scrollWheelZoom={true}
             maxBounds={outerBounds}
             maxBoundsViscosity={1.0}
-            zoomControl={true}
+            zoomControl={false}
         >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
