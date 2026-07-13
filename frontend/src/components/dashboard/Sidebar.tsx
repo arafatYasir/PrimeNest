@@ -132,7 +132,7 @@ export const Sidebar = () => {
             <aside
                 className={cn(
                     'hidden lg:flex h-screen flex-col border-r border-border bg-card text-text transition-all duration-300 ease-in-out',
-                    isCollapsed ? 'w-22' : 'w-full min-w-[240px] max-w-[18%]'
+                    isCollapsed ? 'w-22' : 'w-60 xl:w-80 2xl:w-90'
                 )}
             >
                 <div
@@ -161,7 +161,7 @@ export const Sidebar = () => {
                     </Button>
                 </div>
 
-                <nav className="flex-1 space-y-1 overflow-y-auto py-4 px-6">
+                <nav className="flex-1 space-y-1 overflow-y-auto py-4 px-6 overflow-hidden">
                     {navLinks.map((link) => (
                         <SidebarLink
                             key={link.name}
