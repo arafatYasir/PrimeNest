@@ -64,3 +64,10 @@ export interface User {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface QuickAction {
+    icon: LucideIcon;
+    title: string;
+    description: string;
+    to: string;
+}

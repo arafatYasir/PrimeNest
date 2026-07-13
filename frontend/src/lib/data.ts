@@ -1,4 +1,4 @@
-import { Heart, MapPin, MessageSquare, ShieldCheck, Clock, Mail, Phone, AlertCircle, Users } from "lucide-react";
+import { Heart, MapPin, MessageSquare, ShieldCheck, Clock, Mail, Phone, AlertCircle, Users, PlusCircle, Building2 } from "lucide-react";
 
 export const navItems = [
     { label: "Browse Properties", to: "/properties" },
@@ -179,4 +179,31 @@ export const aboutUsCorePillars = [
         title: "Built for Both Buyers & Sellers",
         description: "PrimeNest is designed as a balanced marketplace where both buyers and sellers have the tools they need to make informed decisions and complete transactions with confidence."
     }
-]
+];
+
+export const dashboardQuickActions = [
+    {
+        icon: PlusCircle,
+        title: "Create New Property",
+        description: "List a new property and reach potential buyers instantly.",
+        to: "/dashboard/add-property",
+    },
+    {
+        icon: Building2,
+        title: "View All Properties",
+        description: "Browse and manage all your active property listings.",
+        to: "/dashboard/properties",
+    },
+    {
+        icon: MessageSquare,
+        title: "View Lead Inbox",
+        description: "Check new messages and conversations from interested buyers.",
+        to: "/dashboard/inbox",
+    },
+    {
+        icon: Heart,
+        title: "Saved Properties",
+        description: "Revisit properties you've saved for later.",
+        to: "/dashboard/saved",
+    },
+];

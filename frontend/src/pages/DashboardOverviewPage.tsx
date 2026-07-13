@@ -1,3 +1,4 @@
+import QuickActions from "@/components/dashboard/overview/QuickActions";
 import StatsCards from "@/components/dashboard/overview/StatsCards"
 import { useUserContext } from "@/context/UserContext"
 
@@ -25,6 +26,9 @@ const DashboardOverviewPage = () => {
             
             {/* ---- Status Cards ---- */}
             <StatsCards />
+
+            {/* ---- Quick Actions ---- */}
+            <QuickActions />
         </div>
     )
 }
