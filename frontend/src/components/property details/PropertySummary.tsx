@@ -1,5 +1,5 @@
 import type { Property } from "@/types/global";
-import { Bed, Bath, Maximize, MapPin, Calendar, Home } from "lucide-react";
+import { Bed, Bath, Maximize, MapPin, Calendar, Home, NotebookText } from "lucide-react";
 
 export default function PropertySummary({ property }: { property: Property }) {
     const {
@@ -134,7 +134,8 @@ export default function PropertySummary({ property }: { property: Property }) {
 
             {/* ---- Property Description ---- */}
             <div>
-                <h2 className="font-heading text-base xs:text-lg font-bold text-text mb-4 border-b border-border pb-2">
+                <h2 className="font-heading text-base xs:text-lg font-bold text-text mb-4 flex items-center gap-2 border-b border-border pb-2">
+                    <NotebookText className="size-4.5 xs:size-5 text-secondary" />
                     Description
                 </h2>
                 <p className="text-text-secondary leading-relaxed text-sm xs:text-base whitespace-pre-line">
