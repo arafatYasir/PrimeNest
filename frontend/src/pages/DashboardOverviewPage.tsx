@@ -1,4 +1,4 @@
-import StatsCards from "@/components/dashboard/StatsCards"
+import StatsCards from "@/components/dashboard/overview/StatsCards"
 
 const DashboardOverviewPage = () => {
     return (
