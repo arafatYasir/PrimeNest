@@ -13,7 +13,7 @@ export default function StatsCards() {
     queryKey: ["property-statuses"],
     queryFn: async () => {
       const token = await getToken();
-      return fetchPropertyStatuses(token);
+      return fetchPropertyStatuses(token ?? "");
     }
   });
 
