@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from "react-router"
-import { useUser } from '@clerk/react'
 import { Loader2 } from "lucide-react";
 import { Sidebar } from "./Sidebar";
+import { useUserContext } from "@/context/UserContext";
 
 const DashboardLayout = () => {
     // Authentication Checking
-    const { isSignedIn, isLoaded } = useUser();
+    const { user, isLoading } = useUserContext();
 
-    if (!isLoaded) {
+    if (isLoading) {
         return (
             <div
                 className="flex min-h-screen w-full items-center justify-center bg-background"
@@ -30,7 +30,7 @@ const DashboardLayout = () => {
     return (
         <>
             {
-                isSignedIn ? (
+                user ? (
                     <div className="flex min-h-screen">
                         <Sidebar />
                         <main className="flex-1 p-10">

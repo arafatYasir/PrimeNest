@@ -52,3 +52,15 @@ export interface AboutUsCorePillar {
     title: string;
     description: string;
 }
+
+export interface User {
+    _id: string;
+    clerkId: string;
+    fullName: string;
+    email: string;
+    phone: string;
+    profilePic: string;
+    bio: string;
+    createdAt: Date;
+    updatedAt: Date;
+}

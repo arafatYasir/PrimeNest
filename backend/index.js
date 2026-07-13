@@ -8,6 +8,7 @@ import errorMiddleware from "./middlewares/error.middleware.js";
 import job from "./lib/cron.js";
 import { clerkMiddleware } from '@clerk/express';
 import clerkWebhook from "./webhooks/clerk.webhook.js";
+import usersRouter from "./routes/users.route.js";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(clerkMiddleware());
 // Routes
 app.use("/health", healthRouter);
 app.use("/api/v1/properties", propertiesRouter);
+app.use("/api/v1/users", usersRouter);
 
 // Global error handler
 app.use(errorMiddleware);
