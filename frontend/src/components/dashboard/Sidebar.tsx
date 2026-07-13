@@ -10,6 +10,8 @@ import {
     Menu,
     ChevronsRight,
     ChevronsLeft,
+    PlusCircle,
+    CreditCard,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -24,9 +26,11 @@ import {
 const navLinks = [
     { name: 'Overview', path: '/dashboard', icon: LayoutDashboard, end: true },
     { name: 'My Properties', path: '/dashboard/properties', icon: Building2 },
+    { name: 'Add Property', path: '/dashboard/add-property', icon: PlusCircle },
     { name: 'Saved Properties', path: '/dashboard/saved', icon: Heart },
     { name: 'Agent Profile', path: '/dashboard/profile', icon: User },
     { name: 'Inbox', path: '/dashboard/inbox', icon: MessageSquare },
+    { name: 'Transactions', path: '/dashboard/transactions', icon: CreditCard },
 ];
 
 interface SidebarLinkProps {
@@ -54,7 +58,7 @@ const SidebarLink = ({ link, isCollapsed = false, mobile = false, onClick }: Sid
                             : 'justify-start gap-3 px-3 py-2.5',
                     isActive
                         ? 'bg-secondary text-white shadow-lg'
-                        : 'text-text-secondary hover:bg-primary/5 hover:text-text'
+                        : 'text-text-secondary hover:bg-primary/10 hover:text-text'
                 )
             }
         >
