@@ -23,7 +23,7 @@ const DashboardOverviewPage = () => {
                 <h1 className="font-heading text-3xl font-bold tracking-tight text-text">
                     {greeting}, {isLoading ? "..." : user?.fullName || "Valued User"}
                 </h1>
-                <p className="text-text-secondary">Here's an overview of your activity.</p>
+                <p className="text-text-secondary mt-1">Here's an overview of your activity.</p>
             </div>
 
             {/* ---- Status Cards ---- */}

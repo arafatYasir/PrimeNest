@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner"
 import PropertyDetailsPage from "./pages/PropertyDetailsPage"
 import DashboardLayout from "./components/dashboard/DashboardLayout"
 import DashboardOverviewPage from "./pages/DashboardOverviewPage"
+import DashboardPropertiesPage from "./pages/DashboardPropertiesPage"
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
 
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardOverviewPage />} />
+          <Route path="/dashboard/properties" element={<DashboardPropertiesPage />} />
         </Route>
       </Routes>
 
