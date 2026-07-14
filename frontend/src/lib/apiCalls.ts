@@ -111,3 +111,18 @@ export const fetchUser = async (clerkId: string, token: string) => {
 
     return data.user;
 }
+
+export const fetchMyProperties = async (token: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/me`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to fetch your properties");
+    }
+
+    return data.data;
+}

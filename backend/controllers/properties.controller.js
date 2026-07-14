@@ -170,3 +170,18 @@ export async function getPropertiesStatuses(req, res, next) {
         next(e);
     }
 }
+
+export async function getMyProperties(req, res, next) {
+    try {
+        const userId = req.user._id;
+
+        const properties = await Property.find({ seller: userId });
+
+        return res.status(200).json({
+            success: true,
+            data: properties
+        });
+    } catch (e) {
+        next(e);
+    }
+}

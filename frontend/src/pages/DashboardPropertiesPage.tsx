@@ -1,3 +1,4 @@
+import DashboardProperties from "@/components/dashboard/properties/DashboardProperties"
 import { Button } from "@/components/ui/button"
 import { CirclePlus } from "lucide-react"
 import { Link } from "react-router"
@@ -19,6 +20,9 @@ const DashboardPropertiesPage = () => {
                     </Button>
                 </Link>
             </div>
+
+            {/* ---- Properties ---- */}
+            <DashboardProperties />
         </div>
     )
 }
