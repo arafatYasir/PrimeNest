@@ -156,10 +156,15 @@ export default function DashboardProperty({ property, onDelete }: DashboardPrope
               <span className="text-text">View</span>
             </DropdownMenuItem>
 
-            <DropdownMenuItem>
-              <Edit3 className="mr-2 h-3.5 w-3.5 text-text" />
-              <span className="text-text">Edit</span>
-            </DropdownMenuItem>
+            {/* ---- Show Edit Option Only If Property Is Not Sold ---- */}
+            {
+              status !== "Sold" && (
+                <DropdownMenuItem>
+                  <Edit3 className="mr-2 h-3.5 w-3.5 text-text" />
+                  <span className="text-text">Edit</span>
+                </DropdownMenuItem>
+              )
+            }
 
             <DropdownMenuSeparator />
 
