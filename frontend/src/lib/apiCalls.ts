@@ -113,3 +113,19 @@ export const fetchMyProperties = async (token: string, page?: number, sortBy?: s
 
     return data;
 }
+
+export const deleteProperty = async (id: string, token: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to delete the property");
+    }
+
+    return data;
+}

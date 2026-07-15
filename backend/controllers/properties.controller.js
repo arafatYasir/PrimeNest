@@ -202,3 +202,40 @@ export async function getMyProperties(req, res, next) {
         next(e);
     }
 }
+
+export async function deleteProperty(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.user._id;
+
+        if (!id) {
+            const error = new Error("Property id is missing");
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const property = await Property.findById(id);
+
+        if (!property) {
+            const error = new Error("Property not found");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        // Verify ownership
+        if (property.seller.toString() !== userId.toString()) {
+            const error = new Error("You are not authorized to delete this property");
+            error.statusCode = 403;
+            throw error;
+        }
+
+        await Property.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            success: true,
+            message: "Property deleted successfully"
+        });
+    } catch (e) {
+        next(e);
+    }
+}

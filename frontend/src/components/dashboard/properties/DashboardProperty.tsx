@@ -12,6 +12,7 @@ import { Link } from "react-router";
 
 interface DashboardPropertyProps {
   property: Property;
+  onDelete: (id: string) => void;
 }
 
 const STATUS_STYLES = {
@@ -35,7 +36,7 @@ const STATUS_STYLES = {
 const formatPrice = (price: number, listingType: string) =>
   `$${price.toLocaleString()}${listingType === "For Rent" ? "/mo" : ""}`;
 
-export default function DashboardProperty({ property }: DashboardPropertyProps) {
+export default function DashboardProperty({ property, onDelete }: DashboardPropertyProps) {
   const {
     _id,
     title,
@@ -163,7 +164,8 @@ export default function DashboardProperty({ property }: DashboardPropertyProps) 
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              className="text-error group focus:bg-error/5"
+              className="text-error group focus:bg-error/5 cursor-pointer"
+              onClick={() => onDelete(_id)}
             >
               <Trash2 className="mr-2 h-3.5 w-3.5 text-error group-hover:text-error!" />
               <span className="group-hover:text-error!">Delete</span>

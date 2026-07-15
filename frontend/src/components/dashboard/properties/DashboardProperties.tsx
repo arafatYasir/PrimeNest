@@ -1,6 +1,6 @@
-import { fetchMyProperties } from "@/lib/apiCalls";
+import { fetchMyProperties, deleteProperty } from "@/lib/apiCalls";
 import { useAuth } from "@clerk/react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { CirclePlus, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,10 +10,12 @@ import type { Property } from "@/types/global";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { sortOptions } from "@/lib/data";
+import { toast } from "sonner";
 
 const DashboardProperties = () => {
     const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState("None");
+    const queryClient = useQueryClient();
 
     // Get the user token
     const { getToken } = useAuth();
@@ -28,9 +30,45 @@ const DashboardProperties = () => {
         placeholderData: keepPreviousData
     });
 
+    const deleteMutation = useMutation({
+        mutationFn: async (id: string) => {
+            const token = await getToken();
+            return deleteProperty(id, token ?? "");
+        },
+        onMutate: async (id) => {
+            await queryClient.cancelQueries({ queryKey: ["my-properties", page, sortBy] });
+            const previousProperties = queryClient.getQueryData(["my-properties", page, sortBy]);
+
+            queryClient.setQueryData(["my-properties", page, sortBy], (old: any) => ({
+                ...old,
+                properties: old?.properties.filter((p: Property) => p._id !== id)
+            }));
+
+            return { previousProperties };
+        },
+        onError: (_err, _id, context) => {
+            queryClient.setQueryData(["my-properties", page, sortBy], context?.previousProperties);
+            toast.error("Failed to delete property");
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ["my-properties"] });
+        },
+        onSuccess: (data) => {
+            toast.success(data.message);
+        }
+    });
+
     useEffect(() => {
         window.scrollTo({ top: 0 });
     }, [page]);
+
+    const handleDeleteProperty = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this property?")) {
+            return;
+        }
+
+        deleteMutation.mutate(id);
+    };
 
     if (isError) {
         return (
@@ -40,9 +78,7 @@ const DashboardProperties = () => {
         );
     }
 
-    const properties = data?.properties || [];
-
-    if (!isLoading && properties.length === 0 && sortBy === "None") {
+    if (!isLoading && data?.properties.length === 0 && sortBy === "None") {
         return (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-12 text-center shadow-xs mt-6">
                 <div className="flex size-12 items-center justify-center rounded-full bg-primary/5 text-primary">
@@ -65,7 +101,7 @@ const DashboardProperties = () => {
     return (
         <div>
             {/* ---- Sort Dropdown ---- */}
-            <div className="flex justify-end mt-6">
+            <div className="flex justify-start mt-6">
                 <div className="w-full xs:w-56">
                     <label className="text-xs font-sans font-bold text-text uppercase tracking-wider mb-2 block">
                         Sort By
@@ -102,10 +138,11 @@ const DashboardProperties = () => {
                             <DashboardPropertySkeleton key={i} />
                         ))
                     ) : (
-                        properties.map((property: Property) => (
+                        data?.properties.map((property: Property) => (
                             <DashboardProperty
                                 key={property._id}
                                 property={property}
+                                onDelete={handleDeleteProperty}
                             />
                         ))
                     )
