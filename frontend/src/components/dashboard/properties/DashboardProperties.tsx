@@ -20,7 +20,7 @@ const DashboardProperties = () => {
         queryKey: ["my-properties", page],
         queryFn: async () => {
             const token = await getToken();
-            return fetchMyProperties(token, page);
+            return fetchMyProperties(token ?? "", page);
         },
         placeholderData: keepPreviousData
     });
