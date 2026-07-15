@@ -1,17 +1,4 @@
-interface AllPropertiesParams {
-    page?: number;
-    sortBy?: string;
-    location?: string;
-    propertyType?: string;
-    propertyStatus?: string;
-    listingType?: string;
-    minPrice?: string;
-    maxPrice?: string;
-    beds?: string;
-    baths?: string;
-    excludeId?: string;
-    limit?: number;
-}
+import type { AllPropertiesParams } from "@/types/global";
 
 export const fetchAllProperties = async ({
     page = 1,
@@ -112,8 +99,8 @@ export const fetchUser = async (clerkId: string, token: string) => {
     return data.user;
 }
 
-export const fetchMyProperties = async (token: string) => {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/me`, {
+export const fetchMyProperties = async (token: string, page?: number) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/me?page=${page}`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -124,5 +111,5 @@ export const fetchMyProperties = async (token: string) => {
         throw new Error(data.message || "Failed to fetch your properties");
     }
 
-    return data.data;
+    return data;
 }

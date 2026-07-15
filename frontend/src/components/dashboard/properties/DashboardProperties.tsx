@@ -1,25 +1,33 @@
 import { fetchMyProperties } from "@/lib/apiCalls";
 import { useAuth } from "@clerk/react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { CirclePlus, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DashboardProperty from "./DashboardProperty";
 import DashboardPropertySkeleton from "./DashboardPropertySkeleton";
 import type { Property } from "@/types/global";
+import { useEffect, useState } from "react";
 
 const DashboardProperties = () => {
+    const [page, setPage] = useState(1);
+
     // Get the user token
     const { getToken } = useAuth();
 
     // Fetch all properties of the current user
-    const { data, isLoading, isError, error } = useQuery({
-        queryKey: ["my-properties"],
+    const { data, isLoading, isError, error, isPlaceholderData } = useQuery({
+        queryKey: ["my-properties", page],
         queryFn: async () => {
             const token = await getToken();
-            return fetchMyProperties(token ?? "");
-        }
+            return fetchMyProperties(token, page);
+        },
+        placeholderData: keepPreviousData
     });
+
+    useEffect(() => {
+        window.scrollTo({ top: 0 });
+    }, [page]);
 
     if (isError) {
         return (
@@ -29,7 +37,9 @@ const DashboardProperties = () => {
         );
     }
 
-    if (!isLoading && data.length === 0) {
+    const properties = data?.properties || [];
+
+    if (!isLoading && properties.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-12 text-center shadow-xs mt-6">
                 <div className="flex size-12 items-center justify-center rounded-full bg-primary/5 text-primary">
@@ -50,19 +60,50 @@ const DashboardProperties = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4 mt-10">
+        <div>
+            <div className="flex flex-col gap-4 mt-10">
+                {
+                    isLoading ? (
+                        Array.from({ length: 5 }).map((_, i: number) => (
+                            <DashboardPropertySkeleton key={i} />
+                        ))
+                    ) : (
+                        properties.map((property: Property) => (
+                            <DashboardProperty
+                                key={property._id}
+                                property={property}
+                            />
+                        ))
+                    )
+                }
+            </div>
+
+            {/* ---- Pagination ---- */}
             {
-                isLoading ? (
-                    Array.from({ length: 5 }).map((_, i: number) => (
-                        <DashboardPropertySkeleton key={i} />
-                    ))
-                ) : (
-                    data.map((property: Property) => (
-                        <DashboardProperty
-                            key={property._id}
-                            property={property}
-                        />
-                    ))
+                data && data?.pagination?.totalPages > 0 && (
+                    <div className="mt-10 flex items-center justify-center gap-5">
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            disabled={data.pagination.currentPage <= 1 || isPlaceholderData}
+                            onClick={() => setPage(prev => prev - 1)}
+                        >
+                            Previous
+                        </Button>
+
+                        <span className="text-sm font-medium text-text">
+                            Page {data.pagination.currentPage} of {data.pagination.totalPages}
+                        </span>
+
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            disabled={data.pagination.currentPage >= data.pagination.totalPages || isPlaceholderData}
+                            onClick={() => setPage(prev => prev + 1)}
+                        >
+                            Next
+                        </Button>
+                    </div>
                 )
             }
         </div>

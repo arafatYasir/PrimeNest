@@ -71,3 +71,18 @@ export interface QuickAction {
     description: string;
     to: string;
 }
+
+export interface AllPropertiesParams {
+    page?: number;
+    sortBy?: string;
+    location?: string;
+    propertyType?: string;
+    propertyStatus?: string;
+    listingType?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    beds?: string;
+    baths?: string;
+    excludeId?: string;
+    limit?: number;
+}

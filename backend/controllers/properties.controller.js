@@ -174,12 +174,27 @@ export async function getPropertiesStatuses(req, res, next) {
 export async function getMyProperties(req, res, next) {
     try {
         const userId = req.user._id;
+        const page = parseInt(req.query.page) || 1;
+        const limit = 5;
 
-        const properties = await Property.find({ seller: userId });
+        const skip = limit * (page - 1);
+
+        const [properties, totalProperties] = await Promise.all([
+            Property.find({ seller: userId }).skip(skip).limit(limit),
+            Property.countDocuments({ seller: userId })
+        ]);
+
+        const totalPages = Math.ceil(totalProperties / limit);
 
         return res.status(200).json({
             success: true,
-            data: properties
+            properties,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalProperties,
+                limit,
+            }
         });
     } catch (e) {
         next(e);
