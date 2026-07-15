@@ -175,12 +175,14 @@ export async function getMyProperties(req, res, next) {
     try {
         const userId = req.user._id;
         const page = parseInt(req.query.page) || 1;
+        const sortBy = req.query.sortBy || "None";
         const limit = 5;
 
         const skip = limit * (page - 1);
+        const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
 
         const [properties, totalProperties] = await Promise.all([
-            Property.find({ seller: userId }).skip(skip).limit(limit),
+            Property.find({ seller: userId }).sort(sortingQuery).skip(skip).limit(limit),
             Property.countDocuments({ seller: userId })
         ]);
 

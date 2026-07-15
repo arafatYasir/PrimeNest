@@ -8,19 +8,22 @@ import DashboardProperty from "./DashboardProperty";
 import DashboardPropertySkeleton from "./DashboardPropertySkeleton";
 import type { Property } from "@/types/global";
 import { useEffect, useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { sortOptions } from "@/lib/data";
 
 const DashboardProperties = () => {
     const [page, setPage] = useState(1);
+    const [sortBy, setSortBy] = useState("None");
 
     // Get the user token
     const { getToken } = useAuth();
 
     // Fetch all properties of the current user
     const { data, isLoading, isError, error, isPlaceholderData } = useQuery({
-        queryKey: ["my-properties", page],
+        queryKey: ["my-properties", page, sortBy],
         queryFn: async () => {
             const token = await getToken();
-            return fetchMyProperties(token ?? "", page);
+            return fetchMyProperties(token ?? "", page, sortBy);
         },
         placeholderData: keepPreviousData
     });
@@ -39,7 +42,7 @@ const DashboardProperties = () => {
 
     const properties = data?.properties || [];
 
-    if (!isLoading && properties.length === 0) {
+    if (!isLoading && properties.length === 0 && sortBy === "None") {
         return (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-12 text-center shadow-xs mt-6">
                 <div className="flex size-12 items-center justify-center rounded-full bg-primary/5 text-primary">
@@ -61,7 +64,38 @@ const DashboardProperties = () => {
 
     return (
         <div>
-            <div className="flex flex-col gap-4 mt-10">
+            {/* ---- Sort Dropdown ---- */}
+            <div className="flex justify-end mt-6">
+                <div className="w-full xs:w-56">
+                    <label className="text-xs font-sans font-bold text-text uppercase tracking-wider mb-2 block">
+                        Sort By
+                    </label>
+                    <Select
+                        value={sortBy}
+                        onValueChange={(value) => {
+                            setSortBy(value ?? "None");
+                            setPage(1);
+                        }}
+                    >
+                        <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text font-sans bg-card">
+                            <SelectValue placeholder="Sort By" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {sortOptions.map((item) => (
+                                <SelectItem
+                                    key={item.value}
+                                    value={item.value}
+                                    className="font-sans"
+                                >
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+
+            <div className="flex flex-col gap-4 mt-6">
                 {
                     isLoading ? (
                         Array.from({ length: 5 }).map((_, i: number) => (

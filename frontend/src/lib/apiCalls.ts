@@ -99,8 +99,8 @@ export const fetchUser = async (clerkId: string, token: string) => {
     return data.user;
 }
 
-export const fetchMyProperties = async (token: string, page?: number) => {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/me?page=${page}`, {
+export const fetchMyProperties = async (token: string, page?: number, sortBy?: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/me?page=${page}&sortBy=${sortBy || "None"}`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
