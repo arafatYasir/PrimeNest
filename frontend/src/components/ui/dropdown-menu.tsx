@@ -53,7 +53,7 @@ function DropdownMenuItem({
     <MenuPrimitive.Item
       data-slot="dropdown-menu-item"
       className={cn(
-        "relative flex min-h-7 w-full items-center gap-2 rounded-md px-2.5 py-1.5 outline-hidden select-none focus:bg-primary/5 focus:text-primary not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5 text-xs/relaxed font-medium text-text cursor-pointer",
+        "relative flex min-h-7 w-full items-center gap-2 rounded-md px-2.5 py-1.5 outline-hidden select-none focus:bg-primary/5 focus:text-primary data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5 text-xs/relaxed font-medium text-text cursor-pointer",
         className
       )}
       {...props}

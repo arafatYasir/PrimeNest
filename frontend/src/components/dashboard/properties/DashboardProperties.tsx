@@ -18,18 +18,8 @@ const DashboardProperties = () => {
         queryFn: async () => {
             const token = await getToken();
             return fetchMyProperties(token ?? "");
-        },
+        }
     });
-
-    if (isLoading) {
-        return (
-            <div className="flex flex-col gap-4 mt-6">
-                {Array.from({ length: 5 }).map((_, i) => (
-                    <DashboardPropertySkeleton key={i} />
-                ))}
-            </div>
-        );
-    }
 
     if (isError) {
         return (
@@ -39,7 +29,7 @@ const DashboardProperties = () => {
         );
     }
 
-    if (data.length === 0) {
+    if (!isLoading && data.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-12 text-center shadow-xs mt-6">
                 <div className="flex size-12 items-center justify-center rounded-full bg-primary/5 text-primary">
@@ -60,13 +50,21 @@ const DashboardProperties = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4 mt-6">
-            {data.map((property: Property) => (
-                <DashboardProperty
-                    key={property._id}
-                    property={property}
-                />
-            ))}
+        <div className="flex flex-col gap-4 mt-10">
+            {
+                isLoading ? (
+                    Array.from({ length: 5 }).map((_, i: number) => (
+                        <DashboardPropertySkeleton key={i} />
+                    ))
+                ) : (
+                    data.map((property: Property) => (
+                        <DashboardProperty
+                            key={property._id}
+                            property={property}
+                        />
+                    ))
+                )
+            }
         </div>
     );
 };
