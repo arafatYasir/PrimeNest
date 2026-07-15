@@ -135,7 +135,7 @@ export const Sidebar = () => {
             {/* ---- Desktop Sidebar ---- */}
             <aside
                 className={cn(
-                    'hidden lg:flex h-screen flex-col border-r border-border bg-card text-text transition-all duration-300 ease-in-out',
+                    'hidden lg:flex h-screen sticky top-0 left-0 flex-col border-r border-border bg-card text-text transition-all duration-300 ease-in-out',
                     isCollapsed ? 'w-22' : 'w-60 xl:w-80 2xl:w-90'
                 )}
             >
