@@ -34,7 +34,7 @@ const DashboardProperties = () => {
     if (isError) {
         return (
             <div className="mt-6 rounded-xl border border-error/20 bg-error/5 p-4 text-error text-sm font-medium">
-                {error.message || "Failed to load properties. Please try again."}
+                {error.message}
             </div>
         );
     }

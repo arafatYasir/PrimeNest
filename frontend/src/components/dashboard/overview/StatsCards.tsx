@@ -18,7 +18,9 @@ export default function StatsCards() {
   });
 
   if (isError) {
-    return <p className="text-error text-lg font-medium">{error.message}</p>
+    return <div className="mt-6 rounded-xl border border-error/20 bg-error/5 p-4 text-error text-sm font-medium">
+      {error.message}
+    </div>
   }
 
   return (
