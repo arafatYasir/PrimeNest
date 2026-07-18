@@ -26,6 +26,11 @@ const userSchema = new Schema(
         bio: {
             type: String,
             default: ""
+        },
+        savedProperties: {
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: "Property",
+            default: []
         }
     },
     {
