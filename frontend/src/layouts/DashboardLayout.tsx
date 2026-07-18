@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router"
 import { Loader2 } from "lucide-react";
-import { Sidebar } from "./Sidebar";
 import { useUserContext } from "@/context/UserContext";
+import { Sidebar } from "@/components/dashboard/Sidebar";
 
 const DashboardLayout = () => {
     // Authentication Checking

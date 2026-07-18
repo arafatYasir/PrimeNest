@@ -6,9 +6,9 @@ import ContactPage from "./pages/ContactPage"
 import AboutPage from "./pages/AboutPage"
 import { Toaster } from "@/components/ui/sonner"
 import PropertyDetailsPage from "./pages/PropertyDetailsPage"
-import DashboardLayout from "./components/dashboard/DashboardLayout"
 import DashboardOverviewPage from "./pages/DashboardOverviewPage"
 import DashboardPropertiesPage from "./pages/DashboardPropertiesPage"
+import DashboardLayout from "./layouts/DashboardLayout"
 
 const App = () => {
   return (
