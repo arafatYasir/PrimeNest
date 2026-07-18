@@ -55,9 +55,11 @@ export default function PropertySummary({ property }: { property: Property }) {
                             {listingType}
                         </span>
                     </div>
+
                     <h1 className="font-heading text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-text leading-tight">
                         {title}
                     </h1>
+                    
                     <p className="flex items-start gap-1.5 text-xs xs:text-sm text-text-secondary">
                         <MapPin className="size-3.5 xs:size-4 shrink-0 xs:mt-0.5 text-secondary" />
                         <span>{location.fullAddress}</span>

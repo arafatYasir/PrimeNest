@@ -61,6 +61,7 @@ export interface User {
     phone: string;
     profilePic: string;
     bio: string;
+    savedProperties: string[];
     createdAt: Date;
     updatedAt: Date;
 }

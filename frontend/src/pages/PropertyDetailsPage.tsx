@@ -2,6 +2,8 @@ import Container from "@/components/Container";
 import { fetchProperty } from "@/lib/apiCalls";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
+import { Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import PropertyImageSlider from "@/components/property details/PropertyImageSlider";
 import PropertySummary from "@/components/property details/PropertySummary";
 import PropertyFeatures from "@/components/property details/PropertyFeatures";
@@ -9,10 +11,15 @@ import SellerInformations from "@/components/property details/SellerInformations
 import PropertyMapLocation from "@/components/property details/PropertyMapLocation";
 import RelevantProperties from "@/components/property details/RelevantProperties";
 import PropertyDetailsSkeleton from "@/components/property details/PropertyDetailsSkeleton";
+import { cn } from "@/lib/utils";
+import { useUserContext } from "@/context/UserContext";
 
 const PropertyDetailsPage = () => {
     // Get the property id
     const { id } = useParams();
+
+    // Get user informations
+    const { user } = useUserContext();
 
     // Fetch the property details
     const { data, isLoading, isError, error } = useQuery({
@@ -28,13 +35,15 @@ const PropertyDetailsPage = () => {
         return <div className="text-error text-3xl text-center font-semibold">{error.message}</div>
     }
 
+    // Variables
     const { seller: sellerInfo, ...property } = data;
+    const isPropertySaved = user && user.savedProperties.includes(property._id);
 
     return (
         <main>
             <Container className="py-8 sm:py-12">
                 {/* ---- Header Section ---- */}
-                <div className="mb-8 sm:mb-10">
+                <div className="mb-8 sm:mb-10 flex items-center justify-between gap-4">
                     <nav className="flex flex-wrap items-center gap-1.5 text-xs font-semibold text-text-secondary tracking-wide uppercase">
                         <a href="/" className="hover:text-text active:text-text transition-colors">Home</a>
                         <span className="text-text">/</span>
@@ -42,6 +51,31 @@ const PropertyDetailsPage = () => {
                         <span className="text-text">/</span>
                         <span className="text-text">{property.title || "Property Name"}</span>
                     </nav>
+
+                    {
+                        isPropertySaved ? (
+                            <Button size="icon-lg" variant="outline" title="Unsave Property">
+                                <Heart
+                                    className={cn(
+                                        "size-4.5",
+                                        "text-error fill-error"
+                                    )}
+                                    strokeWidth={1.5}
+                                />
+                            </Button>
+                        ) : (
+                            <Button size="icon-lg" variant="outline" title="Save Property">
+                                <Heart
+                                    className={
+                                        cn(
+                                            "size-4.5"
+                                        )
+                                    }
+                                    strokeWidth={1.5}
+                                />
+                            </Button>
+                        )
+                    }
                 </div>
 
                 {/* ---- Two Column Layout ---- */}
@@ -86,7 +120,7 @@ const PropertyDetailsPage = () => {
                 {/* ---- Relevant Properties ---- */}
                 <RelevantProperties propertyType={property.propertyType} currentPropertyId={property._id} />
             </Container>
-        </main>
+        </main >
     )
 }
 
