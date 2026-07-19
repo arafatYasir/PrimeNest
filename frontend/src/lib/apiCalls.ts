@@ -131,7 +131,7 @@ export const deleteProperty = async (id: string, token: string) => {
 }
 
 export const saveProperty = async (propertyId: string, token: string) => {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/${propertyId}/save`, {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/me/saved-properties/${propertyId}`, {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`

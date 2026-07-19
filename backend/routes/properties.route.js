@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty, saveProperty } from "../controllers/properties.controller.js";
+import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty } from "../controllers/properties.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
 
 const propertiesRouter = Router();
@@ -21,8 +21,5 @@ propertiesRouter.get("/:id", getProperty);
 
 // Delete A Specific Property
 propertiesRouter.delete("/:id", protectRoute, deleteProperty);
-
-// Save a Specific Property
-propertiesRouter.post("/:id/save", protectRoute, saveProperty);
 
 export default propertiesRouter;
