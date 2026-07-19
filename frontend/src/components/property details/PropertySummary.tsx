@@ -43,10 +43,10 @@ export default function PropertySummary({ property }: { property: Property }) {
     }[status] || "bg-blue-50 text-blue-700 border-blue-200";
 
     return (
-        <div className="space-y-6 xs:space-y-8">
+        <div className="space-y-6 xs:space-y-8 relative">
             {/* ---- Top Header Section: Title, Price, Status ---- */}
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 pb-6 border-b border-border">
-                <div className="space-y-2">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-border">
+                <div className="space-y-3">
                     <div className="flex flex-wrap items-center gap-2.5">
                         <span className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold border ${statusColors}`}>
                             {status}
@@ -59,7 +59,7 @@ export default function PropertySummary({ property }: { property: Property }) {
                     <h1 className="font-heading text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-text leading-tight">
                         {title}
                     </h1>
-                    
+
                     <p className="flex items-start gap-1.5 text-xs xs:text-sm text-text-secondary">
                         <MapPin className="size-3.5 xs:size-4 shrink-0 xs:mt-0.5 text-secondary" />
                         <span>{location.fullAddress}</span>

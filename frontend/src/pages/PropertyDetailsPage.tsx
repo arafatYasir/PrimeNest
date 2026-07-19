@@ -2,8 +2,6 @@ import Container from "@/components/Container";
 import { fetchProperty } from "@/lib/apiCalls";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
-import { Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import PropertyImageSlider from "@/components/property details/PropertyImageSlider";
 import PropertySummary from "@/components/property details/PropertySummary";
 import PropertyFeatures from "@/components/property details/PropertyFeatures";
@@ -11,8 +9,8 @@ import SellerInformations from "@/components/property details/SellerInformations
 import PropertyMapLocation from "@/components/property details/PropertyMapLocation";
 import RelevantProperties from "@/components/property details/RelevantProperties";
 import PropertyDetailsSkeleton from "@/components/property details/PropertyDetailsSkeleton";
-import { cn } from "@/lib/utils";
 import { useUserContext } from "@/context/UserContext";
+import PropertySaveButton from "@/components/property details/PropertySaveButton";
 
 const PropertyDetailsPage = () => {
     // Get the property id
@@ -51,31 +49,6 @@ const PropertyDetailsPage = () => {
                         <span className="text-text">/</span>
                         <span className="text-text">{property.title || "Property Name"}</span>
                     </nav>
-
-                    {
-                        isPropertySaved ? (
-                            <Button size="icon-lg" variant="outline" title="Unsave Property">
-                                <Heart
-                                    className={cn(
-                                        "size-4.5",
-                                        "text-error fill-error"
-                                    )}
-                                    strokeWidth={1.5}
-                                />
-                            </Button>
-                        ) : (
-                            <Button size="icon-lg" variant="outline" title="Save Property">
-                                <Heart
-                                    className={
-                                        cn(
-                                            "size-4.5"
-                                        )
-                                    }
-                                    strokeWidth={1.5}
-                                />
-                            </Button>
-                        )
-                    }
                 </div>
 
                 {/* ---- Two Column Layout ---- */}
@@ -99,7 +72,10 @@ const PropertyDetailsPage = () => {
                             )
                         }
 
-                        <div className="space-y-6 xs:space-y-8 bg-card rounded-2xl border border-border p-4 sm:p-6 md:p-8">
+                        <div className="space-y-6 xs:space-y-8 bg-card rounded-2xl border border-border p-4 sm:p-6 md:p-8 relative">
+                            {/* ---- Save / Unsave Button ---- */}
+                            <PropertySaveButton isPropertySaved={isPropertySaved} />
+
                             {/* ---- Property Summary ---- */}
                             <PropertySummary property={property} />
 
