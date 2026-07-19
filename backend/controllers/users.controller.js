@@ -48,3 +48,40 @@ export async function saveProperty(req, res, next) {
         next(e);
     }
 }
+
+export async function unsaveProperty(req, res, next) {
+    try {
+        const userId = req.user._id;
+        const { id } = req.params;
+
+        if (!id) {
+            const error = new Error("Property id is missing!");
+            error.statusCode = 400;
+            throw error;
+        }
+        if (id.trim() === "") {
+            const error = new Error("Property id is empty!");
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const property = await Property.findById(id);
+
+        if (!property) {
+            const error = new Error("Property is not found!");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        await User.findByIdAndUpdate(userId, {
+            $pull: { savedProperties: id }
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Property Unsaved Successfully!"
+        });
+    } catch (e) {
+        next(e);
+    }
+}
