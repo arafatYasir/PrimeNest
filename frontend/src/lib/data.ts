@@ -48,15 +48,15 @@ export const FOOTER_COLUMNS = [
         title: "For Sellers",
         links: [
             { label: "Dashboard", href: "/dashboard" },
-            { label: "Manage Listings", href: "/dashboard" },
-            { label: "Lead Inbox", href: "/dashboard" },
+            { label: "Manage Listings", href: "/dashboard/properties" },
+            { label: "Lead Inbox", href: "/dashboard/inbox" },
         ],
     },
     {
         title: "Account",
         links: [
-            { label: "My Profile", href: "/profile" },
-            { label: "Saved Properties", href: "/saved" },
+            { label: "My Profile", href: "/dashboard/profile" },
+            { label: "Saved Properties", href: "/dashboard/saved" },
         ],
     },
 ];

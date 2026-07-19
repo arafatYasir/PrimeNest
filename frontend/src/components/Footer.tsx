@@ -23,7 +23,7 @@ function Footer() {
                                 Prime<span className="text-accent">Nest</span>
                             </span>
                         </Link>
-                        <p className="text-sm text-text-secondary leading-relaxed">
+                        <p className="text-sm text-text-secondary leading-loose">
                             Your trusted marketplace to buy and sell properties with confidence. Whether you're searching for your dream home or listing a property, PrimeNest makes every step simple, transparent, and secure.
                         </p>
                     </div>
