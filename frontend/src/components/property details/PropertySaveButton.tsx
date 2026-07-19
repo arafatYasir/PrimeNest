@@ -28,7 +28,7 @@ const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
     const saveMutation = useMutation({
         mutationFn: async () => {
             const token = await getToken();
-            return saveProperty(propertyId, token);
+            return saveProperty(propertyId!, token ?? "");
         },
         onError: (error) => {
             toast.error(error.message, {
