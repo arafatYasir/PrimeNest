@@ -146,3 +146,20 @@ export const saveProperty = async (propertyId: string, token: string) => {
 
     return data;
 }
+
+export const unsaveProperty = async (propertyId: string, token: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/me/saved-properties/${propertyId}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to unsave property");
+    }
+
+    return data;
+}

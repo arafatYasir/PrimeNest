@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 import { Skeleton } from "../ui/skeleton"
 import { useAuth } from "@clerk/react"
 import { useMutation } from "@tanstack/react-query"
-import { saveProperty } from "@/lib/apiCalls"
+import { saveProperty, unsaveProperty } from "@/lib/apiCalls"
 import { toast } from "sonner"
 
 const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
@@ -45,6 +45,26 @@ const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
         }
     });
 
+    const unsaveMutation = useMutation({
+        mutationFn: async () => {
+            const token = await getToken();
+            return unsaveProperty(propertyId!, token ?? "");
+        },
+        onError: (error) => {
+            toast.error(error.message, {
+                className: "text-error!"
+            });
+
+            // Roll back to previous state
+            setIsPropertySaved(true);
+        },
+        onSuccess: (data) => {
+            toast.success(data.message, {
+                className: "text-success!"
+            });
+        }
+    });
+
     const handleSaveProperty = () => {
         // Check if the user is logged in
         if (!user) {
@@ -60,6 +80,14 @@ const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
         saveMutation.mutate();
     }
 
+    const handleUnsaveProperty = () => {
+        // Update the state optimistically
+        setIsPropertySaved(false);
+
+        // Save the property in database
+        unsaveMutation.mutate();
+    }
+
     return (
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:right-8 z-100">
             {
@@ -70,8 +98,8 @@ const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
                         size="icon-lg"
                         variant="outline"
                         title={isPropertySaved ? "Unsave Property" : "Save Property"}
-                        onClick={handleSaveProperty}
-                        disabled={saveMutation.isPending}
+                        onClick={isPropertySaved ? handleUnsaveProperty : handleSaveProperty}
+                        disabled={isPropertySaved ? unsaveMutation.isPending : saveMutation.isPending}
                     >
                         <Heart
                             className={
