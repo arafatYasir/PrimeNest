@@ -9,6 +9,7 @@ import PropertyDetailsPage from "./pages/PropertyDetailsPage"
 import DashboardOverviewPage from "./pages/DashboardOverviewPage"
 import DashboardPropertiesPage from "./pages/DashboardPropertiesPage"
 import DashboardLayout from "./layouts/DashboardLayout"
+import DashboardSavedPage from "./pages/DashboardSavedPage"
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardOverviewPage />} />
           <Route path="/dashboard/properties" element={<DashboardPropertiesPage />} />
+          <Route path="/dashboard/saved" element={<DashboardSavedPage />} />
         </Route>
       </Routes>
 

@@ -163,3 +163,18 @@ export const unsaveProperty = async (propertyId: string, token: string) => {
 
     return data;
 }
+
+export const fetchSavedProperties = async (token: string, page?: number, sortBy?: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/me/saved-properties?page=${page}&sortBy=${sortBy || "None"}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to fetch saved properties");
+    }
+
+    return data;
+}
