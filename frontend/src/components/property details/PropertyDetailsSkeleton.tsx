@@ -26,11 +26,14 @@ export default function PropertyDetailsSkeleton() {
                             <Skeleton className="w-full aspect-video rounded-none" />
                         </div>
 
-                        <div className="space-y-6 xs:space-y-8 bg-card rounded-2xl border border-border p-4 sm:p-6 md:p-8">
+                        <div className="space-y-6 xs:space-y-8 bg-card rounded-2xl border border-border p-4 sm:p-6 md:p-8 relative">
+                            {/* ---- Save / Unsave Button ---- */}
+                            <Skeleton className="size-8 rounded-lg absolute top-4 right-4 sm:top-6 sm:right-6 md:right-8" />
+
                             {/* ---- Property Summary ---- */}
                             <div className="space-y-6 xs:space-y-8">
                                 {/* ---- Top Header Section: Title, Price, Status ---- */}
-                                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 pb-6 border-b border-border">
+                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-border">
                                     <div className="space-y-3 w-full md:w-2/3">
                                         <div className="flex flex-wrap items-center gap-2.5">
                                             <Skeleton className="h-[22px] w-20 rounded-md" />
@@ -115,7 +118,7 @@ export default function PropertyDetailsSkeleton() {
                                     <Skeleton className="h-4 w-1/2 rounded" />
                                 </div>
                             </div>
-                            
+
                             {/* Bio Section */}
                             <div className="space-y-2">
                                 <Skeleton className="h-4 w-full rounded" />

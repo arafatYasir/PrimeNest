@@ -9,15 +9,11 @@ import SellerInformations from "@/components/property details/SellerInformations
 import PropertyMapLocation from "@/components/property details/PropertyMapLocation";
 import RelevantProperties from "@/components/property details/RelevantProperties";
 import PropertyDetailsSkeleton from "@/components/property details/PropertyDetailsSkeleton";
-import { useUserContext } from "@/context/UserContext";
 import PropertySaveButton from "@/components/property details/PropertySaveButton";
 
 const PropertyDetailsPage = () => {
     // Get the property id
     const { id } = useParams();
-
-    // Get user informations
-    const { user } = useUserContext();
 
     // Fetch the property details
     const { data, isLoading, isError, error } = useQuery({
@@ -35,7 +31,6 @@ const PropertyDetailsPage = () => {
 
     // Variables
     const { seller: sellerInfo, ...property } = data;
-    const isPropertySaved = Boolean(user && user.savedProperties.includes(property._id));
 
     return (
         <main>
@@ -74,7 +69,7 @@ const PropertyDetailsPage = () => {
 
                         <div className="space-y-6 xs:space-y-8 bg-card rounded-2xl border border-border p-4 sm:p-6 md:p-8 relative">
                             {/* ---- Save / Unsave Button ---- */}
-                            <PropertySaveButton isPropertySaved={isPropertySaved} />
+                            <PropertySaveButton propertyId={property._id ?? ""} />
 
                             {/* ---- Property Summary ---- */}
                             <PropertySummary property={property} />
