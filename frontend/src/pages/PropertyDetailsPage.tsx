@@ -35,7 +35,7 @@ const PropertyDetailsPage = () => {
 
     // Variables
     const { seller: sellerInfo, ...property } = data;
-    const isPropertySaved = user && user.savedProperties.includes(property._id);
+    const isPropertySaved = (user && user.savedProperties.includes(property._id)) ?? false;
 
     return (
         <main>
