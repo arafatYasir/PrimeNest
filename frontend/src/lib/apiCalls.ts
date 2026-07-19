@@ -129,3 +129,20 @@ export const deleteProperty = async (id: string, token: string) => {
 
     return data;
 }
+
+export const saveProperty = async (propertyId: string, token: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/${propertyId}/save`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to save property");
+    }
+
+    return data;
+}

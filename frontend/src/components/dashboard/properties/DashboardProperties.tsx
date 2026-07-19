@@ -46,9 +46,9 @@ const DashboardProperties = () => {
 
             return { previousProperties };
         },
-        onError: (_err, _id, context) => {
+        onError: (error, _id, context) => {
             queryClient.setQueryData(["my-properties", page, sortBy], context?.previousProperties);
-            toast.error("Failed to delete property");
+            toast.error(error.message);
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["my-properties"] });
