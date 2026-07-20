@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { useMediaQuery } from 'react-responsive'
 
 interface DashboardPropertyProps {
   property: Property;
@@ -53,6 +54,9 @@ export default function DashboardProperty({ property, onDelete }: DashboardPrope
 
   const coverImage = images?.[0];
   const statusStyle = STATUS_STYLES[status] || STATUS_STYLES.Available;
+
+  // Media Query Breakpoints
+  const isTablet = useMediaQuery({ minWidth: 768 });
 
   return (
     <div
@@ -145,7 +149,7 @@ export default function DashboardProperty({ property, onDelete }: DashboardPrope
       <div className="absolute top-4 right-4 md:relative md:top-auto md:right-auto shrink-0">
         <DropdownMenu>
           <DropdownMenuTrigger render={
-            <Button variant="ghost" size="icon-lg">
+            <Button variant={isTablet ? "ghost" : "default"} size="icon-lg">
               <MoreVertical className="size-4" />
             </Button>
           } />
