@@ -84,7 +84,7 @@ const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
         // Update the state optimistically
         setIsPropertySaved(false);
 
-        // Save the property in database
+        // Unsave the property in database
         unsaveMutation.mutate();
     }
 

@@ -57,6 +57,7 @@ export const FOOTER_COLUMNS = [
         links: [
             { label: "My Profile", href: "/dashboard/profile" },
             { label: "Saved Properties", href: "/dashboard/saved" },
+            { label: "Transactions", href: "/dashboard/transactions" },
         ],
     },
 ];
