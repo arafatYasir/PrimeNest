@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import { CirclePlus, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DashboardProperty from "./DashboardProperty";
+import ConfirmationModal from "@/components/ConfirmationModal";
 import DashboardPropertySkeleton from "./DashboardPropertySkeleton";
 import type { Property } from "@/types/global";
 import { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ import { toast } from "sonner";
 const DashboardProperties = () => {
     const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState("None");
+    const [deletePropertyId, setDeletePropertyId] = useState<string | null>(null);
     const queryClient = useQueryClient();
 
     // Get the user token
@@ -48,13 +50,18 @@ const DashboardProperties = () => {
         },
         onError: (error, _id, context) => {
             queryClient.setQueryData(["my-properties", page, sortBy], context?.previousProperties);
-            toast.error(error.message);
+
+            toast.error(error.message, {
+                className: "text-error!"
+            });
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["my-properties"] });
         },
         onSuccess: (data) => {
-            toast.success(data.message);
+            toast.success(data.message, {
+                className: "text-success!"
+            });
         }
     });
 
@@ -62,12 +69,15 @@ const DashboardProperties = () => {
         window.scrollTo({ top: 0 });
     }, [page]);
 
-    const handleDeleteProperty = async (id: string) => {
-        if (!confirm("Are you sure you want to delete this property?")) {
-            return;
-        }
+    const handleDeleteProperty = (id: string) => {
+        setDeletePropertyId(id);
+    };
 
-        deleteMutation.mutate(id);
+    const confirmDelete = () => {
+        if (deletePropertyId) {
+            deleteMutation.mutate(deletePropertyId);
+            setDeletePropertyId(null);
+        }
     };
 
     if (isError) {
@@ -78,7 +88,7 @@ const DashboardProperties = () => {
         );
     }
 
-    if (!isLoading && data?.properties.length === 0 && sortBy === "None") {
+    if (!isLoading && data?.properties.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-12 text-center shadow-xs mt-6">
                 <div className="flex size-12 items-center justify-center rounded-full bg-primary/5 text-primary">
@@ -177,6 +187,16 @@ const DashboardProperties = () => {
                     </div>
                 )
             }
+
+            <ConfirmationModal
+                isOpen={deletePropertyId !== null}
+                title="Delete Property"
+                description="Are you sure you want to delete this property? This action cannot be undone."
+                confirmText="Delete"
+                onConfirm={confirmDelete}
+                onClose={() => setDeletePropertyId(null)}
+                isLoading={deleteMutation.isPending}
+            />
         </div>
     );
 };

@@ -41,7 +41,7 @@ const DashboardSavedProperties = () => {
         );
     }
 
-    if (!isLoading && data?.properties.length === 0 && sortBy === "None") {
+    if (!isLoading && data?.properties.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-12 text-center shadow-xs mt-6">
                 <div className="flex size-12 items-center justify-center rounded-full bg-primary/5 text-primary">
