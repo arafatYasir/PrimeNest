@@ -10,6 +10,7 @@ import DashboardOverviewPage from "./pages/DashboardOverviewPage"
 import DashboardPropertiesPage from "./pages/DashboardPropertiesPage"
 import DashboardLayout from "./layouts/DashboardLayout"
 import DashboardSavedPage from "./pages/DashboardSavedPage"
+import DashboardProfilePage from "./pages/DashboardProfilePage"
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route index element={<DashboardOverviewPage />} />
           <Route path="/dashboard/properties" element={<DashboardPropertiesPage />} />
           <Route path="/dashboard/saved" element={<DashboardSavedPage />} />
+          <Route path="/dashboard/profile" element={<DashboardProfilePage />} />
         </Route>
       </Routes>
 
