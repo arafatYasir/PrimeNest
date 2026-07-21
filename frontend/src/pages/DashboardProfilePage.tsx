@@ -79,6 +79,9 @@ const DashboardProfilePage = () => {
 
         setSelectedProfilePhoto(file);
         setValue("profilePic", URL.createObjectURL(file));
+
+
+        console.log(selectedProfilePhoto); /// I'll remove this after I implement full profile photo upload
     }
 
     return (
