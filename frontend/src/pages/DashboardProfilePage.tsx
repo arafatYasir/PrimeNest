@@ -113,7 +113,7 @@ const DashboardProfilePage = () => {
         }
 
         setSelectedProfilePhoto(null);
-        setValue("profilePic", user.profilePic || "");
+        setValue("profilePic", user?.profilePic || "");
     }
 
     return (
