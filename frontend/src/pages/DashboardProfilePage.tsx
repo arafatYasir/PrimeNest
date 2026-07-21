@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useUserContext } from "@/context/UserContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,11 +25,14 @@ const profileSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
 const DashboardProfilePage = () => {
+    // States
+    const [selectedProfilePhoto, setSelectedProfilePhoto] = useState<File | null>(null);
+
     // Get the user informations
     const { user } = useUserContext();
 
     // Profile Form State
-    const { register, handleSubmit, watch, reset, formState: { errors, isSubmitting } } = useForm<ProfileFormValues>({
+    const { register, handleSubmit, watch, reset, setValue, formState: { errors, isSubmitting } } = useForm<ProfileFormValues>({
         resolver: zodResolver(profileSchema),
         defaultValues: {
             fullName: "",
@@ -39,6 +42,9 @@ const DashboardProfilePage = () => {
             profilePic: ""
         }
     });
+
+    // Extra hooks
+    const uploadInputRef = useRef<HTMLInputElement | null>(null);
 
     const watchedProfilePic = watch("profilePic");
     const watchedFullName = watch("fullName");
@@ -58,9 +64,21 @@ const DashboardProfilePage = () => {
         }
     }, [user, reset]);
 
-    // Submit handler
+    // Functions
     const onSubmit = async (data: ProfileFormValues) => {
         console.log("Form submitted with data: ", data);
+    }
+
+    const handleTriggerUpload = () => {
+        uploadInputRef.current.click();
+    }
+
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setSelectedProfilePhoto(file);
+        setValue("profilePic", URL.createObjectURL(file));
     }
 
     return (
@@ -95,7 +113,21 @@ const DashboardProfilePage = () => {
                             Upload a professional headshot. Recommended size is at least 400x400px.
                         </p>
                         <div className="flex items-center gap-3 mt-1">
-                            <Button type="button" variant="outline" className="gap-2">
+                            {/* ---- Profile Photo Upload Input ---- */}
+                            <input
+                                ref={uploadInputRef}
+                                type="file"
+                                className="hidden"
+                                onChange={handleFileUpload}
+                            />
+
+                            {/* ---- Profile Photo Upload Trigger ---- */}
+                            <Button
+                                type="button"
+                                variant="outline"
+                                className="gap-2"
+                                onClick={handleTriggerUpload}
+                            >
                                 <Camera className="size-3.5" />
                                 Change Photo
                             </Button>
