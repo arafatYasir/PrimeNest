@@ -3,7 +3,7 @@ import { useUserContext } from "@/context/UserContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Camera, Mail, User, Phone, Save, Lock } from "lucide-react";
+import { Camera, Mail, User, Phone, Save, Lock, X, Upload } from "lucide-react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,6 +45,7 @@ const DashboardProfilePage = () => {
 
     // Extra hooks
     const uploadInputRef = useRef<HTMLInputElement | null>(null);
+    const objectUrlRef = useRef<string | null>(null);
 
     const watchedProfilePic = watch("profilePic");
     const watchedFullName = watch("fullName");
@@ -64,26 +65,55 @@ const DashboardProfilePage = () => {
         }
     }, [user, reset]);
 
-    // Functions
+    // Clean up any existing blog urls on unmount
+    useEffect(() => {
+        return () => {
+            if (objectUrlRef.current) {
+                URL.revokeObjectURL(objectUrlRef.current);
+            }
+        }
+    }, []);
+
+    // Form submit handler
     const onSubmit = async (data: ProfileFormValues) => {
         console.log("Form submitted with data: ", data);
     }
 
+    // File upload trigger
     const handleTriggerUpload = () => {
-        if (uploadInputRef?.current) {
+        if (uploadInputRef.current) {
             uploadInputRef.current.click();
         }
     }
 
+    // File upload
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        setSelectedProfilePhoto(file);
-        setValue("profilePic", URL.createObjectURL(file));
+        // Revoke previous blob URL if any exists
+        if (objectUrlRef.current) {
+            URL.revokeObjectURL(objectUrlRef.current);
+        }
 
+        const newUrl = URL.createObjectURL(file);
+        objectUrlRef.current = newUrl;
+
+        setSelectedProfilePhoto(file);
+        setValue("profilePic", newUrl);
 
         console.log(selectedProfilePhoto); /// I'll remove this after I implement full profile photo upload
+    }
+
+    // Cancel file upload
+    const handleCancelUpload = () => {
+        if (objectUrlRef.current) {
+            URL.revokeObjectURL(objectUrlRef.current);
+            objectUrlRef.current = null;
+        }
+
+        setSelectedProfilePhoto(null);
+        setValue("profilePic", user.profilePic || "");
     }
 
     return (
@@ -126,16 +156,36 @@ const DashboardProfilePage = () => {
                                 onChange={handleFileUpload}
                             />
 
-                            {/* ---- Profile Photo Upload Trigger ---- */}
-                            <Button
-                                type="button"
-                                variant="outline"
-                                className="gap-2"
-                                onClick={handleTriggerUpload}
-                            >
-                                <Camera className="size-3.5" />
-                                Change Photo
-                            </Button>
+                            {/* ---- Buttons (Change / Cancel / Upload) ---- */}
+                            {
+                                selectedProfilePhoto ? (
+                                    <div className="flex gap-2">
+                                        <Button
+                                            variant="outline"
+                                            className="gap-1.5 hover:text-error!"
+                                            onClick={handleCancelUpload}
+                                        >
+                                            <X className="size-3.5" />
+                                            Cancel
+                                        </Button>
+                                        <Button className="gap-1.5">
+                                            <Upload className="size-3.5" />
+                                            Upload
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    // ---- Profile Photo Upload Trigger ---- 
+                                    <Button
+                                        variant="outline"
+                                        className="gap-2"
+                                        onClick={handleTriggerUpload}
+                                    >
+                                        <Camera className="size-3.5" />
+                                        Change Photo
+                                    </Button>
+                                )
+                            }
+
                         </div>
                     </div>
                 </div>
@@ -258,7 +308,7 @@ const DashboardProfilePage = () => {
                     </div>
                 </form>
             </div>
-        </div>
+        </div >
     );
 };
 
