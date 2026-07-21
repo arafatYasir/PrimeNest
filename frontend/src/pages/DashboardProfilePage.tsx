@@ -70,7 +70,9 @@ const DashboardProfilePage = () => {
     }
 
     const handleTriggerUpload = () => {
-        uploadInputRef.current.click();
+        if (uploadInputRef?.current) {
+            uploadInputRef.current.click();
+        }
     }
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
