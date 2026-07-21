@@ -5,10 +5,19 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Camera, Mail, User, Phone, Save, Lock } from "lucide-react";
 
-const DashboardProfilePage = () => {
-    const { user } = useUserContext();
+interface FormData {
+    fullName: string;
+    email: string;
+    phone: string;
+    bio: string;
+    profilePic: string;
+}
 
-    const [formData, setFormData] = useState({
+const DashboardProfilePage = () => {
+    // Get the user informations
+    const { user, isLoading } = useUserContext();
+
+    const [formData, setFormData] = useState<FormData>({
         fullName: "",
         email: "",
         phone: "",
@@ -26,7 +35,7 @@ const DashboardProfilePage = () => {
                 profilePic: user.profilePic || ""
             });
         }
-    }, [user]);
+    }, [user, isLoading]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -41,29 +50,31 @@ const DashboardProfilePage = () => {
             </div>
 
             <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-xs space-y-8">
-                {/* Profile Picture Section */}
+                {/* ---- Profile Picture ---- */}
                 <div className="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-border">
                     <div className="relative group">
-                        <div className="size-24 sm:size-28 rounded-full overflow-hidden border-2 border-border bg-section flex items-center justify-center shadow-sm">
+                        <div className="size-24 sm:size-28 rounded-full overflow-hidden border-2 border-border bg-section flex items-center justify-center shadow-xs">
                             {formData.profilePic ? (
                                 <img
                                     src={formData.profilePic}
-                                    alt={formData.fullName || "Profile"}
+                                    alt={formData.fullName || "Profile Photo"}
                                     className="size-full object-cover"
                                 />
                             ) : (
-                                <User className="size-12 text-text-secondary/60" />
+                                <div className="text-4xl font-bold text-text-secondary">
+                                    {formData.fullName.charAt(0)}
+                                </div>
                             )}
                         </div>
                     </div>
 
-                    <div className="flex flex-col items-center sm:items-start text-center sm:text-left gap-2">
-                        <h3 className="font-heading text-base font-semibold text-text">Profile Photo</h3>
-                        <p className="text-xs text-text-secondary max-w-xs">
+                    <div className="flex flex-col items-center sm:items-start text-center sm:text-left gap-1.5">
+                        <h3 className="font-heading text-lg font-semibold text-text">Profile Photo</h3>
+                        <p className="text-sm text-text-secondary ">
                             Upload a professional headshot. Recommended size is at least 400x400px.
                         </p>
                         <div className="flex items-center gap-3 mt-1">
-                            <Button type="button" variant="outline" size="sm" className="gap-2">
+                            <Button type="button" variant="outline" className="gap-2">
                                 <Camera className="size-3.5" />
                                 Change Photo
                             </Button>
@@ -71,16 +82,16 @@ const DashboardProfilePage = () => {
                     </div>
                 </div>
 
-                {/* Form Fields */}
+                {/* ---- Input Form ---- */}
                 <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {/* Full Name */}
+                        {/* ---- Full Name ---- */}
                         <div className="space-y-2">
                             <label
                                 htmlFor="fullName"
                                 className="text-[11px] xs:text-xs block font-semibold uppercase tracking-wider text-text-secondary"
                             >
-                                Full Name <span className="text-destructive">*</span>
+                                Full Name <span className="text-error">*</span>
                             </label>
                             <div className="relative">
                                 <Input
@@ -97,7 +108,7 @@ const DashboardProfilePage = () => {
                             </div>
                         </div>
 
-                        {/* Email Address (Read-only) */}
+                        {/* ---- Email Address (Read-only) ---- */}
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
                                 <label
@@ -124,7 +135,7 @@ const DashboardProfilePage = () => {
                         </div>
                     </div>
 
-                    {/* Phone Number */}
+                    {/* ---- Phone Number ---- */}
                     <div className="space-y-2">
                         <label
                             htmlFor="phone"
@@ -147,7 +158,7 @@ const DashboardProfilePage = () => {
                         </div>
                     </div>
 
-                    {/* Bio */}
+                    {/* ---- Bio ---- */}
                     <div className="space-y-2">
                         <label
                             htmlFor="bio"
@@ -160,19 +171,19 @@ const DashboardProfilePage = () => {
                             name="bio"
                             required
                             rows={5}
-                            placeholder="Write a brief professional bio introducing your experience, areas of expertise, and services to potential buyers and sellers..."
+                            placeholder="Write a brief professional bio introducing your experience, and services to potential buyers and sellers..."
                             value={formData.bio}
                             onChange={handleChange}
-                            className="py-3 resize-y leading-relaxed"
+                            className="py-3 leading-relaxed resize-none"
                         />
-                        <p className="text-[11px] text-text-secondary">
+                        <p className="text-xs text-text-secondary">
                             Brief description for your agent profile. Displayed on public listing pages.
                         </p>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="pt-4 border-t border-border flex items-center justify-end gap-3">
-                        <Button type="button" size="lg" className="px-6 font-medium shadow-xs">
+                    {/* ---- Action Button ---- */}
+                    <div className="pt-4 border-t border-border">
+                        <Button type="submit" size="lg" className="px-6 font-medium shadow-xs">
                             <Save className="size-4 mr-2" />
                             Save Changes
                         </Button>
