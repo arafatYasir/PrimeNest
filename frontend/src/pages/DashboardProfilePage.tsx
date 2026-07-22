@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
-import { uploadProfilePhoto } from "@/lib/apiCalls";
+import { uploadProfilePhoto, updateAgentProfile } from "@/lib/apiCalls";
 import { toast } from "sonner";
 
 // Profile Schema
@@ -61,9 +61,29 @@ const DashboardProfilePage = () => {
             toast.error(error.message || "Failed to update profile photo", {
                 className: "text-error!"
             });
+        }
+    });
 
-            // Revert back to the original photo
-            setValue("profilePic", user?.profilePic || "");
+    // Profile update mutation
+    const profileMutation = useMutation({
+        mutationFn: async (profileData: { fullName: string; phone: string; bio: string }) => {
+            const token = await getToken();
+            return updateAgentProfile(profileData, token ?? "");
+        },
+        onSuccess: (data) => {
+            toast.success("Profile updated!", {
+                className: "text-success!"
+            });
+
+            // Set updated values in form
+            setValue("fullName", data.user.fullName);
+            setValue("phone", data.user.phone);
+            setValue("bio", data.user.bio);
+        },
+        onError: (error: any) => {
+            toast.error(error.message || "Failed to update profile", {
+                className: "text-error!"
+            });
         }
     });
 
@@ -101,7 +121,7 @@ const DashboardProfilePage = () => {
         }
     }, [user, reset]);
 
-    // Clean up any existing blog urls on unmount
+    // Clean up any existing blob urls on unmount
     useEffect(() => {
         return () => {
             if (objectUrlRef.current) {
@@ -111,8 +131,12 @@ const DashboardProfilePage = () => {
     }, []);
 
     // Form submit handler
-    const onSubmit = async (data: ProfileFormValues) => {
-        console.log("Form submitted with data: ", data);
+    const onSubmit = (data: ProfileFormValues) => {
+        profileMutation.mutate({
+            fullName: data.fullName,
+            phone: data.phone,
+            bio: data.bio
+        });
     }
 
     // File upload trigger
@@ -179,7 +203,7 @@ const DashboardProfilePage = () => {
                     <div className="flex flex-col items-center sm:items-start text-center sm:text-left gap-1.5">
                         <h3 className="font-heading text-lg font-semibold text-text">Profile Photo</h3>
                         <p className="text-sm text-text-secondary ">
-                            Upload a professional headshot. Recommended size is at least 400x400px upto 5 MB.
+                            Upload a professional headshot. Recommended size is at least 400x400px up to 5 MB.
                         </p>
                         <div className="flex items-center gap-3 mt-1">
                             {/* ---- Profile Photo Upload Input ---- */}
@@ -349,9 +373,18 @@ const DashboardProfilePage = () => {
 
                     {/* ---- Action Button ---- */}
                     <div className="pt-4 border-t border-border">
-                        <Button type="submit" size="lg" className="px-6 font-medium shadow-xs" disabled={isSubmitting}>
-                            <Save className="size-4 mr-2" />
-                            {isSubmitting ? "Saving..." : "Save Changes"}
+                        <Button
+                            type="submit"
+                            size="lg"
+                            className="px-6 font-medium shadow-xs"
+                            disabled={profileMutation.isPending || isSubmitting}
+                        >
+                            {profileMutation.isPending ? (
+                                <Loader2 className="size-4 mr-2 animate-spin" />
+                            ) : (
+                                <Save className="size-4 mr-2" />
+                            )}
+                            {profileMutation.isPending ? "Saving..." : "Save Changes"}
                         </Button>
                     </div>
                 </form>

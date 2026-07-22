@@ -18,30 +18,30 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const loadUser = async () => {
+        if (!isClerkLoaded) return;
+
+        if (!isSignedIn) {
+            setUser(null);
+            setIsLoading(false);
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            const token = await getToken();
+            if (token && clerkUser) {
+                const userData = await fetchUser(clerkUser.id, token);
+                setUser(userData);
+            }
+        } catch (e: any) {
+            setError(e.message || "Failed to load user data");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const loadUser = async () => {
-            if (!isClerkLoaded) return;
-            
-            if (!isSignedIn) {
-                setUser(null);
-                setIsLoading(false);
-                return;
-            }
-
-            setIsLoading(true);
-            try {
-                const token = await getToken();
-                if (token && clerkUser) {
-                    const userData = await fetchUser(clerkUser.id, token);
-                    setUser(userData);
-                }
-            } catch (e: any) {
-                setError(e.message || "Failed to load user data");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
         loadUser();
     }, [clerkUser, isClerkLoaded, isSignedIn, getToken]);
 

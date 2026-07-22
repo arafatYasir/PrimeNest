@@ -194,14 +194,24 @@ export async function updateAgentProfile(req, res, next) {
 
         const { fullName, phone, bio } = req.body;
 
-        await User.findByIdAndUpdate(userId, {
-            fullName, phone, bio
-        });
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { fullName, phone, bio },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            const error = new Error("User not found");
+            error.statusCode = 404;
+            throw error;
+        }
 
         return res.status(200).json({
             success: true,
             user: {
-                fullName, phone, bio
+                fullName: updatedUser.fullName,
+                phone: updatedUser.phone,
+                bio: updatedUser.bio
             }
         });
     } catch (e) {

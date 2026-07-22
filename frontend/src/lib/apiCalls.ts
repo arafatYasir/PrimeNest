@@ -195,3 +195,24 @@ export const uploadProfilePhoto = async (formData: FormData, token: string) => {
 
     return data;
 }
+
+export const updateAgentProfile = async (
+    profileData: { fullName: string; phone: string; bio: string },
+    token: string
+) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/me/profile`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(profileData)
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to update profile");
+    }
+
+    return data;
+}
