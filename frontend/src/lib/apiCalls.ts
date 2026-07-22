@@ -178,3 +178,20 @@ export const fetchSavedProperties = async (token: string, page?: number, sortBy?
 
     return data;
 }
+
+export const uploadProfilePhoto = async (formData: FormData, token: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/me/profile-photo`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+        body: formData
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to upload profile photo");
+    }
+
+    return data;
+}

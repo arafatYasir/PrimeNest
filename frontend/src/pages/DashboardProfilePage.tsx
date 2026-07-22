@@ -3,11 +3,15 @@ import { useUserContext } from "@/context/UserContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Camera, Mail, User, Phone, Save, Lock, X, Upload } from "lucide-react";
+import { Camera, Mail, User, Phone, Save, Lock, X, Upload, Loader2 } from "lucide-react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@clerk/react";
+import { uploadProfilePhoto } from "@/lib/apiCalls";
+import { toast } from "sonner";
 
 // Profile Schema
 const profileSchema = z.object({
@@ -30,6 +34,38 @@ const DashboardProfilePage = () => {
 
     // Get the user informations
     const { user } = useUserContext();
+
+    // Get the user's token
+    const { getToken } = useAuth();
+
+    // Profile photo upload mutation
+    const uploadMutation = useMutation({
+        mutationFn: async (file: File) => {
+            const token = await getToken();
+            const formData = new FormData();
+            formData.append("profilePic", file);
+            return uploadProfilePhoto(formData, token ?? "");
+        },
+        onSuccess: (data) => {
+            toast.success("Profile Photo Updated", {
+                className: "text-success!"
+            });
+
+            // Update form value
+            setValue("profilePic", data.profilePhoto);
+
+            // Clear selected file
+            setSelectedProfilePhoto(null);
+        },
+        onError: (error: any) => {
+            toast.error(error.message || "Failed to update profile photo", {
+                className: "text-error!"
+            });
+
+            // Revert back to the original photo
+            setValue("profilePic", user?.profilePic || "");
+        }
+    });
 
     // Profile Form State
     const { register, handleSubmit, watch, reset, setValue, formState: { errors, isSubmitting } } = useForm<ProfileFormValues>({
@@ -101,8 +137,6 @@ const DashboardProfilePage = () => {
 
         setSelectedProfilePhoto(file);
         setValue("profilePic", newUrl);
-
-        console.log(selectedProfilePhoto); /// I'll remove this after I implement full profile photo upload
     }
 
     // Cancel file upload
@@ -165,13 +199,26 @@ const DashboardProfilePage = () => {
                                             variant="outline"
                                             className="gap-1.5 hover:text-error!"
                                             onClick={handleCancelUpload}
+                                            disabled={uploadMutation.isPending}
                                         >
                                             <X className="size-3.5" />
                                             Cancel
                                         </Button>
-                                        <Button className="gap-1.5">
-                                            <Upload className="size-3.5" />
-                                            Upload
+                                        <Button
+                                            className="gap-1.5"
+                                            onClick={() => {
+                                                if (selectedProfilePhoto) {
+                                                    uploadMutation.mutate(selectedProfilePhoto);
+                                                }
+                                            }}
+                                            disabled={uploadMutation.isPending}
+                                        >
+                                            {uploadMutation.isPending ? (
+                                                <Loader2 className="size-3.5 animate-spin" />
+                                            ) : (
+                                                <Upload className="size-3.5" />
+                                            )}
+                                            {uploadMutation.isPending ? "Uploading..." : "Upload"}
                                         </Button>
                                     </div>
                                 ) : (
