@@ -187,3 +187,24 @@ export async function uploadProfilePhoto(req, res, next) {
         next(e);
     }
 }
+
+export async function updateAgentProfile(req, res, next) {
+    try {
+        const userId = req.user._id;
+
+        const { fullName, phone, bio } = req.body;
+
+        await User.findByIdAndUpdate(userId, {
+            fullName, phone, bio
+        });
+
+        return res.status(200).json({
+            success: true,
+            user: {
+                fullName, phone, bio
+            }
+        });
+    } catch (e) {
+        next(e);
+    }
+}
