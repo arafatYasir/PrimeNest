@@ -145,7 +145,7 @@ const DashboardProfilePage = () => {
                     <div className="flex flex-col items-center sm:items-start text-center sm:text-left gap-1.5">
                         <h3 className="font-heading text-lg font-semibold text-text">Profile Photo</h3>
                         <p className="text-sm text-text-secondary ">
-                            Upload a professional headshot. Recommended size is at least 400x400px.
+                            Upload a professional headshot. Recommended size is at least 400x400px upto 5 MB.
                         </p>
                         <div className="flex items-center gap-3 mt-1">
                             {/* ---- Profile Photo Upload Input ---- */}
@@ -154,6 +154,7 @@ const DashboardProfilePage = () => {
                                 type="file"
                                 className="hidden"
                                 onChange={handleFileUpload}
+                                accept="image/*"
                             />
 
                             {/* ---- Buttons (Change / Cancel / Upload) ---- */}
