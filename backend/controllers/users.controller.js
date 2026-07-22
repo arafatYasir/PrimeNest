@@ -1,3 +1,4 @@
+import cloudinary from "../config/cloudinary.js";
 import Property from "../models/property.model.js";
 import User from "../models/user.model.js";
 
@@ -142,6 +143,45 @@ export async function getSavedProperties(req, res, next) {
                 totalProperties,
                 limit,
             }
+        });
+    } catch (e) {
+        next(e);
+    }
+}
+
+export async function uploadProfilePhoto(req, res, next) {
+    try {
+        const userId = req.user._id;
+
+        if (!req.file) {
+            const error = new Error("No file is provided");
+            error.statusCode = 400;
+
+            throw error;
+        }
+
+        // Upload file to cloudinary
+        const result = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                { folder: `PrimeNest/${userId}/profile-photos` },
+                (err, result) => {
+                    if (err) reject(err);
+                    else resolve(result);
+                }
+            );
+            stream.end(req.file.buffer);
+        });
+
+        const newProfilePhotoUrl = result.secure_url;
+
+        // Update user document profilePic value
+        await User.findByIdAndUpdate(userId, {
+            profilePic: newProfilePhotoUrl
+        });
+
+        res.json({
+            success: true,
+            profilePhoto: newProfilePhotoUrl
         });
     } catch (e) {
         next(e);
