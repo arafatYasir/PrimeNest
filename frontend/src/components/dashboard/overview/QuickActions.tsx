@@ -18,8 +18,8 @@ export default function QuickActions() {
                         to={to}
                         className={cn(
                             "group relative flex items-start gap-3 xs:gap-4 overflow-hidden rounded-xl border border-border bg-card p-4 xs:p-5 text-left",
-                            "shadow-sm transition-all duration-200",
-                            "hover:shadow-md hover:-translate-y-0.5"
+                            "shadow-lg shadow-primary/5 transition-all duration-200",
+                            "hover:shadow-xl hover:-translate-y-0.5"
                         )}
                     >
                         <div

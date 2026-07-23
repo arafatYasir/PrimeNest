@@ -167,7 +167,7 @@ const DashboardProfilePage = () => {
                 <p className="text-text-secondary mt-1">Manage the information of your agent profile.</p>
             </div>
 
-            <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-xs space-y-8">
+            <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-8">
                 {/* ---- Profile Picture ---- */}
                 <div className="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-border">
                     <div className="relative group">
