@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Camera, Mail, User, Phone, Save, Lock, X, Upload, Loader2 } from "lucide-react";
-import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
@@ -12,21 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
 import { uploadProfilePhoto, updateAgentProfile } from "@/lib/apiCalls";
 import { toast } from "sonner";
-
-// Profile Schema
-const profileSchema = z.object({
-    fullName: z.string().trim().min(3, "Full name must be at least 3 characters."),
-    email: z.string().trim().email("Invalid email address"),
-    phone: z.string().trim().regex(
-        /^[\d\s\-+()\.]{10,15}$/,
-        "Phone number must be 10-15 characters (digits, spaces, dashes, parentheses, dots, plus sign only)"
-    ),
-    bio: z.string().trim().min(80, "Bio must be at least 80 characters long."),
-    profilePic: z.string().optional()
-});
-
-// Profile Type
-type ProfileFormValues = z.infer<typeof profileSchema>;
+import { profileSchema, type ProfileFormValues } from "@/lib/validations";
 
 const DashboardProfilePage = () => {
     // States
