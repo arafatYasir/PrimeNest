@@ -11,6 +11,7 @@ import DashboardPropertiesPage from "./pages/DashboardPropertiesPage"
 import DashboardLayout from "./layouts/DashboardLayout"
 import DashboardSavedPage from "./pages/DashboardSavedPage"
 import DashboardProfilePage from "./pages/DashboardProfilePage"
+import DashboardAddPropertyPage from "./pages/DashboardAddPropertyPage"
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardOverviewPage />} />
           <Route path="/dashboard/properties" element={<DashboardPropertiesPage />} />
+          <Route path="/dashboard/add-property" element={<DashboardAddPropertyPage />} />
           <Route path="/dashboard/saved" element={<DashboardSavedPage />} />
           <Route path="/dashboard/profile" element={<DashboardProfilePage />} />
         </Route>
