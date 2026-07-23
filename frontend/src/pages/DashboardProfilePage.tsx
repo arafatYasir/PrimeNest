@@ -216,6 +216,7 @@ const DashboardProfilePage = () => {
                                         </Button>
                                         <Button
                                             className="gap-1.5"
+                                            variant="secondary"
                                             onClick={() => {
                                                 if (selectedProfilePhoto) {
                                                     uploadMutation.mutate(selectedProfilePhoto);
@@ -361,6 +362,7 @@ const DashboardProfilePage = () => {
                     <div className="pt-4 border-t border-border">
                         <Button
                             type="submit"
+                            variant="secondary"
                             size="lg"
                             className="px-6 font-medium shadow-xs"
                             disabled={profileMutation.isPending || isSubmitting}

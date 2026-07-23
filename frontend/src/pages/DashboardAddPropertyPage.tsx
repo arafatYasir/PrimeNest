@@ -4,6 +4,7 @@ import { profileSchema } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, ArrowRight, CheckCircle2, Image, User, Phone, FileText, XCircle } from "lucide-react";
 import { Link } from "react-router";
+import AddPropertyForm from "@/components/dashboard/add property/AddPropertyForm";
 
 const DashboardAddPropertyPage = () => {
     const [isAllowed, setIsAllowed] = useState(false);
@@ -45,7 +46,7 @@ const DashboardAddPropertyPage = () => {
             {/* ---- Property Form / Error ---- */}
             {
                 isAllowed ? (
-                    <></>
+                    <AddPropertyForm />
                 ) : (
                     <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-xs space-y-6">
                         <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900">
