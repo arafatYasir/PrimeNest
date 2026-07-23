@@ -19,10 +19,7 @@ import {
     MapPin,
     Globe,
     UploadCloud,
-    Image as ImageIcon,
     Trash2,
-    Plus,
-    Tag,
     Sparkles,
 } from "lucide-react";
 
