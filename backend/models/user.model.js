@@ -31,6 +31,11 @@ const userSchema = new Schema(
             type: [mongoose.Schema.Types.ObjectId],
             ref: "Property",
             default: []
+        },
+        role: {
+            type: String,
+            enum: ["user", "admin"],
+            default: "user"
         }
     },
     {
