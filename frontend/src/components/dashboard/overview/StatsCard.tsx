@@ -1,5 +1,6 @@
 import { type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type StatVariant = "primary" | "success" | "warning" | "muted";
 
@@ -9,12 +10,13 @@ interface StatsCardProps {
     value: number | string;
     variant?: StatVariant;
     trend?: string;
+    isLoading: boolean;
 }
 
 const variantStyles: Record<StatVariant, { iconBg: string; iconColor: string }> = {
     primary: {
-        iconBg: "bg-primary/10",
-        iconColor: "text-primary",
+        iconBg: "bg-info/10",
+        iconColor: "text-info",
     },
     success: {
         iconBg: "bg-success/10",
@@ -25,8 +27,8 @@ const variantStyles: Record<StatVariant, { iconBg: string; iconColor: string }> 
         iconColor: "text-warning",
     },
     muted: {
-        iconBg: "bg-secondary/10",
-        iconColor: "text-secondary",
+        iconBg: "bg-primary/10",
+        iconColor: "text-primary",
     },
 };
 
@@ -36,6 +38,7 @@ export default function StatsCard({
     value,
     variant = "primary",
     trend,
+    isLoading,
 }: StatsCardProps) {
     const styles = variantStyles[variant];
 
@@ -59,15 +62,23 @@ export default function StatsCard({
                 </p>
             </div>
 
-            <p className="font-heading text-xl xs:text-2xl sm:text-3xl font-bold tracking-tight text-text mt-3">
-                {value}
-            </p>
+            {
+                isLoading ? (
+                    <Skeleton className="mt-3 h-9 w-12 rounded" />
+                ) : (
+                    <p className="font-heading text-xl xs:text-2xl sm:text-3xl font-bold tracking-tight text-text mt-3">
+                        {value}
+                    </p>
+                )
+            }
 
-            {trend && (
-                <p className="text-[11px] xs:text-xs sm:text-sm text-text-secondary font-medium mt-1">
-                    {trend}
-                </p>
-            )}
+            {
+                trend && (
+                    <p className="text-[11px] xs:text-xs sm:text-sm text-text-secondary font-medium mt-1">
+                        {trend}
+                    </p>
+                )
+            }
         </div>
     );
 }
