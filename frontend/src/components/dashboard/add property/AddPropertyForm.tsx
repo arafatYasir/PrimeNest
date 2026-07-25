@@ -22,6 +22,10 @@ import {
     UploadCloud,
     Trash2,
     Sparkles,
+    Tag,
+    Plus,
+    X,
+    Check,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { type PropertyFormValues, propertySchema } from "@/lib/validations";
@@ -29,13 +33,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import PropertyLocationMap from "./PropertyLocationMap";
 import React, { useEffect, useRef, useState } from "react";
 
+const SUGGESTED_FEATURES = [
+    "Swimming Pool",
+    "Garden",
+    "Garage",
+    "Air Conditioning",
+    "Gym",
+    "Security System",
+    "Solar Panels",
+    "Balcony",
+    "Pet Friendly",
+    "High-Speed Internet"
+];
+
 const AddPropertyForm = () => {
     // States
     const [objectUrls, setObjectUrls] = useState<string[]>([]);
     const [isDragging, setIsDragging] = useState<boolean>(false);
+    const [featureInput, setFeatureInput] = useState<string>("");
 
     // React Hook Form
-    const { register, watch, setValue, handleSubmit, formState: { errors } } = useForm<PropertyFormValues>({
+    const { register, watch, setValue, handleSubmit, reset, formState: { errors } } = useForm<PropertyFormValues>({
         resolver: zodResolver(propertySchema),
         defaultValues: {
             title: "",
@@ -62,6 +80,7 @@ const AddPropertyForm = () => {
 
     // Variables
     const images = watch("images");
+    const features = watch("features") || [];
 
     // Create object urls from images
     useEffect(() => {
@@ -136,6 +155,40 @@ const AddPropertyForm = () => {
         const currentImages = watch("images") || [];
         const updated = currentImages.filter((_, idx) => idx !== indexToRemove);
         setValue("images", updated, { shouldValidate: true });
+    };
+
+    // Features Handlers
+    const handleAddFeature = () => {
+        const trimmed = featureInput.trim();
+        if (!trimmed) return;
+        if (features.length >= 10) return;
+        if (features.includes(trimmed)) {
+            setFeatureInput("");
+            return;
+        }
+        setValue("features", [...features, trimmed], { shouldValidate: true });
+        setFeatureInput("");
+    };
+
+    const handleKeyDownFeature = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleAddFeature();
+        }
+    };
+
+    const handleRemoveFeature = (indexToRemove: number) => {
+        const updated = features.filter((_, idx) => idx !== indexToRemove);
+        setValue("features", updated, { shouldValidate: true });
+    };
+
+    const toggleSuggestedFeature = (suggestion: string) => {
+        if (features.includes(suggestion)) {
+            setValue("features", features.filter((f) => f !== suggestion), { shouldValidate: true });
+        } else {
+            if (features.length >= 10) return;
+            setValue("features", [...features, suggestion], { shouldValidate: true });
+        }
     };
 
     return (
@@ -467,7 +520,112 @@ const AddPropertyForm = () => {
                 </div>
             </div>
 
-            {/* ---- Section 5: Property Images ---- */}
+            {/* ---- Section 5: Features & Amenities ---- */}
+            <div className="space-y-6">
+                <div className="flex items-center justify-between pb-2 border-b flex-wrap gap-2">
+                    <h2 className="font-heading text-lg sm:text-xl font-bold text-text">Features & Amenities</h2>
+                    <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-section border text-text-secondary">
+                        {features.length} / 10 features
+                    </span>
+                </div>
+
+                <div className="space-y-4">
+                    {/* ---- Feature Input Field ---- */}
+                    <div className="space-y-2">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="featureInput"
+                        >
+                            Property Features <span className="text-text-secondary font-normal">(Press Enter or click Add)</span>
+                        </label>
+                        <div className="flex items-center gap-2">
+                            <div className="relative flex-1 flex items-center">
+                                <Tag className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
+                                <Input
+                                    id="featureInput"
+                                    type="text"
+                                    placeholder="e.g. Swimming Pool, Smart Home Controls, Hardwood Floors..."
+                                    value={featureInput}
+                                    onChange={(e) => setFeatureInput(e.target.value)}
+                                    onKeyDown={handleKeyDownFeature}
+                                    className={cn("pl-9 pr-4", errors.features && "border-error")}
+                                    disabled={features.length >= 10}
+                                />
+                            </div>
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                size="lg"
+                                onClick={handleAddFeature}
+                                disabled={!featureInput.trim() || features.length >= 10}
+                                className="shrink-0"
+                            >
+                                <Plus className="size-4" />
+                                <span className="hidden xs:inline">Add Feature</span>
+                            </Button>
+                        </div>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.features && <p className="text-xs text-error">{errors.features.message}</p>}
+                    </div>
+
+                    {/* Quick Suggestion Chips */}
+                    <div className="space-y-2 pt-1">
+                        <p className="text-xs font-medium text-text-secondary flex items-center gap-1">
+                            <Sparkles className="size-3.5 text-accent" /> Popular Suggestions:
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            {SUGGESTED_FEATURES.map((suggestion) => {
+                                const isSelected = features.includes(suggestion);
+                                return (
+                                    <button
+                                        key={suggestion}
+                                        type="button"
+                                        onClick={() => toggleSuggestedFeature(suggestion)}
+                                        disabled={!isSelected && features.length >= 10}
+                                        className={cn(
+                                            "text-xs font-medium px-3 py-1.5 rounded-lg border transition-all duration-200 flex items-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+                                            isSelected
+                                                ? "bg-secondary text-white border-secondary shadow-xs"
+                                                : "bg-section/70 hover:bg-section text-text border-border hover:border-secondary/50"
+                                        )}
+                                    >
+                                        {isSelected ? <Check className="size-3.5" /> : <Plus className="size-3.5 text-text-secondary" />}
+                                        {suggestion}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* Added Features Badges (At the bottom) */}
+                    {features.length > 0 && (
+                        <div className="space-y-2 pt-3 border-t border-dashed">
+                            <p className="text-xs font-semibold text-text">Selected Features ({features.length}):</p>
+                            <div className="flex flex-wrap gap-2">
+                                {features.map((feature, idx) => (
+                                    <span
+                                        key={feature + idx}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 shadow-2xs group hover:bg-error/10 hover:text-error hover:border-error/20 transition-all duration-200"
+                                    >
+                                        <span>{feature}</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveFeature(idx)}
+                                            className="text-primary/70 hover:text-error rounded-full p-0.5 transition-colors cursor-pointer"
+                                            aria-label={`Remove ${feature}`}
+                                        >
+                                            <X className="size-3.5" />
+                                        </button>
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* ---- Section 6: Property Images ---- */}
             <div className="space-y-6">
                 <div className="flex items-center justify-between pb-2 border-b flex-wrap gap-2">
                     <h2 className="font-heading text-lg sm:text-xl font-bold text-text">Property Gallery</h2>
@@ -511,7 +669,7 @@ const AddPropertyForm = () => {
                     onChange={handleImageUpload}
                 />
 
-                {/* Image Previews Mock UI */}
+                {/* ---- Images Preview ---- */}
                 <div className="space-y-3">
                     <div className="flex items-center justify-between text-xs font-medium text-text-secondary">
                         <span>Uploaded Photos ({images.length})</span>
@@ -563,7 +721,11 @@ const AddPropertyForm = () => {
 
             {/* ---- Action Buttons ---- */}
             <div className="flex items-center justify-end gap-4 pt-4 border-t">
-                <Button variant="outline" size="lg" type="button">
+                <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => reset()}
+                >
                     Cancel
                 </Button>
                 <Button variant="secondary" size="lg" type="submit">
