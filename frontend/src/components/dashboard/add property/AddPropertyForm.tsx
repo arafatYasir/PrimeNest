@@ -26,6 +26,7 @@ import {
 import { useForm } from "react-hook-form";
 import { type PropertyFormValues, propertySchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
+import PropertyLocationMap from "./PropertyLocationMap";
 
 const AddPropertyForm = () => {
     // React Hook Form
@@ -358,6 +359,22 @@ const AddPropertyForm = () => {
 
                         {/* ---- Error Message ---- */}
                         {errors.fullAddress && <p className="text-xs text-error">{errors.fullAddress.message}</p>}
+                    </div>
+
+                    {/* Property Map Location Selection */}
+                    <div className="pt-2">
+                        <PropertyLocationMap
+                            lat={watch("lat")}
+                            lon={watch("lon")}
+                            onLocationSelect={(lat, lon) => {
+                                setValue("lat", lat, { shouldValidate: true });
+                                setValue("lon", lon, { shouldValidate: true });
+                            }}
+                            onClearLocation={() => {
+                                setValue("lat", 0, { shouldValidate: true });
+                                setValue("lon", 0, { shouldValidate: true });
+                            }}
+                        />
                     </div>
                 </div>
             </div>
