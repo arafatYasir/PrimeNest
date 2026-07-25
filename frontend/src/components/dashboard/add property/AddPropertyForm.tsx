@@ -27,9 +27,13 @@ import { useForm } from "react-hook-form";
 import { type PropertyFormValues, propertySchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PropertyLocationMap from "./PropertyLocationMap";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const AddPropertyForm = () => {
+    // States
+    const [objectUrls, setObjectUrls] = useState<string[]>([]);
+    const [isDragging, setIsDragging] = useState<boolean>(false);
+
     // React Hook Form
     const { register, watch, setValue, handleSubmit, formState: { errors } } = useForm<PropertyFormValues>({
         resolver: zodResolver(propertySchema),
@@ -48,11 +52,27 @@ const AddPropertyForm = () => {
             fullAddress: "",
             lat: 0,
             lon: 0,
+            features: [],
+            images: [],
         }
     });
 
     // Extra hooks
     const imageInputRef = useRef<HTMLInputElement | null>(null);
+
+    // Variables
+    const images = watch("images");
+
+    // Create object urls from images
+    useEffect(() => {
+        const urls = images.map((file) => URL.createObjectURL(file));
+        setObjectUrls(urls);
+
+        // Cleanup: revoke object urls
+        return () => {
+            urls.forEach((url) => URL.revokeObjectURL(url));
+        }
+    }, [images]);
 
     // Functions
     const handleTriggerInput = () => {
@@ -61,16 +81,62 @@ const AddPropertyForm = () => {
         }
     }
 
+    const processFiles = (newFiles: FileList | File[]) => {
+        const validImageFiles = Array.from(newFiles).filter((file) =>
+            file.type.startsWith("image/")
+        );
+        if (validImageFiles.length === 0) return;
+
+        const currentImages = watch("images") || [];
+        const sizeLeft = 10 - currentImages.length;
+        if (sizeLeft <= 0) return;
+
+        const filesToAdd = validImageFiles.slice(0, sizeLeft);
+        setValue("images", [...currentImages, ...filesToAdd], { shouldValidate: true });
+    };
+
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-
-        const temp = [];
-
-        for (let i = 0; i < files.length; i++) {
-            temp.push(files[i]);
+        if (e.target.files) {
+            processFiles(e.target.files);
         }
+        e.target.value = "";
+    };
 
-    }
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!isDragging) setIsDragging(true);
+    };
+
+    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+            setIsDragging(false);
+        }
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            processFiles(e.dataTransfer.files);
+        }
+    };
+
+    const handleRemoveImage = (indexToRemove: number) => {
+        const currentImages = watch("images") || [];
+        const updated = currentImages.filter((_, idx) => idx !== indexToRemove);
+        setValue("images", updated, { shouldValidate: true });
+    };
 
     return (
         <form onSubmit={handleSubmit((data) => console.log(data))} className="rounded-2xl border bg-card p-6 sm:p-8 space-y-6">
@@ -412,8 +478,17 @@ const AddPropertyForm = () => {
 
                 {/* ---- Image Dropzone ---- */}
                 <div
-                    className="group border-2 border-dashed hover:border-secondary rounded-2xl p-8 text-center bg-section/50 hover:bg-secondary/10 transition-all duration-200 cursor-pointer flex flex-col items-center justify-center space-y-3"
+                    className={cn(
+                        "group border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center space-y-3",
+                        isDragging
+                            ? "border-secondary bg-secondary/15 scale-[1.01]"
+                            : "border-border hover:border-secondary bg-section/50 hover:bg-secondary/10"
+                    )}
                     onClick={handleTriggerInput}
+                    onDragOver={handleDragOver}
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
                 >
                     <div className="p-4 rounded-full bg-card border text-secondary shadow-xs">
                         <UploadCloud className="size-8" />
@@ -439,30 +514,49 @@ const AddPropertyForm = () => {
                 {/* Image Previews Mock UI */}
                 <div className="space-y-3">
                     <div className="flex items-center justify-between text-xs font-medium text-text-secondary">
-                        <span>Uploaded Photos (1)</span>
+                        <span>Uploaded Photos ({images.length})</span>
                         <span className="text-secondary flex items-center gap-1">
                             <Sparkles className="size-3.5" /> First image set as thumbnail
                         </span>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                        {/* Sample Image Preview 1 */}
-                        <div className="relative group aspect-4/3 rounded-xl overflow-hidden border bg-section shadow-xs">
-                            <img
-                                src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80"
-                                alt="Property preview 1"
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                            <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-primary/90 text-white text-[10px] font-semibold tracking-wider">
-                                Thumbnail
-                            </div>
+                        {
+                            images.length > 0 && images.map((image, idx) => (
+                                <div
+                                    key={image.name + idx}
+                                    className="relative group aspect-4/3 rounded-xl overflow-hidden border bg-section shadow-xs"
+                                >
+                                    <img
+                                        src={objectUrls[idx]}
+                                        alt={image.name}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
 
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
-                                <Button size="icon-lg" className="bg-card/90 text-error hover:bg-card shadow-xs">
-                                    <Trash2 className="size-4" />
-                                </Button>
-                            </div>
-                        </div>
+                                    {
+                                        idx === 0 && (
+                                            <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-primary/90 text-white text-[10px] font-semibold tracking-wider">
+                                                Thumbnail
+                                            </div>
+                                        )
+                                    }
+
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
+                                        <Button
+                                            type="button"
+                                            size="icon-lg"
+                                            className="bg-card/90 text-error hover:bg-card shadow-xs"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleRemoveImage(idx);
+                                            }}
+                                        >
+                                            <Trash2 className="size-4" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
             </div>

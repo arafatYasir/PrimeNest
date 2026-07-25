@@ -29,8 +29,8 @@ export const propertySchema = z.object({
     fullAddress: z.string().trim().min(10, "Address must be at least 10 characters"),
     lat: z.number("Latitude must be a number"),
     lon: z.number("Longitude must be a number"),
-    features: z.array(z.string()).optional(),
-    images: z.array(z.string()),
+    features: z.array(z.string()).max(10, "You can add 10 features maximum"),
+    images: z.array(z.file()).max(10, "You can upload 10 images maximum"),
 });
 
 export type PropertyFormValues = z.infer<typeof propertySchema>;
