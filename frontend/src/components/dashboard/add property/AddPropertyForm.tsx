@@ -122,7 +122,7 @@ const AddPropertyForm = () => {
                             id="propertyType"
                             {...register("propertyType")}
                             value={watch("propertyType")}
-                            onValueChange={(val) => setValue("propertyType", val)}
+                            onValueChange={(val) => val && setValue("propertyType", val)}
                         >
                             <SelectTrigger className={cn("w-full h-10! rounded-lg px-3.5 text-sm! text-text", errors.propertyType && "border-error")}>
                                 <SelectValue placeholder="Select Property Type" />
@@ -151,7 +151,7 @@ const AddPropertyForm = () => {
                             id="listingType"
                             {...register("listingType")}
                             value={watch("listingType")}
-                            onValueChange={(val) => setValue("listingType", val)}
+                            onValueChange={(val) => val && setValue("listingType", val)}
                         >
                             <SelectTrigger className={cn("w-full h-10! rounded-lg px-3.5 text-sm! text-text", errors.listingType && "border-error")}>
                                 <SelectValue placeholder="Select Listing Type" />
