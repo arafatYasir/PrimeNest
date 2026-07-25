@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
     Select,
     SelectContent,
@@ -22,10 +23,34 @@ import {
     Trash2,
     Sparkles,
 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { type PropertyFormValues, propertySchema } from "@/lib/validations";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const AddPropertyForm = () => {
+    // React Hook Form
+    const { register, watch, setValue, handleSubmit, formState: { errors } } = useForm<PropertyFormValues>({
+        resolver: zodResolver(propertySchema),
+        defaultValues: {
+            propertyTitle: "",
+            propertyDescription: "",
+            propertyType: "House",
+            listingType: "For Sale",
+            price: 0,
+            area: 0,
+            yearBuilt: new Date().getFullYear(),
+            bedrooms: 1,
+            bathrooms: 1,
+            country: "",
+            city: "",
+            fullAddress: "",
+            lat: 0,
+            lon: 0,
+        }
+    });
+
     return (
-        <form onSubmit={(e) => e.preventDefault()} className="rounded-2xl border bg-card p-6 sm:p-8 space-y-6">
+        <form onSubmit={handleSubmit((data) => console.log(data))} className="rounded-2xl border bg-card p-6 sm:p-8 space-y-6">
             {/* ---- Section 1: Basic Information ---- */}
             <div className="space-y-6">
                 <h2 className="font-heading text-lg sm:text-xl font-bold text-text border-b pb-2">Basic Information</h2>
@@ -33,27 +58,44 @@ const AddPropertyForm = () => {
                 <div className="space-y-4">
                     {/* Title */}
                     <div className="space-y-2">
-                        <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="propertyTitle"
+                        >
                             Property Title <span className="text-error">*</span>
                         </label>
                         <Input
                             type="text"
                             placeholder="e.g. Modern Luxury Villa with Private Pool & Garden"
+                            {...register("propertyTitle")}
+                            id="propertyTitle"
+                            className={cn(errors.propertyTitle && "border-error")}
                         />
+
+                        {/* ---- Error Message ---- */}
+                        {errors.propertyTitle && <p className="text-xs text-error">{errors.propertyTitle.message}</p>}
                     </div>
 
                     {/* Description */}
                     <div>
                         <div className="space-y-2">
-                            <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                            <label
+                                className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                                htmlFor="propertyDescription"
+                            >
                                 Property Description <span className="text-error">*</span>
                             </label>
                             <Textarea
                                 rows={5}
                                 placeholder="Write a compelling detailed description of the property, surrounding neighborhood, amenities, and key highlights..."
-                                className="py-3 leading-relaxed resize-none"
+                                className={cn("py-3 leading-relaxed resize-none", errors.propertyDescription && "border-error")}
+                                id="propertyDescription"
+                                {...register("propertyDescription")}
                             />
                         </div>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.propertyDescription && <p className="text-xs text-error">{errors.propertyDescription.message}</p>}
 
                         <p className="text-xs text-text-secondary font-medium tabular-nums text-right mt-1">
                             0 characters
@@ -69,11 +111,19 @@ const AddPropertyForm = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {/* Property Type Dropdown */}
                     <div className="space-y-2">
-                        <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="propertyType"
+                        >
                             Property Type <span className="text-error">*</span>
                         </label>
-                        <Select>
-                            <SelectTrigger className="w-full h-10! rounded-lg  px-3.5 text-sm! text-text">
+                        <Select
+                            id="propertyType"
+                            {...register("propertyType")}
+                            value={watch("propertyType")}
+                            onValueChange={(val) => setValue("propertyType", val)}
+                        >
+                            <SelectTrigger className={cn("w-full h-10! rounded-lg px-3.5 text-sm! text-text", errors.propertyType && "border-error")}>
                                 <SelectValue placeholder="Select Property Type" />
                             </SelectTrigger>
                             <SelectContent>
@@ -83,15 +133,26 @@ const AddPropertyForm = () => {
                                 <SelectItem value="Land">Land</SelectItem>
                             </SelectContent>
                         </Select>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.propertyType && <p className="text-xs text-error">{errors.propertyType.message}</p>}
                     </div>
 
                     {/* Listing Type Dropdown */}
                     <div className="space-y-2">
-                        <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="listingType"
+                        >
                             Listing Type <span className="text-error">*</span>
                         </label>
-                        <Select>
-                            <SelectTrigger className="w-full h-10! rounded-lg  px-3.5 text-sm! text-text">
+                        <Select
+                            id="listingType"
+                            {...register("listingType")}
+                            value={watch("listingType")}
+                            onValueChange={(val) => setValue("listingType", val)}
+                        >
+                            <SelectTrigger className={cn("w-full h-10! rounded-lg px-3.5 text-sm! text-text", errors.listingType && "border-error")}>
                                 <SelectValue placeholder="Select Listing Type" />
                             </SelectTrigger>
                             <SelectContent>
@@ -99,6 +160,9 @@ const AddPropertyForm = () => {
                                 <SelectItem value="For Rent">For Rent</SelectItem>
                             </SelectContent>
                         </Select>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.listingType && <p className="text-xs text-error">{errors.listingType.message}</p>}
                     </div>
                 </div>
             </div>
@@ -110,77 +174,112 @@ const AddPropertyForm = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {/* Price */}
                     <div className="space-y-2 sm:col-span-2 lg:col-span-1">
-                        <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="price"
+                        >
                             Price ($) <span className="text-error">*</span>
                         </label>
                         <div className="relative flex items-center">
                             <DollarSign className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
                             <Input
-                                type="number"
                                 placeholder="450,000"
-                                className="pl-9"
+                                className={cn("pl-9", errors.price && "border-error")}
+                                id="price"
+                                {...register("price", { valueAsNumber: true })}
                             />
                         </div>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.price && <p className="text-xs text-error">{errors.price.message}</p>}
                     </div>
 
                     {/* Area */}
                     <div className="space-y-2">
-                        <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="area"
+                        >
                             Area (sq ft) <span className="text-error">*</span>
                         </label>
                         <div className="relative flex items-center">
                             <Maximize2 className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
                             <Input
-                                type="number"
                                 placeholder="2,800"
-                                className="pl-9"
+                                className={cn("pl-9", errors.area && "border-error")}
+                                id="area"
+                                {...register("area", { valueAsNumber: true })}
                             />
                         </div>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.area && <p className="text-xs text-error">{errors.area.message}</p>}
                     </div>
 
                     {/* Year Built */}
                     <div className="space-y-2">
-                        <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="yearBuilt"
+                        >
                             Year Built <span className="text-error">*</span>
                         </label>
                         <div className="relative flex items-center">
                             <Calendar className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
                             <Input
-                                type="number"
                                 placeholder="2022"
-                                className="pl-9"
+                                className={cn("pl-9", errors.yearBuilt && "border-error")}
+                                id="yearBuilt"
+                                {...register("yearBuilt", { valueAsNumber: true })}
                             />
                         </div>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.yearBuilt && <p className="text-xs text-error">{errors.yearBuilt.message}</p>}
                     </div>
 
                     {/* Beds */}
                     <div className="space-y-2">
-                        <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="bedrooms"
+                        >
                             Bedrooms
                         </label>
                         <div className="relative flex items-center">
                             <Bed className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
                             <Input
-                                type="number"
                                 placeholder="4"
-                                className="pl-9"
+                                className={cn("pl-9", errors.bedrooms && "border-error")}
+                                id="bedrooms"
+                                {...register("bedrooms", { valueAsNumber: true })}
                             />
                         </div>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.bedrooms && <p className="text-xs text-error">{errors.bedrooms.message}</p>}
                     </div>
 
                     {/* Baths */}
                     <div className="space-y-2">
-                        <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="bathrooms"
+                        >
                             Bathrooms
                         </label>
                         <div className="relative flex items-center">
                             <Bath className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
                             <Input
-                                type="number"
                                 placeholder="3"
-                                className="pl-9"
+                                className={cn("pl-9", errors.bathrooms && "border-error")}
+                                id="bathrooms"
+                                {...register("bathrooms", { valueAsNumber: true })}
                             />
                         </div>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.bathrooms && <p className="text-xs text-error">{errors.bathrooms.message}</p>}
                     </div>
                 </div>
             </div>
@@ -193,7 +292,10 @@ const AddPropertyForm = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         {/* Country */}
                         <div className="space-y-2">
-                            <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                            <label
+                                className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                                htmlFor="country"
+                            >
                                 Country <span className="text-error">*</span>
                             </label>
                             <div className="relative flex items-center">
@@ -201,14 +303,22 @@ const AddPropertyForm = () => {
                                 <Input
                                     type="text"
                                     placeholder="United States"
-                                    className="pl-9"
+                                    className={cn("pl-9", errors.country && "border-error")}
+                                    id="country"
+                                    {...register("country")}
                                 />
                             </div>
+
+                            {/* ---- Error Message ---- */}
+                            {errors.country && <p className="text-xs text-error">{errors.country.message}</p>}
                         </div>
 
                         {/* City */}
                         <div className="space-y-2">
-                            <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                            <label
+                                className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                                htmlFor="city"
+                            >
                                 City <span className="text-error">*</span>
                             </label>
                             <div className="relative flex items-center">
@@ -216,15 +326,23 @@ const AddPropertyForm = () => {
                                 <Input
                                     type="text"
                                     placeholder="Los Angeles"
-                                    className="pl-9"
+                                    className={cn("pl-9", errors.city && "border-error")}
+                                    id="city"
+                                    {...register("city")}
                                 />
                             </div>
+
+                            {/* ---- Error Message ---- */}
+                            {errors.city && <p className="text-xs text-error">{errors.city.message}</p>}
                         </div>
                     </div>
 
                     {/* Full Address */}
                     <div className="space-y-2">
-                        <label className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5">
+                        <label
+                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                            htmlFor="fullAddress"
+                        >
                             Full Address <span className="text-error">*</span>
                         </label>
                         <div className="relative flex items-center">
@@ -232,9 +350,14 @@ const AddPropertyForm = () => {
                             <Input
                                 type="text"
                                 placeholder="1245 Sunset Blvd, Suite 400, Los Angeles, CA 90026"
-                                className="pl-9"
+                                className={cn("pl-9", errors.fullAddress && "border-error")}
+                                id="fullAddress"
+                                {...register("fullAddress")}
                             />
                         </div>
+
+                        {/* ---- Error Message ---- */}
+                        {errors.fullAddress && <p className="text-xs text-error">{errors.fullAddress.message}</p>}
                     </div>
                 </div>
             </div>
