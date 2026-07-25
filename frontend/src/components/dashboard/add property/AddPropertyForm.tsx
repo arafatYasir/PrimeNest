@@ -27,21 +27,22 @@ import { useForm } from "react-hook-form";
 import { type PropertyFormValues, propertySchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PropertyLocationMap from "./PropertyLocationMap";
+import React, { useRef } from "react";
 
 const AddPropertyForm = () => {
     // React Hook Form
     const { register, watch, setValue, handleSubmit, formState: { errors } } = useForm<PropertyFormValues>({
         resolver: zodResolver(propertySchema),
         defaultValues: {
-            propertyTitle: "",
-            propertyDescription: "",
+            title: "",
+            description: "",
             propertyType: "House",
             listingType: "For Sale",
             price: 0,
             area: 0,
             yearBuilt: new Date().getFullYear(),
-            bedrooms: 1,
-            bathrooms: 1,
+            beds: 1,
+            baths: 1,
             country: "",
             city: "",
             fullAddress: "",
@@ -49,6 +50,27 @@ const AddPropertyForm = () => {
             lon: 0,
         }
     });
+
+    // Extra hooks
+    const imageInputRef = useRef<HTMLInputElement | null>(null);
+
+    // Functions
+    const handleTriggerInput = () => {
+        if (imageInputRef.current) {
+            imageInputRef.current.click();
+        }
+    }
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+
+        const temp = [];
+
+        for (let i = 0; i < files.length; i++) {
+            temp.push(files[i]);
+        }
+
+    }
 
     return (
         <form onSubmit={handleSubmit((data) => console.log(data))} className="rounded-2xl border bg-card p-6 sm:p-8 space-y-6">
@@ -61,20 +83,20 @@ const AddPropertyForm = () => {
                     <div className="space-y-2">
                         <label
                             className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
-                            htmlFor="propertyTitle"
+                            htmlFor="title"
                         >
                             Property Title <span className="text-error">*</span>
                         </label>
                         <Input
                             type="text"
                             placeholder="e.g. Modern Luxury Villa with Private Pool & Garden"
-                            {...register("propertyTitle")}
-                            id="propertyTitle"
-                            className={cn(errors.propertyTitle && "border-error")}
+                            {...register("title")}
+                            id="title"
+                            className={cn(errors.title && "border-error")}
                         />
 
                         {/* ---- Error Message ---- */}
-                        {errors.propertyTitle && <p className="text-xs text-error">{errors.propertyTitle.message}</p>}
+                        {errors.title && <p className="text-xs text-error">{errors.title.message}</p>}
                     </div>
 
                     {/* Description */}
@@ -82,24 +104,24 @@ const AddPropertyForm = () => {
                         <div className="space-y-2">
                             <label
                                 className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
-                                htmlFor="propertyDescription"
+                                htmlFor="description"
                             >
                                 Property Description <span className="text-error">*</span>
                             </label>
                             <Textarea
                                 rows={5}
                                 placeholder="Write a compelling detailed description of the property, surrounding neighborhood, amenities, and key highlights..."
-                                className={cn("py-3 leading-relaxed resize-none", errors.propertyDescription && "border-error")}
-                                id="propertyDescription"
-                                {...register("propertyDescription")}
+                                className={cn("py-3 leading-relaxed resize-none", errors.description && "border-error")}
+                                id="description"
+                                {...register("description")}
                             />
                         </div>
 
                         {/* ---- Error Message ---- */}
-                        {errors.propertyDescription && <p className="text-xs text-error">{errors.propertyDescription.message}</p>}
+                        {errors.description && <p className="text-xs text-error">{errors.description.message}</p>}
 
                         <p className="text-xs text-text-secondary font-medium tabular-nums text-right mt-1">
-                            0 characters
+                            {watch("description")?.length || 0} characters
                         </p>
                     </div>
                 </div>
@@ -243,7 +265,7 @@ const AddPropertyForm = () => {
                     <div className="space-y-2">
                         <label
                             className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
-                            htmlFor="bedrooms"
+                            htmlFor="beds"
                         >
                             Bedrooms
                         </label>
@@ -251,21 +273,21 @@ const AddPropertyForm = () => {
                             <Bed className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
                             <Input
                                 placeholder="4"
-                                className={cn("pl-9", errors.bedrooms && "border-error")}
-                                id="bedrooms"
-                                {...register("bedrooms", { valueAsNumber: true })}
+                                className={cn("pl-9", errors.beds && "border-error")}
+                                id="beds"
+                                {...register("beds", { valueAsNumber: true })}
                             />
                         </div>
 
                         {/* ---- Error Message ---- */}
-                        {errors.bedrooms && <p className="text-xs text-error">{errors.bedrooms.message}</p>}
+                        {errors.beds && <p className="text-xs text-error">{errors.beds.message}</p>}
                     </div>
 
                     {/* Baths */}
                     <div className="space-y-2">
                         <label
                             className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
-                            htmlFor="bathrooms"
+                            htmlFor="baths"
                         >
                             Bathrooms
                         </label>
@@ -273,14 +295,14 @@ const AddPropertyForm = () => {
                             <Bath className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
                             <Input
                                 placeholder="3"
-                                className={cn("pl-9", errors.bathrooms && "border-error")}
-                                id="bathrooms"
-                                {...register("bathrooms", { valueAsNumber: true })}
+                                className={cn("pl-9", errors.baths && "border-error")}
+                                id="baths"
+                                {...register("baths", { valueAsNumber: true })}
                             />
                         </div>
 
                         {/* ---- Error Message ---- */}
-                        {errors.bathrooms && <p className="text-xs text-error">{errors.bathrooms.message}</p>}
+                        {errors.baths && <p className="text-xs text-error">{errors.baths.message}</p>}
                     </div>
                 </div>
             </div>
@@ -379,7 +401,7 @@ const AddPropertyForm = () => {
                 </div>
             </div>
 
-            {/* ---- Section 5: Property Images (Multi-image upload UI) ---- */}
+            {/* ---- Section 5: Property Images ---- */}
             <div className="space-y-6">
                 <div className="flex items-center justify-between pb-2 border-b flex-wrap gap-2">
                     <h2 className="font-heading text-lg sm:text-xl font-bold text-text">Property Gallery</h2>
@@ -389,7 +411,10 @@ const AddPropertyForm = () => {
                 </div>
 
                 {/* ---- Image Dropzone ---- */}
-                <div className="group border-2 border-dashed hover:border-secondary rounded-2xl p-8 text-center bg-section/50 hover:bg-secondary/10 transition-all duration-200 cursor-pointer flex flex-col items-center justify-center space-y-3">
+                <div
+                    className="group border-2 border-dashed hover:border-secondary rounded-2xl p-8 text-center bg-section/50 hover:bg-secondary/10 transition-all duration-200 cursor-pointer flex flex-col items-center justify-center space-y-3"
+                    onClick={handleTriggerInput}
+                >
                     <div className="p-4 rounded-full bg-card border text-secondary shadow-xs">
                         <UploadCloud className="size-8" />
                     </div>
@@ -400,6 +425,16 @@ const AddPropertyForm = () => {
                         <p className="text-xs text-text-secondary">High quality images improve buyer engagement (Up to 5 MB each)</p>
                     </div>
                 </div>
+
+                {/* ---- Image Input ---- */}
+                <input
+                    ref={imageInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={handleImageUpload}
+                />
 
                 {/* Image Previews Mock UI */}
                 <div className="space-y-3">

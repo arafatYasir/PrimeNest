@@ -25,7 +25,10 @@ const propertySchema = new Schema(
             enum: ["Available", "Sold", "Pending"],
             default: "Available"
         },
-        images: [String],
+        images: {
+            type: [String],
+            required: true
+        },
         price: {
             type: Number,
             required: true
@@ -63,7 +66,8 @@ const propertySchema = new Schema(
             required: true
         },
         features: {
-            type: [String]
+            type: [String],
+            required: true
         },
         seller: {
             type: mongoose.Schema.Types.ObjectId,
