@@ -183,6 +183,7 @@ export const uploadProfilePhoto = async (formData: FormData, token: string) => {
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/me/profile-photo`, {
         method: "PATCH",
         headers: {
+            "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${token}`
         },
         body: formData
@@ -212,6 +213,24 @@ export const updateAgentProfile = async (
 
     if (!data.success) {
         throw new Error(data.message || "Failed to update profile");
+    }
+
+    return data;
+}
+
+export const createProperty = async (token: string, formData: FormData) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+        body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to create property");
     }
 
     return data;

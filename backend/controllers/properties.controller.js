@@ -1,4 +1,5 @@
 import Property from "../models/property.model.js";
+import cloudinary from "../config/cloudinary.js";
 
 const sortingMap = {
     "None": { createdAt: -1 },
@@ -241,6 +242,97 @@ export async function deleteProperty(req, res, next) {
             message: "Property Deleted Successfully!"
         });
     } catch (e) {
+        next(e);
+    }
+}
+
+export async function createProperty(req, res, next) {
+    let createdProperty = null;
+    try {
+        const userId = req.user._id;
+        const userRole = req.user.role;
+
+        const {
+            title,
+            description,
+            propertyType,
+            listingType,
+            price,
+            area,
+            yearBuilt,
+            beds,
+            baths,
+            country,
+            city,
+            fullAddress,
+            lat,
+            lon,
+            features
+        } = req.body;
+
+        // Create the Property document in MongoDB without the images field
+        createdProperty = await Property.create({
+            title,
+            description,
+            propertyType,
+            listingType,
+            price,
+            area,
+            yearBuilt,
+            beds: beds ?? null,
+            baths: baths ?? null,
+            location: {
+                country,
+                city,
+                fullAddress,
+                lat,
+                lon,
+            },
+            features,
+            status: userRole === "admin" ? "Available" : "Pending",
+            seller: userId
+        });
+
+        // Upload the images received from the multer middleware to Cloudinary
+        const files = req.files || (Array.isArray(req.body.images) ? req.body.images : []);
+        let imageUrls = [];
+
+        if (files && files.length > 0) {
+            const uploadPromises = files.map((file) => {
+                return new Promise((resolve, reject) => {
+                    if (!file.buffer) {
+                        return reject(new Error("File buffer missing for upload"));
+                    }
+                    const stream = cloudinary.uploader.upload_stream(
+                        { folder: `PrimeNest/${userId}/property-photos/${createdProperty._id}` },
+                        (err, result) => {
+                            if (err) return reject(err);
+                            resolve(result.secure_url);
+                        }
+                    );
+                    stream.end(file.buffer);
+                });
+            });
+
+            imageUrls = await Promise.all(uploadPromises);
+        }
+
+        // Update the previously created Property document to include these URLs in the images field
+        createdProperty.images = imageUrls;
+        await createdProperty.save();
+
+        return res.status(201).json({
+            success: true,
+            message: "Property Created!",
+        });
+    } catch (e) {
+        if (createdProperty && createdProperty._id) {
+            try {
+                await Property.findByIdAndDelete(createdProperty._id);
+            } catch (cleanupError) {
+                console.error("Cleanup failed:", cleanupError);
+            }
+        }
         next(e);
     }
 }

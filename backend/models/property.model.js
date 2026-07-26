@@ -27,7 +27,7 @@ const propertySchema = new Schema(
         },
         images: {
             type: [String],
-            required: true
+            default: []
         },
         price: {
             type: Number,

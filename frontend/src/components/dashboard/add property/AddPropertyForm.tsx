@@ -32,6 +32,10 @@ import { type PropertyFormValues, propertySchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PropertyLocationMap from "./PropertyLocationMap";
 import React, { useEffect, useRef, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@clerk/react";
+import { toast } from "sonner";
+import { createProperty } from "@/lib/apiCalls";
 
 const SUGGESTED_FEATURES = [
     "Swimming Pool",
@@ -49,8 +53,8 @@ const SUGGESTED_FEATURES = [
 const AddPropertyForm = () => {
     // States
     const [objectUrls, setObjectUrls] = useState<string[]>([]);
-    const [isDragging, setIsDragging] = useState<boolean>(false);
-    const [featureInput, setFeatureInput] = useState<string>("");
+    const [isDragging, setIsDragging] = useState(false);
+    const [featureInput, setFeatureInput] = useState("");
 
     // React Hook Form
     const { register, watch, setValue, handleSubmit, reset, formState: { errors } } = useForm<PropertyFormValues>({
@@ -72,6 +76,53 @@ const AddPropertyForm = () => {
             lon: 0,
             features: [],
             images: [],
+        }
+    });
+
+    // Get the user's token
+    const { getToken } = useAuth();
+
+    // Property creation api call
+    const { mutate } = useMutation({
+        mutationFn: async (values: PropertyFormValues) => {
+            const token = await getToken();
+            const formData = new FormData();
+
+            formData.append("title", values.title);
+            formData.append("description", values.description);
+            formData.append("propertyType", values.propertyType);
+            formData.append("listingType", values.listingType);
+            formData.append("price", values.price.toString());
+            formData.append("area", values.area.toString());
+            formData.append("yearBuilt", values.yearBuilt.toString());
+
+            if (watch("propertyType") !== "Land") {
+                formData.append("beds", values.beds.toString());
+                formData.append("baths", values.baths.toString());
+            }
+
+            formData.append("country", values.country);
+            formData.append("city", values.city);
+            formData.append("fullAddress", values.fullAddress);
+            formData.append("lat", values.lat.toString());
+            formData.append("lon", values.lon.toString());
+            values.features.forEach((feature) => formData.append("features", feature));
+            values.images.forEach((image) => formData.append("images", image));
+
+            return createProperty(token ?? "", formData);
+        },
+        onSuccess: () => {
+            toast.success("Property Created!", {
+                className: "text-success!"
+            });
+
+            // Reset form state
+            reset();
+        },
+        onError: (err) => {
+            toast.error(err.message || "Failed to update profile photo", {
+                className: "text-error!"
+            });
         }
     });
 
@@ -192,7 +243,7 @@ const AddPropertyForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit((data) => console.log(data))} className="rounded-2xl border bg-card p-6 sm:p-8 space-y-6">
+        <form onSubmit={handleSubmit((data) => mutate(data))} className="rounded-2xl border bg-card p-6 sm:p-8 space-y-6">
             {/* ---- Section 1: Basic Information ---- */}
             <div className="space-y-6">
                 <h2 className="font-heading text-lg sm:text-xl font-bold text-text border-b pb-2">Basic Information</h2>
@@ -380,49 +431,56 @@ const AddPropertyForm = () => {
                         {errors.yearBuilt && <p className="text-xs text-error">{errors.yearBuilt.message}</p>}
                     </div>
 
-                    {/* Beds */}
-                    <div className="space-y-2">
-                        <label
-                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
-                            htmlFor="beds"
-                        >
-                            Bedrooms
-                        </label>
-                        <div className="relative flex items-center">
-                            <Bed className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
-                            <Input
-                                placeholder="4"
-                                className={cn("pl-9", errors.beds && "border-error")}
-                                id="beds"
-                                {...register("beds", { valueAsNumber: true })}
-                            />
-                        </div>
+                    {/* ---- Beds/Baths show conditionally ---- */}
+                    {
+                        (watch("propertyType") !== "Land") && (
+                            <>
+                                {/* Beds */}
+                                <div className="space-y-2">
+                                    <label
+                                        className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                                        htmlFor="beds"
+                                    >
+                                        Bedrooms
+                                    </label>
+                                    <div className="relative flex items-center">
+                                        <Bed className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
+                                        <Input
+                                            placeholder="4"
+                                            className={cn("pl-9", errors.beds && "border-error")}
+                                            id="beds"
+                                            {...register("beds", { valueAsNumber: true })}
+                                        />
+                                    </div>
 
-                        {/* ---- Error Message ---- */}
-                        {errors.beds && <p className="text-xs text-error">{errors.beds.message}</p>}
-                    </div>
+                                    {/* ---- Error Message ---- */}
+                                    {errors.beds && <p className="text-xs text-error">{errors.beds.message}</p>}
+                                </div>
 
-                    {/* Baths */}
-                    <div className="space-y-2">
-                        <label
-                            className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
-                            htmlFor="baths"
-                        >
-                            Bathrooms
-                        </label>
-                        <div className="relative flex items-center">
-                            <Bath className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
-                            <Input
-                                placeholder="3"
-                                className={cn("pl-9", errors.baths && "border-error")}
-                                id="baths"
-                                {...register("baths", { valueAsNumber: true })}
-                            />
-                        </div>
+                                {/* Baths */}
+                                <div className="space-y-2">
+                                    <label
+                                        className="text-xs xs:text-sm font-medium text-text flex items-center gap-1.5"
+                                        htmlFor="baths"
+                                    >
+                                        Bathrooms
+                                    </label>
+                                    <div className="relative flex items-center">
+                                        <Bath className="absolute left-3.5 size-4 text-text-secondary pointer-events-none" />
+                                        <Input
+                                            placeholder="3"
+                                            className={cn("pl-9", errors.baths && "border-error")}
+                                            id="baths"
+                                            {...register("baths", { valueAsNumber: true })}
+                                        />
+                                    </div>
 
-                        {/* ---- Error Message ---- */}
-                        {errors.baths && <p className="text-xs text-error">{errors.baths.message}</p>}
-                    </div>
+                                    {/* ---- Error Message ---- */}
+                                    {errors.baths && <p className="text-xs text-error">{errors.baths.message}</p>}
+                                </div>
+                            </>
+                        )
+                    }
                 </div>
             </div>
 

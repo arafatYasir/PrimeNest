@@ -1,6 +1,9 @@
 import { Router } from "express";
-import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty } from "../controllers/properties.controller.js";
+import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty, createProperty } from "../controllers/properties.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
+import { validate } from "../middlewares/validate.middleware.js"
+import { propertySchema } from "../validations/property.validation.js";
+import upload from "../config/multer.js";
 
 const propertiesRouter = Router();
 
@@ -18,6 +21,9 @@ propertiesRouter.get("/me", protectRoute, getMyProperties);
 
 // Get A Specific Property
 propertiesRouter.get("/:id", getProperty);
+
+// Create A New Property
+propertiesRouter.post("/", protectRoute, upload.array("images", 10), validate(propertySchema), createProperty);
 
 // Delete A Specific Property
 propertiesRouter.delete("/:id", protectRoute, deleteProperty);

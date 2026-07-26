@@ -2,12 +2,13 @@ import { useUserContext } from "@/context/UserContext";
 import { useEffect, useState } from "react";
 import { profileSchema } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, ArrowRight, CheckCircle2, Image, User, Phone, FileText, XCircle } from "lucide-react";
+import { AlertCircle, ArrowRight, CheckCircle2, Image, User, Phone, FileText, XCircle, Loader2 } from "lucide-react";
 import { Link } from "react-router";
 import AddPropertyForm from "@/components/dashboard/add property/AddPropertyForm";
 
 const DashboardAddPropertyPage = () => {
     const [isAllowed, setIsAllowed] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     // Get the user information
     const { user } = useUserContext();
@@ -26,7 +27,23 @@ const DashboardAddPropertyPage = () => {
 
             setIsAllowed(result.success);
         }
+
+        setLoading(false);
     }, [user]);
+
+    if (loading) {
+        return (
+            <div className="flex items-center gap-2">
+                {/* Spinner */}
+                <Loader2 className="animate-spin text-secondary size-6" strokeWidth={2} />
+
+                {/* Brand text */}
+                <span className="font-heading font-semibold tracking-widest uppercase text-text-secondary">
+                    Loading...
+                </span>
+            </div>
+        )
+    }
 
     const checklistItems = [
         { key: "profilePic", label: "Profile Picture", icon: Image, value: user?.profilePic },
