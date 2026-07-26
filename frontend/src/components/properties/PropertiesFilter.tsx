@@ -56,6 +56,7 @@ const PropertiesFilter = ({
 
         setter(cleaned);
     };
+
     return (
         <div className="sticky top-[65px] rounded-2xl border border-border bg-card p-6 shadow-xs">
             {/* Filter Title */}
@@ -66,7 +67,10 @@ const PropertiesFilter = ({
 
             {/* Location Filter */}
             <div className="mb-5">
-                <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
+                <label
+                    className="text-xs font-bold text-text uppercase tracking-wider mb-2 block"
+                    htmlFor="location"
+                >
                     Location
                 </label>
                 <Input
@@ -75,15 +79,23 @@ const PropertiesFilter = ({
                     className="w-full"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
+                    id="location"
                 />
             </div>
 
             {/* Property Type Filter */}
             <div className="mb-5">
-                <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
+                <label
+                    className="text-xs font-bold text-text uppercase tracking-wider mb-2 block"
+                    htmlFor="propertyType"
+                >
                     Property Type
                 </label>
-                <Select value={propertyType} onValueChange={(value) => setPropertyType(value ?? "Any")}>
+                <Select
+                    value={propertyType}
+                    onValueChange={(value) => setPropertyType(value ?? "Any")}
+                    id="propertyType"
+                >
                     <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                         <SelectValue placeholder={propertyType} />
                     </SelectTrigger>
@@ -99,10 +111,17 @@ const PropertiesFilter = ({
 
             {/* Property Status */}
             <div className="mb-5">
-                <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
+                <label
+                    className="text-xs font-bold text-text uppercase tracking-wider mb-2 block"
+                    htmlFor="propertyStatus"
+                >
                     Property Status
                 </label>
-                <Select value={propertyStatus} onValueChange={(value) => setPropertyStatus(value ?? "Any")}>
+                <Select
+                    value={propertyStatus}
+                    onValueChange={(value) => setPropertyStatus(value ?? "Any")}
+                    id="propertyStatus"
+                >
                     <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                         <SelectValue placeholder={propertyStatus} />
                     </SelectTrigger>
@@ -118,10 +137,17 @@ const PropertiesFilter = ({
 
             {/* Listing Type */}
             <div className="mb-5">
-                <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
+                <label
+                    className="text-xs font-bold text-text uppercase tracking-wider mb-2 block"
+                    htmlFor="listingType"
+                >
                     Listing Type
                 </label>
-                <Select value={listingType} onValueChange={(value) => setListingType(value ?? "Any")}>
+                <Select
+                    value={listingType}
+                    onValueChange={(value) => setListingType(value ?? "Any")}
+                    id="listingType"
+                >
                     <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                         <SelectValue placeholder={listingType} />
                     </SelectTrigger>
@@ -168,10 +194,17 @@ const PropertiesFilter = ({
             {/* Bedrooms & Bathrooms Filter */}
             <div className="grid grid-cols-2 gap-4 mb-5">
                 <div>
-                    <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
+                    <label
+                        className="text-xs font-bold text-text uppercase tracking-wider mb-2 block"
+                        htmlFor="beds"
+                    >
                         Bedrooms
                     </label>
-                    <Select value={beds} onValueChange={(value) => setBeds(value ?? "Any")}>
+                    <Select
+                        value={beds}
+                        onValueChange={(value) => setBeds(value ?? "Any")}
+                        id="beds"
+                    >
                         <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                             <SelectValue placeholder={beds} />
                         </SelectTrigger>
@@ -185,10 +218,17 @@ const PropertiesFilter = ({
                     </Select>
                 </div>
                 <div>
-                    <label className="text-xs font-bold text-text uppercase tracking-wider mb-2 block">
+                    <label
+                        className="text-xs font-bold text-text uppercase tracking-wider mb-2 block"
+                        htmlFor="baths"
+                    >
                         Bathrooms
                     </label>
-                    <Select value={baths} onValueChange={(value) => setBaths(value ?? "Any")}>
+                    <Select
+                        value={baths}
+                        onValueChange={(value) => setBaths(value ?? "Any")}
+                        id="baths"
+                    >
                         <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text">
                             <SelectValue placeholder={baths} />
                         </SelectTrigger>

@@ -10,6 +10,7 @@ import PropertyMapLocation from "@/components/property details/PropertyMapLocati
 import RelevantProperties from "@/components/property details/RelevantProperties";
 import PropertyDetailsSkeleton from "@/components/property details/PropertyDetailsSkeleton";
 import PropertySaveButton from "@/components/property details/PropertySaveButton";
+import { useEffect } from "react";
 
 const PropertyDetailsPage = () => {
     // Get the property id
@@ -21,6 +22,11 @@ const PropertyDetailsPage = () => {
         queryFn: () => fetchProperty(id!),
         enabled: !!id
     });
+
+    // Scroll to the top on page load
+    useEffect(() => {
+        window.scrollTo({ top: 0 });
+    }, []);
 
 
     if (isLoading) return <PropertyDetailsSkeleton />
