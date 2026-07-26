@@ -38,6 +38,10 @@ export const PropertyLocationMap = ({
     const hasSelection = typeof lat === "number" && typeof lon === "number" && lat !== 0 && lon !== 0;
 
     const defaultCenter: [number, number] = hasSelection ? [lat, lon] : [34.0522, -118.2437]; // Los Angeles default center
+    const outerBounds: [[number, number], [number, number]] = [
+        [24.396308, -125.000000],
+        [49.384358, -66.934570],
+    ]
 
     return (
         <div className="space-y-2.5">
@@ -45,6 +49,9 @@ export const PropertyLocationMap = ({
                 <MapContainer
                     center={defaultCenter}
                     zoom={10}
+                    maxBounds={outerBounds}
+                    maxBoundsViscosity={1.0}
+                    minZoom={4}
                     className="w-full h-full z-0"
                 >
                     <TileLayer
