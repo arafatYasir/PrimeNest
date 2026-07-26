@@ -248,6 +248,10 @@ export async function deleteProperty(req, res, next) {
 
 export async function createProperty(req, res, next) {
     let createdProperty = null;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
         const userId = req.user._id;
         const userRole = req.user.role;
@@ -321,18 +325,16 @@ export async function createProperty(req, res, next) {
         createdProperty.images = imageUrls;
         await createdProperty.save();
 
+        await session.commitTransaction();
+
         return res.status(201).json({
             success: true,
             message: "Property Created!",
         });
     } catch (e) {
-        if (createdProperty && createdProperty._id) {
-            try {
-                await Property.findByIdAndDelete(createdProperty._id);
-            } catch (cleanupError) {
-                console.error("Cleanup failed:", cleanupError);
-            }
-        }
+        await session.abortTransaction();
         next(e);
+    } finally {
+        session.endSession();
     }
 }
