@@ -26,6 +26,7 @@ import {
     Plus,
     X,
     Check,
+    Loader2,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { type PropertyFormValues, propertySchema } from "@/lib/validations";
@@ -83,7 +84,7 @@ const AddPropertyForm = () => {
     const { getToken } = useAuth();
 
     // Property creation api call
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: async (values: PropertyFormValues) => {
             const token = await getToken();
             const formData = new FormData();
@@ -786,9 +787,13 @@ const AddPropertyForm = () => {
                 >
                     Cancel
                 </Button>
-                <Button variant="secondary" size="lg" type="submit">
-                    <Building2 className="size-4" />
-                    Publish Property
+                <Button variant="secondary" size="lg" type="submit" disabled={isPending}>
+                    {isPending ? (
+                        <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                        <Building2 className="size-4" />
+                    )}
+                    {isPending ? "Publishing..." : "Publish Property"}
                 </Button>
             </div>
         </form>

@@ -1,5 +1,6 @@
 import Property from "../models/property.model.js";
 import cloudinary from "../config/cloudinary.js";
+import mongoose from "mongoose";
 
 const sortingMap = {
     "None": { createdAt: -1 },
