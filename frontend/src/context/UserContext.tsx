@@ -43,7 +43,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         loadUser();
-    }, [clerkUser, isClerkLoaded, isSignedIn, getToken]);
+    }, [isClerkLoaded, isSignedIn, getToken]);
 
     return (
         <UserContext.Provider value={{ user, isLoading, error }}>
