@@ -10,7 +10,7 @@ export async function protectRoute(req, res, next) {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        const user = await User.findOne({ clerkId: userId });
+        const user = await User.findOne({ clerkId: userId }).select("-clerkId -createdAt -updatedAt");
 
         if (!user) {
             return res.status(404).json({ message: "User profile is not synced yet" });
