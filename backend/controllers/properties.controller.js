@@ -385,3 +385,34 @@ export async function approveProperty(req, res, next) {
         next(e);
     }
 }
+
+export async function getAllPendingProperties(req, res, next) {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const sortBy = req.query.sortBy || "None";
+        const limit = 10;
+
+        const skip = limit * (page - 1);
+        const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
+
+        const [properties, totalProperties] = await Promise.all([
+            Property.find({ status: "Pending" }).populate("seller", "fullName email phone").sort(sortingQuery).skip(skip).limit(limit),
+            Property.countDocuments({ status: "Pending" })
+        ]);
+
+        const totalPages = Math.ceil(totalProperties / limit);
+
+        return res.status(200).json({
+            success: true,
+            data: properties,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalProperties,
+                limit,
+            }
+        });
+    } catch (e) {
+        next(e);
+    }
+}

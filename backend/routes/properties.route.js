@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty, createProperty, approveProperty } from "../controllers/properties.controller.js";
+import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty, createProperty, approveProperty, getAllPendingProperties } from "../controllers/properties.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
 import { requireAdmin } from "../middlewares/requireAdmin.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js"
@@ -19,6 +19,9 @@ propertiesRouter.get("/statuses", protectRoute, getPropertiesStatuses);
 
 // Get All Properties Of The Current User
 propertiesRouter.get("/me", protectRoute, getMyProperties);
+
+// Get All Pending Properties
+propertiesRouter.get("/pending", protectRoute, requireAdmin, getAllPendingProperties);
 
 // Get A Specific Property
 propertiesRouter.get("/:id", getProperty);
