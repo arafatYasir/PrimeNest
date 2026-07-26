@@ -55,15 +55,13 @@ export interface AboutUsCorePillar {
 
 export interface User {
     _id: string;
-    clerkId: string;
     fullName: string;
     email: string;
     phone: string;
     profilePic: string;
     bio: string;
     savedProperties: string[];
-    createdAt: Date;
-    updatedAt: Date;
+    role: string;
 }
 
 export interface QuickAction {

@@ -12,6 +12,7 @@ import {
     ChevronsLeft,
     PlusCircle,
     CreditCard,
+    ClipboardCheck
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -33,6 +34,10 @@ const navLinks = [
     { name: 'Inbox', path: '/dashboard/inbox', icon: MessageSquare },
     { name: 'Transactions', path: '/dashboard/transactions', icon: CreditCard },
 ];
+
+const adminLinks = [
+    { name: "Pending Properties", path: "/dashboard/admin/pending-properties", icon: ClipboardCheck }
+]
 
 interface SidebarLinkProps {
     link: typeof navLinks[number];
@@ -86,6 +91,7 @@ export const Sidebar = () => {
 
     // Get the user information
     const { user } = useUserContext();
+    console.log(user.role)
 
     return (
         <>
@@ -103,7 +109,7 @@ export const Sidebar = () => {
                 </SheetTrigger>
                 <SheetContent
                     side="left"
-                    className="w-[280px] border-r border-sidebar-border bg-sidebar p-0"
+                    className="w-70 border-r border-sidebar-border bg-sidebar p-0"
                 >
                     <SheetHeader className="border-b border-sidebar-border p-4">
                         <SheetTitle className="font-heading text-lg font-bold tracking-tight text-primary">
@@ -119,6 +125,23 @@ export const Sidebar = () => {
                                 onClick={() => setMobileOpen(false)}
                             />
                         ))}
+                        {user.role === "admin" && (
+                            <div className="mt-4 pt-4 border-t border-border">
+                                <span className="text-xs font-bold text-text-secondary uppercase tracking-wider pl-3">
+                                    Admin Access
+                                </span>
+                                <div className="mt-1">
+                                    {adminLinks.map((link) => (
+                                        <SidebarLink
+                                            key={link.name}
+                                            link={link}
+                                            mobile
+                                            onClick={() => setMobileOpen(false)}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </nav>
 
                     <div className="border-t border-border p-3">
@@ -169,7 +192,8 @@ export const Sidebar = () => {
                     </Button>
                 </div>
 
-                <nav className="flex-1 space-y-1 overflow-y-auto py-4 px-6 overflow-hidden">
+                <nav className="flex-1 space-y-1.5 overflow-y-auto py-4 px-6 overflow-hidden">
+                    {/* ---- Normal Links ---- */}
                     {navLinks.map((link) => (
                         <SidebarLink
                             key={link.name}
@@ -177,6 +201,26 @@ export const Sidebar = () => {
                             isCollapsed={isCollapsed}
                         />
                     ))}
+
+                    {/* ---- Admin Links ---- */}
+                    {user.role === "admin" && (
+                        <div className="mt-4 pt-4 border-t border-border">
+                            {!isCollapsed && (
+                                <span className="text-xs font-bold text-text-secondary uppercase tracking-wider pl-3">
+                                    Admin Access
+                                </span>
+                            )}
+                            <div className="mt-1">
+                                {adminLinks.map((link) => (
+                                    <SidebarLink
+                                        key={link.name}
+                                        link={link}
+                                        isCollapsed={isCollapsed}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </nav>
 
                 <div className="border-t border-border py-4 px-6">
