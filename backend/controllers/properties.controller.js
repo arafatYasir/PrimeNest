@@ -240,7 +240,7 @@ export async function deleteProperty(req, res, next) {
 
         return res.status(200).json({
             success: true,
-            message: "Property Deleted Successfully!"
+            message: "Property Deleted!"
         });
     } catch (e) {
         next(e);
@@ -337,5 +337,51 @@ export async function createProperty(req, res, next) {
         next(e);
     } finally {
         session.endSession();
+    }
+}
+
+export async function approveProperty(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            const error = new Error("Property id is required!");
+            error.statusCode = 400;
+
+            throw error;
+        }
+        if (!id.trim()) {
+            const error = new Error("Property id is empty!");
+            error.statusCode = 400;
+
+            throw error;
+        }
+
+        const property = await Property.findById(id);
+
+        if (!property) {
+            const error = new Error("Property not found!");
+            error.statusCode = 404;
+
+            throw error;
+        }
+
+        if (property.status === "Available") {
+            return res.status(200).json({
+                success: true,
+                message: "Property is already approved!"
+            });
+        }
+
+        property.status = "Available";
+        await property.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Property Approved!"
+        });
+    }
+    catch (e) {
+        next(e);
     }
 }
