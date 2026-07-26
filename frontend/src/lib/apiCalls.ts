@@ -235,3 +235,34 @@ export const createProperty = async (token: string, formData: FormData) => {
 
     return data;
 }
+
+export const fetchPendingProperties = async (token: string, page?: number, sortBy?: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/pending?page=${page}&sortBy=${sortBy || "None"}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to fetch pending properties");
+    }
+
+    return data;
+}
+
+export const approveProperty = async (id: string, token: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/${id}/approve`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to approve property");
+    }
+
+    return data;
+}
