@@ -179,7 +179,7 @@ const DashboardProfilePage = () => {
                                     className="size-full object-cover"
                                 />
                             ) : (
-                                <div className="text-4xl font-bold text-text-secondary">
+                                <div className="text-5xl font-bold text-text-secondary">
                                     {watchedFullName.charAt(0)}
                                 </div>
                             )}
