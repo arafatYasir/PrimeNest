@@ -97,8 +97,8 @@ const AddPropertyForm = () => {
             formData.append("yearBuilt", values.yearBuilt.toString());
 
             if (watch("propertyType") !== "Land") {
-                formData.append("beds", values.beds.toString());
-                formData.append("baths", values.baths.toString());
+                formData.append("beds", (values.beds ?? 1).toString());
+                formData.append("baths", (values.baths ?? 1).toString());
             }
 
             formData.append("country", values.country);
