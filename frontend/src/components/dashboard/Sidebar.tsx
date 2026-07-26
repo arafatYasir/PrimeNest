@@ -91,7 +91,6 @@ export const Sidebar = () => {
 
     // Get the user information
     const { user } = useUserContext();
-    console.log(user.role)
 
     return (
         <>
@@ -125,11 +124,13 @@ export const Sidebar = () => {
                                 onClick={() => setMobileOpen(false)}
                             />
                         ))}
-                        {user.role === "admin" && (
+
+                        {user && user.role === "admin" && (
                             <div className="mt-4 pt-4 border-t border-border">
                                 <span className="text-xs font-bold text-text-secondary uppercase tracking-wider pl-3">
                                     Admin Access
                                 </span>
+
                                 <div className="mt-1">
                                     {adminLinks.map((link) => (
                                         <SidebarLink
@@ -203,7 +204,7 @@ export const Sidebar = () => {
                     ))}
 
                     {/* ---- Admin Links ---- */}
-                    {user.role === "admin" && (
+                    {user && user.role === "admin" && (
                         <div className="mt-4 pt-4 border-t border-border">
                             {!isCollapsed && (
                                 <span className="text-xs font-bold text-text-secondary uppercase tracking-wider pl-3">
