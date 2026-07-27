@@ -8,6 +8,7 @@ import { Clock, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import NotFound from "../NotFound";
 import DashboardError from "../DashboardError";
+import DashboardPendingProperty from "./DashboardPendingProperty";
 
 const DashboardPendingProperties = () => {
     // States
@@ -95,6 +96,26 @@ const DashboardPendingProperties = () => {
                         </SelectContent>
                     </Select>
                 </div>
+            </div>
+
+            {/* ---- Pending Properties ---- */}
+            <div className="flex flex-col gap-4 mt-6">
+                {
+                    isLoading ? (
+                        Array.from({ length: 5 }).map((_, i: number) => (
+                            <div key={i}>Loading...</div>
+                        ))
+                    ) : (
+                        properties.map((property) => (
+                            <DashboardPendingProperty
+                                key={property._id}
+                                property={property}
+                                onApprove={() => { }}
+                                onReject={() => { }}
+                            />
+                        ))
+                    )
+                }
             </div>
 
             {/* ---- Pagination ---- */}
