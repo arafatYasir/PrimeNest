@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import NotFound from "../NotFound";
 import DashboardError from "../DashboardError";
 import DashboardPendingProperty from "./DashboardPendingProperty";
+import DashboardPendingPropertySkeleton from "./DashboardPendingPropertySkeleton";
 import type { PendingProperty } from "@/types/global";
 
 const DashboardPendingProperties = () => {
@@ -104,7 +105,7 @@ const DashboardPendingProperties = () => {
                 {
                     isLoading ? (
                         Array.from({ length: 5 }).map((_, i: number) => (
-                            <div key={i}>Loading...</div>
+                            <DashboardPendingPropertySkeleton key={i} />
                         ))
                     ) : (
                         properties.map((property: PendingProperty) => (
