@@ -27,12 +27,13 @@ interface DashboardPendingPropertyProps {
     onApprove: (id: string) => void;
     onReject: (id: string) => void;
     isApproving: boolean;
+    isRejecting: boolean;
 }
 
 const formatPrice = (price: number, listingType: string) =>
     `$${price.toLocaleString()}${listingType === "For Rent" ? "/mo" : ""}`;
 
-export default function DashboardPendingProperty({ property, onApprove, onReject, isApproving }: DashboardPendingPropertyProps) {
+export default function DashboardPendingProperty({ property, onApprove, onReject, isApproving, isRejecting }: DashboardPendingPropertyProps) {
     const {
         _id,
         title,
@@ -209,8 +210,13 @@ export default function DashboardPendingProperty({ property, onApprove, onReject
                         <DropdownMenuItem
                             className="text-error group focus:bg-error/5 cursor-pointer"
                             onClick={() => onReject(_id)}
+                            disabled={isRejecting}
                         >
-                            <XCircle className="mr-2 h-3.5 w-3.5 text-error group-hover:text-error!" />
+                            {isRejecting ? (
+                                <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin text-error" />
+                            ) : (
+                                <XCircle className="mr-2 h-3.5 w-3.5 text-error group-hover:text-error!" />
+                            )}
                             <span className="group-hover:text-error!">Reject</span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>

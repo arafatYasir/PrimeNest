@@ -6,7 +6,7 @@ export interface Property {
     description: string;
     propertyType: "House" | "Apartment" | "Condo" | "Land";
     listingType: "For Sale" | "For Rent";
-    status: "Available" | "Sold" | "Pending";
+    status: "Available" | "Sold" | "Pending" | "Rejected";
     images: string[];
     price: number;
     area: number;

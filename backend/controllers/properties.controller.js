@@ -416,3 +416,49 @@ export async function getAllPendingProperties(req, res, next) {
         next(e);
     }
 }
+
+export async function rejectProperty(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            const error = new Error("Property id is required!");
+            error.statusCode = 400;
+
+            throw error;
+        }
+        if (!id.trim()) {
+            const error = new Error("Property id is empty!");
+            error.statusCode = 400;
+
+            throw error;
+        }
+
+        const property = await Property.findById(id);
+
+        if (!property) {
+            const error = new Error("Property not found!");
+            error.statusCode = 404;
+
+            throw error;
+        }
+
+        if (property.status === "Rejected") {
+            return res.status(200).json({
+                success: true,
+                message: "Property is already rejected!"
+            });
+        }
+
+        property.status = "Rejected";
+        await property.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Property Rejected!"
+        });
+    }
+    catch (e) {
+        next(e);
+    }
+}

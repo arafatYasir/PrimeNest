@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty, createProperty, approveProperty, getAllPendingProperties } from "../controllers/properties.controller.js";
+import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty, createProperty, approveProperty, getAllPendingProperties, rejectProperty } from "../controllers/properties.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
 import { requireAdmin } from "../middlewares/requireAdmin.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js"
@@ -34,5 +34,8 @@ propertiesRouter.delete("/:id", protectRoute, deleteProperty);
 
 // Approve A Property (Admin)
 propertiesRouter.patch("/:id/approve", protectRoute, requireAdmin, approveProperty);
+
+// Reject A Property (Admin)
+propertiesRouter.patch("/:id/reject", protectRoute, requireAdmin, rejectProperty);
 
 export default propertiesRouter;

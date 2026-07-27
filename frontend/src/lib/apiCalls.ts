@@ -266,3 +266,19 @@ export const approveProperty = async (id: string, token: string) => {
 
     return data;
 }
+
+export const rejectProperty = async (id: string, token: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/${id}/reject`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to reject property");
+    }
+
+    return data;
+}

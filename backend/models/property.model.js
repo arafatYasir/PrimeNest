@@ -22,8 +22,8 @@ const propertySchema = new Schema(
         },
         status: {
             type: String,
-            enum: ["Available", "Sold", "Pending"],
-            default: "Available"
+            enum: ["Available", "Sold", "Pending", "Rejected"],
+            default: "Pending"
         },
         images: {
             type: [String],
