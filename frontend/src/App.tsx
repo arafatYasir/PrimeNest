@@ -12,7 +12,7 @@ import DashboardLayout from "./layouts/DashboardLayout"
 import DashboardSavedPage from "./pages/DashboardSavedPage"
 import DashboardProfilePage from "./pages/DashboardProfilePage"
 import DashboardAddPropertyPage from "./pages/DashboardAddPropertyPage"
-import DashboardPendingProperties from "./pages/DashboardPendingProperties"
+import DashboardPendingPropertiesPage from "./pages/DashboardPendingPropertiesPage"
 
 const App = () => {
   return (
@@ -35,7 +35,7 @@ const App = () => {
           <Route path="/dashboard/profile" element={<DashboardProfilePage />} />
           
           {/* ---- Admin Routes ---- */}
-          <Route path="/dashboard/admin/pending-properties" element={<DashboardPendingProperties />} />
+          <Route path="/dashboard/admin/pending-properties" element={<DashboardPendingPropertiesPage />} />
         </Route>
       </Routes>
 
