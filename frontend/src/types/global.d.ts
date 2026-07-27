@@ -26,6 +26,10 @@ export interface Property {
     updatedAt: Date;
 };
 
+export interface PendingProperty extends Omit<Property, "seller"> {
+    seller: PopulatedSeller;
+}
+
 export interface FooterColumn {
     title: string;
     links: { label: string; href: string }[];

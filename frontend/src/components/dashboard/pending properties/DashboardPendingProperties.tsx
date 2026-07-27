@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import NotFound from "../NotFound";
 import DashboardError from "../DashboardError";
 import DashboardPendingProperty from "./DashboardPendingProperty";
+import type { PendingProperty } from "@/types/global";
 
 const DashboardPendingProperties = () => {
     // States
@@ -106,7 +107,7 @@ const DashboardPendingProperties = () => {
                             <div key={i}>Loading...</div>
                         ))
                     ) : (
-                        properties.map((property) => (
+                        properties.map((property: PendingProperty) => (
                             <DashboardPendingProperty
                                 key={property._id}
                                 property={property}
