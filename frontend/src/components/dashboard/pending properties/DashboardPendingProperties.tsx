@@ -1,0 +1,125 @@
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { fetchPendingProperties } from "@/lib/apiCalls";
+import { sortOptions } from "@/lib/data";
+import { useAuth } from "@clerk/react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
+import { Clock, RefreshCw } from "lucide-react";
+import { useEffect, useState } from "react";
+import NotFound from "../NotFound";
+
+const DashboardPendingProperties = () => {
+    // States
+    const [page, setPage] = useState(1);
+    const [sortBy, setSortBy] = useState("None");
+
+    // Get user access token
+    const { getToken } = useAuth();
+
+    // Fetching all pending properties
+    const { data, isLoading, isError, error, refetch, isPlaceholderData } = useQuery({
+        queryFn: async () => {
+            const token = await getToken();
+            return fetchPendingProperties(token ?? "", page, sortBy);
+        },
+        queryKey: ["pending-properties", page, sortBy],
+        placeholderData: keepPreviousData
+    });
+
+    const properties = data?.data;
+    const pagination = data?.pagination;
+
+    useEffect(() => {
+        window.scrollTo({ top: 0 });
+    }, [page]);
+
+    if (isError) {
+        return (
+            <div className="mt-6 rounded-xl border border-error/20 bg-error/5 p-4 text-error text-sm font-medium">
+                {error.message}
+            </div>
+        );
+    }
+
+    if (!isLoading && properties.length === 0) {
+        return (
+            <NotFound
+                title="No pending approvals"
+                icon={Clock}
+                description="Great work! There are currently no new property listings awaiting your review. All submitted properties have been processed."
+                render={
+                    <Button variant="secondary" onClick={() => refetch()}>
+                        <RefreshCw className="size-4" />
+                        Refresh
+                    </Button>
+                }
+            />
+        );
+    }
+
+    return (
+        <div>
+            {/* ---- Sort Dropdown ---- */}
+            <div className="flex justify-start mt-6">
+                <div className="w-full xs:w-56">
+                    <label className="text-xs font-sans font-bold text-text uppercase tracking-wider mb-2 block">
+                        Sort By
+                    </label>
+                    <Select
+                        value={sortBy}
+                        onValueChange={(value) => {
+                            setSortBy(value ?? "None");
+                            setPage(1);
+                        }}
+                    >
+                        <SelectTrigger className="w-full h-10! rounded-lg border-border px-3.5 text-sm! text-text font-sans bg-card">
+                            <SelectValue placeholder="Sort By" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {sortOptions.map((item) => (
+                                <SelectItem
+                                    key={item.value}
+                                    value={item.value}
+                                    className="font-sans"
+                                >
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+
+            {/* ---- Pagination ---- */}
+            {
+                pagination && pagination?.totalPages > 0 && (
+                    <div className="mt-10 flex items-center justify-center gap-5">
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            disabled={data.pagination.currentPage <= 1 || isPlaceholderData}
+                            onClick={() => setPage(prev => prev - 1)}
+                        >
+                            Previous
+                        </Button>
+
+                        <span className="text-sm font-medium text-text">
+                            Page {data.pagination.currentPage} of {data.pagination.totalPages}
+                        </span>
+
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            disabled={data.pagination.currentPage >= data.pagination.totalPages || isPlaceholderData}
+                            onClick={() => setPage(prev => prev + 1)}
+                        >
+                            Next
+                        </Button>
+                    </div>
+                )
+            }
+        </div>
+    )
+}
+
+export default DashboardPendingProperties
