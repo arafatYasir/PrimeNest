@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { fetchPendingProperties } from "@/lib/apiCalls";
+import { approveProperty, fetchPendingProperties } from "@/lib/apiCalls";
 import { sortOptions } from "@/lib/data";
 import { useAuth } from "@clerk/react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query"
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Clock, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import NotFound from "../NotFound";
@@ -11,6 +11,7 @@ import DashboardError from "../DashboardError";
 import DashboardPendingProperty from "./DashboardPendingProperty";
 import DashboardPendingPropertySkeleton from "./DashboardPendingPropertySkeleton";
 import type { PendingProperty } from "@/types/global";
+import { toast } from "sonner";
 
 const DashboardPendingProperties = () => {
     // States
@@ -29,6 +30,44 @@ const DashboardPendingProperties = () => {
         queryKey: ["pending-properties", page, sortBy],
         placeholderData: keepPreviousData
     });
+
+    const queryClient = useQueryClient();
+
+    // Property approve api
+    const approveMutation = useMutation({
+        mutationFn: async (id: string) => {
+            const token = await getToken();
+            return approveProperty(id, token ?? "");
+        },
+        onMutate: async (id) => {
+            await queryClient.cancelQueries({ queryKey: ["pending-properties", page, sortBy] });
+            const previousProperties = queryClient.getQueryData(["pending-properties", page, sortBy]);
+
+            queryClient.setQueryData(["pending-properties", page, sortBy], (old: any) => ({
+                ...old,
+                data: old?.data?.filter((p: PendingProperty) => p._id !== id)
+            }));
+
+            return { previousProperties };
+        },
+        onError: (error, _id, context) => {
+            queryClient.setQueryData(["pending-properties", page, sortBy], context?.previousProperties);
+
+            toast.error(error.message, {
+                className: "text-error!"
+            });
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ["pending-properties"] });
+        },
+        onSuccess: (data) => {
+            toast.success(data.message, {
+                className: "text-success!"
+            });
+        }
+    });
+
+    const approvingId = approveMutation.isPending ? approveMutation.variables : null;
 
     const properties = data?.data;
     const pagination = data?.pagination;
@@ -65,6 +104,11 @@ const DashboardPendingProperties = () => {
                 }
             />
         );
+    }
+
+    // Functions
+    const handleApprove = (id: string) => {
+        approveMutation.mutate(id);
     }
 
     return (
@@ -112,8 +156,9 @@ const DashboardPendingProperties = () => {
                             <DashboardPendingProperty
                                 key={property._id}
                                 property={property}
-                                onApprove={() => { }}
+                                onApprove={handleApprove}
                                 onReject={() => { }}
+                                isApproving={approvingId === property._id}
                             />
                         ))
                     )

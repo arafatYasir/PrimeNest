@@ -1,5 +1,5 @@
 import type { Property } from "@/types/global";
-import { Bath, Bed, MapPin, Maximize, MoreVertical, Eye, CheckCircle, XCircle, User, Mail, Phone } from "lucide-react";
+import { Bath, Bed, MapPin, Maximize, MoreVertical, Eye, CheckCircle, XCircle, User, Mail, Phone, Loader2 } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -26,12 +26,13 @@ interface DashboardPendingPropertyProps {
     property: PendingProperty;
     onApprove: (id: string) => void;
     onReject: (id: string) => void;
+    isApproving: boolean;
 }
 
 const formatPrice = (price: number, listingType: string) =>
     `$${price.toLocaleString()}${listingType === "For Rent" ? "/mo" : ""}`;
 
-export default function DashboardPendingProperty({ property, onApprove, onReject }: DashboardPendingPropertyProps) {
+export default function DashboardPendingProperty({ property, onApprove, onReject, isApproving }: DashboardPendingPropertyProps) {
     const {
         _id,
         title,
@@ -189,9 +190,20 @@ export default function DashboardPendingProperty({ property, onApprove, onReject
                         <DropdownMenuItem
                             className="text-secondary group focus:bg-secondary/5 cursor-pointer"
                             onClick={() => onApprove(_id)}
+                            disabled={isApproving}
                         >
-                            <CheckCircle className="mr-2 h-3.5 w-3.5 text-secondary group-hover:text-secondary!" />
-                            <span className="group-hover:text-secondary!">Approve</span>
+                            {isApproving ? (
+                                <>
+                                    <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin text-secondary" />
+                                    <span className="group-hover:text-secondary!">Approving</span>
+                                </>
+                            ) : (
+                                <>
+                                    <CheckCircle className="mr-2 h-3.5 w-3.5 text-secondary group-hover:text-secondary!" />
+                                    <span className="group-hover:text-secondary!">Approve</span>
+                                </>
+                            )}
+
                         </DropdownMenuItem>
 
                         <DropdownMenuItem
