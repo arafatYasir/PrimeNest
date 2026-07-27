@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { sortOptions } from "@/lib/data";
 import { Link } from "react-router";
+import NotFound from "../NotFound";
 
 const DashboardSavedProperties = () => {
     // States
@@ -43,20 +44,18 @@ const DashboardSavedProperties = () => {
 
     if (!isLoading && data?.properties.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-12 text-center shadow-xs mt-6">
-                <div className="flex size-12 items-center justify-center rounded-full bg-primary/5 text-primary">
-                    <Heart className="size-6" />
-                </div>
-                <h3 className="mt-4 font-heading text-lg font-bold text-text">No saved properties</h3>
-                <p className="mt-2 max-w-sm text-sm text-text-secondary">
-                    You haven't saved any properties yet. Browse listings and save the ones you love to find them here later.
-                </p>
-                <Link to="/properties" className="mt-6">
-                    <Button variant="secondary">
-                        Browse Properties
-                    </Button>
-                </Link>
-            </div>
+            <NotFound
+                title="No saved properties"
+                icon={Heart}
+                description="You haven't saved any properties yet. Browse listings and save the ones you love to find them here later."
+                render={
+                    <Link to="/properties">
+                        <Button variant="secondary">
+                            Browse Properties
+                        </Button>
+                    </Link>
+                }
+            />
         );
     }
 

@@ -12,11 +12,14 @@ import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { sortOptions } from "@/lib/data";
 import { toast } from "sonner";
+import NotFound from "../NotFound";
 
 const DashboardProperties = () => {
+    // States
     const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState("None");
     const [deletePropertyId, setDeletePropertyId] = useState<string | null>(null);
+
     const queryClient = useQueryClient();
 
     // Get the user token
@@ -90,21 +93,19 @@ const DashboardProperties = () => {
 
     if (!isLoading && data?.properties.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card p-12 text-center shadow-xs mt-6">
-                <div className="flex size-12 items-center justify-center rounded-full bg-primary/5 text-primary">
-                    <Building className="size-6" />
-                </div>
-                <h3 className="mt-4 font-heading text-lg font-bold text-text">No properties listed</h3>
-                <p className="mt-2 max-w-sm text-sm text-text-secondary">
-                    You haven't listed any properties yet. Start listing your properties to reach potential buyers and renters.
-                </p>
-                <Link to="/dashboard/add-property" className="mt-6">
-                    <Button variant="secondary">
-                        <CirclePlus className="size-4 mr-1" />
-                        Add Property
-                    </Button>
-                </Link>
-            </div>
+            <NotFound
+                title="No properties listed"
+                icon={Building}
+                description="You haven't listed any properties yet. Start listing your properties to reach potential buyers and renters."
+                render={
+                    <Link to="/dashboard/add-property">
+                        <Button variant="secondary">
+                            <CirclePlus className="size-4 mr-1" />
+                            Add Property
+                        </Button>
+                    </Link>
+                }
+            />
         );
     }
 
