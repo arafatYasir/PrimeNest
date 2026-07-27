@@ -1,7 +1,7 @@
 import { fetchSavedProperties } from "@/lib/apiCalls";
 import { useAuth } from "@clerk/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { Heart } from "lucide-react";
+import { Heart, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PropertyCard from "@/components/PropertyCard";
 import PropertyCardSkeleton from "@/components/PropertyCardSkeleton";
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { sortOptions } from "@/lib/data";
 import { Link } from "react-router";
 import NotFound from "../NotFound";
+import DashboardError from "../DashboardError";
 
 const DashboardSavedProperties = () => {
     // States
@@ -21,7 +22,7 @@ const DashboardSavedProperties = () => {
     const { getToken } = useAuth();
 
     // Fetch saved properties of the current user
-    const { data, isLoading, isError, error, isPlaceholderData } = useQuery({
+    const { data, isLoading, isError, error, refetch, isPlaceholderData } = useQuery({
         queryKey: ["saved-properties", page, sortBy],
         queryFn: async () => {
             const token = await getToken();
@@ -36,9 +37,15 @@ const DashboardSavedProperties = () => {
 
     if (isError) {
         return (
-            <div className="mt-6 rounded-xl border border-error/20 bg-error/5 p-4 text-error text-sm font-medium">
-                {error.message}
-            </div>
+            <DashboardError
+                title={error.message}
+                render={
+                    <Button variant="outline" size="lg" onClick={() => refetch()}>
+                        <RefreshCw className="size-4 mr-1" />
+                        Retry
+                    </Button>
+                }
+            />
         );
     }
 

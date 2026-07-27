@@ -2,7 +2,7 @@ import { fetchMyProperties, deleteProperty } from "@/lib/apiCalls";
 import { useAuth } from "@clerk/react";
 import { keepPreviousData, useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router";
-import { CirclePlus, Building } from "lucide-react";
+import { CirclePlus, Building, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DashboardProperty from "./DashboardProperty";
 import ConfirmationModal from "@/components/ConfirmationModal";
@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { sortOptions } from "@/lib/data";
 import { toast } from "sonner";
 import NotFound from "../NotFound";
+import DashboardError from "../DashboardError";
 
 const DashboardProperties = () => {
     // States
@@ -26,7 +27,7 @@ const DashboardProperties = () => {
     const { getToken } = useAuth();
 
     // Fetch all properties of the current user
-    const { data, isLoading, isError, error, isPlaceholderData } = useQuery({
+    const { data, isLoading, isError, error, refetch, isPlaceholderData } = useQuery({
         queryKey: ["my-properties", page, sortBy],
         queryFn: async () => {
             const token = await getToken();
@@ -85,9 +86,15 @@ const DashboardProperties = () => {
 
     if (isError) {
         return (
-            <div className="mt-6 rounded-xl border border-error/20 bg-error/5 p-4 text-error text-sm font-medium">
-                {error.message}
-            </div>
+            <DashboardError
+                title={error.message}
+                render={
+                    <Button variant="outline" size="lg" onClick={() => refetch()}>
+                        <RefreshCw className="size-4 mr-1" />
+                        Retry
+                    </Button>
+                }
+            />
         );
     }
 

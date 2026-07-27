@@ -7,6 +7,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { Clock, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import NotFound from "../NotFound";
+import DashboardError from "../DashboardError";
 
 const DashboardPendingProperties = () => {
     // States
@@ -35,9 +36,15 @@ const DashboardPendingProperties = () => {
 
     if (isError) {
         return (
-            <div className="mt-6 rounded-xl border border-error/20 bg-error/5 p-4 text-error text-sm font-medium">
-                {error.message}
-            </div>
+            <DashboardError
+                title={error.message}
+                render={
+                    <Button variant="outline" size="lg" onClick={() => refetch()}>
+                        <RefreshCw className="size-4 mr-1" />
+                        Retry
+                    </Button>
+                }
+            />
         );
     }
 

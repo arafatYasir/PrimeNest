@@ -1,14 +1,16 @@
-import { Building2, CheckCircle2, Clock, Handshake } from "lucide-react";
+import { Building2, CheckCircle2, Clock, Handshake, RefreshCw } from "lucide-react";
 import StatsCard from "./StatsCard";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPropertyStatuses } from "@/lib/apiCalls";
 import { useAuth } from "@clerk/react";
+import DashboardError from "../DashboardError";
+import { Button } from "@/components/ui/button";
 
 export default function StatsCards() {
   // Getting user token from clerk
   const { getToken } = useAuth();
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["property-statuses"],
     queryFn: async () => {
       const token = await getToken();
@@ -17,9 +19,17 @@ export default function StatsCards() {
   });
 
   if (isError) {
-    return <div className="mt-6 rounded-xl border border-error/20 bg-error/5 p-4 text-error text-sm font-medium">
-      {error.message}
-    </div>
+    return (
+      <DashboardError
+        title={error.message}
+        render={
+          <Button variant="outline" size="lg" onClick={() => refetch()}>
+            <RefreshCw className="size-4 mr-1" />
+            Retry
+          </Button>
+        }
+      />
+    )
   }
 
   return (
