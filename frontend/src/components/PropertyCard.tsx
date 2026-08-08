@@ -1,5 +1,6 @@
 import type { Property } from "@/types/global";
 import { Bath, Bed, MapPin, Maximize, type LucideIcon } from "lucide-react";
+import { Link } from "react-router";
 
 interface StatItemTypes {
     icon: LucideIcon;
@@ -31,7 +32,7 @@ const formatPrice = (price: number, listingType: string) =>
 function StatItem({ icon: Icon, value, unit }: StatItemTypes) {
     return (
         <div className="flex items-center gap-1.5">
-            <Icon className="h-[18px] w-[18px] text-text-secondary/70" strokeWidth={1.5} />
+            <Icon className="size-4.5 text-text-secondary/70" strokeWidth={1.5} />
             <span className="text-sm font-medium text-text">{value ?? "—"}</span>
             <span className="text-xs text-text-secondary">{unit}</span>
         </div>
@@ -60,8 +61,8 @@ function PropertyCard({ property }: { property: Property }) {
     const statusStyle = STATUS_STYLES[status];
 
     return (
-        <a
-            href={`/properties/${_id ?? ""}`}
+        <Link
+            to={`/properties/${_id ?? ""}`}
             className="group flex flex-col overflow-hidden rounded-2xl bg-card border border-border/60
                  transition-all duration-300 ease-out
                  hover:shadow-lg hover:shadow-black/6 hover:border-border
@@ -147,7 +148,7 @@ function PropertyCard({ property }: { property: Property }) {
                     </div>
                 </div>
             </div>
-        </a>
+        </Link>
     );
 }
 

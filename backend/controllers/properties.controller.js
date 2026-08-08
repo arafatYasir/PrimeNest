@@ -35,7 +35,9 @@ export async function getAllProperties(req, res, next) {
         const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
 
         // ---- Build the filter object ----
-        const query = {};
+        const query = {
+            status: { $ne: "Rejected" }
+        };
 
         if (excludeId) {
             query._id = { $ne: excludeId };
@@ -54,7 +56,7 @@ export async function getAllProperties(req, res, next) {
             query.propertyType = propertyType;
         }
 
-        if (propertyStatus !== "Any") {
+        if (propertyStatus !== "Any" && propertyStatus !== "Rejected") {
             query.status = propertyStatus;
         }
 
