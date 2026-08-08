@@ -246,13 +246,13 @@ export async function deleteProperty(req, res, next) {
                 .filter(Boolean);
 
             if (publicIds.length > 0) {
-                await cloudinary.api.delete_resources(publicIds).catch(() => {});
+                await cloudinary.api.delete_resources(publicIds).catch(() => { });
             }
 
             // Also delete the Cloudinary folder for this property
             await cloudinary.api
                 .delete_folder(`PrimeNest/${userId}/property-photos/${id}`)
-                .catch(() => {});
+                .catch(() => { });
         }
 
         await Property.findByIdAndDelete(id);
@@ -271,6 +271,8 @@ export async function createProperty(req, res, next) {
 
     const session = await mongoose.startSession();
     session.startTransaction();
+
+    let uploadedPublicIds = [];
 
     try {
         const userId = req.user._id;
@@ -315,7 +317,7 @@ export async function createProperty(req, res, next) {
             features,
             status: userRole === "admin" ? "Available" : "Pending",
             seller: userId
-        });
+        }, { session });
 
         // Upload the images received from the multer middleware to Cloudinary
         const files = req.files || (Array.isArray(req.body.images) ? req.body.images : []);
@@ -331,19 +333,21 @@ export async function createProperty(req, res, next) {
                         { folder: `PrimeNest/${userId}/property-photos/${createdProperty._id}` },
                         (err, result) => {
                             if (err) return reject(err);
-                            resolve(result.secure_url);
+                            resolve({ url: result.secure_url, publicId: result.public_id });
                         }
                     );
                     stream.end(file.buffer);
                 });
             });
 
-            imageUrls = await Promise.all(uploadPromises);
+            const uploadedFiles = await Promise.all(uploadPromises);
+            imageUrls = uploadedFiles.map(f => f.url);
+            uploadedPublicIds = uploadedFiles.map(f => f.publicId);
         }
 
         // Update the previously created Property document to include these URLs in the images field
         createdProperty.images = imageUrls;
-        await createdProperty.save();
+        await createdProperty.save({ session });
 
         await session.commitTransaction();
 
@@ -352,6 +356,9 @@ export async function createProperty(req, res, next) {
             message: "Property Created!",
         });
     } catch (e) {
+        if (uploadedPublicIds.length > 0) {
+            await cloudinary.api.delete_resources(uploadedPublicIds).catch(() => {});
+        }
         await session.abortTransaction();
         next(e);
     } finally {
