@@ -58,7 +58,7 @@ function PropertyCard({ property }: { property: Property }) {
     const cityLine = [location?.city, location?.country]
         .filter(Boolean)
         .join(", ");
-    const statusStyle = STATUS_STYLES[status];
+    const statusStyle = STATUS_STYLES[status as keyof typeof STATUS_STYLES] ?? STATUS_STYLES["Available"];
 
     return (
         <Link

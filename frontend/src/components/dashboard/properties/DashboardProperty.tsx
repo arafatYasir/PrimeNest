@@ -53,7 +53,7 @@ export default function DashboardProperty({ property, onDelete }: DashboardPrope
   } = property;
 
   const coverImage = images?.[0];
-  const statusStyle = STATUS_STYLES[status] || STATUS_STYLES.Available;
+  const statusStyle = STATUS_STYLES[status as keyof typeof STATUS_STYLES] ?? STATUS_STYLES["Available"];
 
   // Media Query Breakpoints
   const isTablet = useMediaQuery({ minWidth: 768 });

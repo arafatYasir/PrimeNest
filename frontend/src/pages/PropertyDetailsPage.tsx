@@ -68,6 +68,7 @@ const PropertyDetailsPage = () => {
                                         src={property.images[0]}
                                         alt={property.title}
                                         className="w-full aspect-video object-cover transition-all duration-500 hover:scale-[1.01]"
+                                        loading="eager"
                                     />
                                 </div>
                             )

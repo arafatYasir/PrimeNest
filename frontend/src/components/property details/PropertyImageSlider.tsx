@@ -42,6 +42,7 @@ const PropertyImageSlider = ({ images, title }: PropertyImageSliderProps) => {
                                         src={image}
                                         alt={`${title}-${i}`}
                                         className="w-full aspect-video object-cover transition-all duration-500 hover:scale-[1.01]"
+                                        loading="eager"
                                     />
                                 </div>
                             </CarouselItem>
