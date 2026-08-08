@@ -24,7 +24,7 @@ const STATUS_STYLES = {
   },
   Sold: {
     dot: "bg-gray-400",
-    text: "text-gray-500",
+    text: "text-gray-600",
     bg: "bg-card md:bg-gray-100",
   },
   Pending: {
@@ -32,6 +32,11 @@ const STATUS_STYLES = {
     text: "text-amber-600",
     bg: "bg-card md:bg-amber-50",
   },
+  Rejected: {
+    dot: "bg-rose-500",
+    text: "text-rose-600",
+    bg: "bg-card md:bg-rose-50"
+  }
 };
 
 const formatPrice = (price: number, listingType: string) =>
@@ -53,7 +58,7 @@ export default function DashboardProperty({ property, onDelete }: DashboardPrope
   } = property;
 
   const coverImage = images?.[0];
-  const statusStyle = STATUS_STYLES[status as keyof typeof STATUS_STYLES] ?? STATUS_STYLES["Available"];
+  const statusStyle = STATUS_STYLES[status] ?? STATUS_STYLES["Available"];
 
   // Media Query Breakpoints
   const isTablet = useMediaQuery({ minWidth: 768 });
