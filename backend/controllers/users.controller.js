@@ -1,4 +1,5 @@
 import cloudinary from "../config/cloudinary.js";
+import { extractPublicId } from "../lib/helpers.js";
 import Property from "../models/property.model.js";
 import User from "../models/user.model.js";
 
@@ -158,6 +159,15 @@ export async function uploadProfilePhoto(req, res, next) {
             error.statusCode = 400;
 
             throw error;
+        }
+
+        // Delete the previous profile photo from Cloudinary if it exists
+        const currentUser = await User.findById(userId).select("profilePic");
+        if (currentUser?.profilePic) {
+            const publicId = extractPublicId(currentUser.profilePic);
+            if (publicId) {
+                await cloudinary.uploader.destroy(publicId).catch(() => {});
+            }
         }
 
         // Upload file to cloudinary

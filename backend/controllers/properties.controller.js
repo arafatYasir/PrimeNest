@@ -1,6 +1,7 @@
 import Property from "../models/property.model.js";
 import cloudinary from "../config/cloudinary.js";
 import mongoose from "mongoose";
+import { extractPublicId } from "../lib/helpers.js";
 
 const sortingMap = {
     "None": { createdAt: -1 },
@@ -217,7 +218,7 @@ export async function deleteProperty(req, res, next) {
             error.statusCode = 400;
             throw error;
         }
-        if (!id.trim() === "") {
+        if (id.trim() === "") {
             const error = new Error("Property id is empty!");
             error.statusCode = 400;
             throw error;
@@ -236,6 +237,22 @@ export async function deleteProperty(req, res, next) {
             const error = new Error("You are not authorized to delete this property!");
             error.statusCode = 403;
             throw error;
+        }
+
+        // Delete property images from Cloudinary
+        if (property.images && property.images.length > 0) {
+            const publicIds = property.images
+                .map(extractPublicId)
+                .filter(Boolean);
+
+            if (publicIds.length > 0) {
+                await cloudinary.api.delete_resources(publicIds).catch(() => {});
+            }
+
+            // Also delete the Cloudinary folder for this property
+            await cloudinary.api
+                .delete_folder(`PrimeNest/${userId}/property-photos/${id}`)
+                .catch(() => {});
         }
 
         await Property.findByIdAndDelete(id);
