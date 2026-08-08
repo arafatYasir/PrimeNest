@@ -183,7 +183,6 @@ export const uploadProfilePhoto = async (formData: FormData, token: string) => {
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/me/profile-photo`, {
         method: "PATCH",
         headers: {
-            "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${token}`
         },
         body: formData
