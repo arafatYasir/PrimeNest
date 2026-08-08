@@ -11,7 +11,11 @@ const activitySchema = new Schema(
         type: {
             type: String,
             enum: [
+                "profile_photo_updated",
+                "profile_info_updated",
                 "listing_created",
+                "listing_updated",
+                "listing_deleted",
                 "listing_approved",
                 "listing_rejected",
                 "new_message",
@@ -27,7 +31,6 @@ const activitySchema = new Schema(
         },
         relatedId: {
             type: Schema.Types.ObjectId,
-            required: true,
         },
         metaId: {
             type: Schema.Types.ObjectId,
