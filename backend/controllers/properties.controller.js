@@ -297,27 +297,31 @@ export async function createProperty(req, res, next) {
         } = req.body;
 
         // Create the Property document in MongoDB without the images field
-        createdProperty = await Property.create({
-            title,
-            description,
-            propertyType,
-            listingType,
-            price,
-            area,
-            yearBuilt,
-            beds: beds ?? null,
-            baths: baths ?? null,
-            location: {
-                country,
-                city,
-                fullAddress,
-                lat,
-                lon,
-            },
-            features,
-            status: userRole === "admin" ? "Available" : "Pending",
-            seller: userId
-        }, { session });
+        const [newProperty] = await Property.create([
+            {
+                title,
+                description,
+                propertyType,
+                listingType,
+                price,
+                area,
+                yearBuilt,
+                beds: beds ?? null,
+                baths: baths ?? null,
+                location: {
+                    country,
+                    city,
+                    fullAddress,
+                    lat,
+                    lon,
+                },
+                features,
+                status: userRole === "admin" ? "Available" : "Pending",
+                seller: userId
+            }
+        ], { session });
+
+        createdProperty = newProperty;
 
         // Upload the images received from the multer middleware to Cloudinary
         const files = req.files || (Array.isArray(req.body.images) ? req.body.images : []);

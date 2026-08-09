@@ -195,12 +195,14 @@ export async function uploadProfilePhoto(req, res, next) {
         }, { session });
 
         // Create a new activity
-        await Activity.create({
-            userId,
-            type: "profile_photo_updated",
-            message: activityMessageMap["profile_photo_updated"],
-            link: `/dashboard/profile`
-        }, { session });
+        await Activity.create([
+            {
+                userId,
+                type: "profile_photo_updated",
+                message: activityMessageMap["profile_photo_updated"],
+                link: `/dashboard/profile`
+            }
+        ], { session });
 
         await session.commitTransaction();
 
@@ -238,12 +240,14 @@ export async function updateAgentProfile(req, res, next) {
         }
 
         // Create a new activity
-        await Activity.create({
-            userId,
-            type: "profile_info_updated",
-            message: activityMessageMap["profile_info_updated"],
-            link: `/dashboard/profile`
-        }, { session });
+        await Activity.create([
+            {
+                userId,
+                type: "profile_info_updated",
+                message: activityMessageMap["profile_info_updated"],
+                link: `/dashboard/profile`
+            }
+        ], { session });
 
         await session.commitTransaction();
 
@@ -256,7 +260,7 @@ export async function updateAgentProfile(req, res, next) {
             }
         });
     } catch (e) {
-        session.abortTransaction();
+        await session.abortTransaction();
         next(e);
     } finally {
         session.endSession();
