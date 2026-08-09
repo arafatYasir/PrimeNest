@@ -1,6 +1,6 @@
 export const activityMessageMap = {
-    "profile_photo_updated": () => "Your profile photo has been updated.",
-    "profile_info_updated": () => "Your profile information has been updated.",
+    "profile_photo_updated": "Your profile photo has been updated.",
+    "profile_info_updated": "Your profile information has been updated.",
     "listing_created": (listingName) => `Your new listing '${listingName || "item"}' has been created successfully.`,
     "listing_updated": (listingName) => `Your listing '${listingName || "item"}' has been updated.`,
     "listing_deleted": (listingName) => `Listing '${listingName || "item"}' has been deleted.`,

@@ -35,6 +35,9 @@ const activitySchema = new Schema(
         metaId: {
             type: Schema.Types.ObjectId,
         },
+        link: {
+            type: String,
+        },
         isRead: {
             type: Boolean,
             default: false,

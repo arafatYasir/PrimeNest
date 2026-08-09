@@ -1,5 +1,7 @@
+import mongoose from "mongoose";
 import cloudinary from "../config/cloudinary.js";
-import { extractPublicId } from "../lib/helpers.js";
+import { activityMessageMap, extractPublicId } from "../lib/helpers.js";
+import Activity from "../models/activity.model.js";
 import Property from "../models/property.model.js";
 import User from "../models/user.model.js";
 
@@ -151,6 +153,9 @@ export async function getSavedProperties(req, res, next) {
 }
 
 export async function uploadProfilePhoto(req, res, next) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
         const userId = req.user._id;
 
@@ -166,7 +171,7 @@ export async function uploadProfilePhoto(req, res, next) {
         if (currentUser?.profilePic) {
             const publicId = extractPublicId(currentUser.profilePic);
             if (publicId) {
-                await cloudinary.uploader.destroy(publicId).catch(() => {});
+                await cloudinary.uploader.destroy(publicId).catch(() => { });
             }
         }
 
@@ -187,18 +192,34 @@ export async function uploadProfilePhoto(req, res, next) {
         // Update user document profilePic value
         await User.findByIdAndUpdate(userId, {
             profilePic: newProfilePhotoUrl
-        });
+        }, { session });
 
-        res.json({
+        // Create a new activity
+        await Activity.create({
+            userId,
+            type: "profile_photo_updated",
+            message: activityMessageMap["profile_photo_updated"],
+            link: `/dashboard/profile`
+        }, { session });
+
+        await session.commitTransaction();
+
+        return res.json({
             success: true,
             profilePhoto: newProfilePhotoUrl
         });
     } catch (e) {
+        await session.abortTransaction();
         next(e);
+    } finally {
+        session.endSession();
     }
 }
 
 export async function updateAgentProfile(req, res, next) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
         const userId = req.user._id;
 
@@ -207,7 +228,7 @@ export async function updateAgentProfile(req, res, next) {
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             { fullName, phone, bio },
-            { new: true }
+            { new: true, session },
         );
 
         if (!updatedUser) {
@@ -215,6 +236,16 @@ export async function updateAgentProfile(req, res, next) {
             error.statusCode = 404;
             throw error;
         }
+
+        // Create a new activity
+        await Activity.create({
+            userId,
+            type: "profile_info_updated",
+            message: activityMessageMap["profile_info_updated"],
+            link: `/dashboard/profile`
+        }, { session });
+
+        await session.commitTransaction();
 
         return res.status(200).json({
             success: true,
@@ -225,6 +256,9 @@ export async function updateAgentProfile(req, res, next) {
             }
         });
     } catch (e) {
+        session.abortTransaction();
         next(e);
+    } finally {
+        session.endSession();
     }
 }
