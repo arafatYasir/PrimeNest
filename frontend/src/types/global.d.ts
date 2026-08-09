@@ -75,6 +75,19 @@ export interface QuickAction {
     to: string;
 }
 
+export interface ActivityItem {
+    _id: string;
+    userId: string;
+    type: string;
+    message: string;
+    relatedId?: string;
+    metaId?: string;
+    link?: string;
+    isRead?: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export interface AllPropertiesParams {
     page?: number;
     sortBy?: string;
