@@ -130,7 +130,7 @@ const RecentActivities = () => {
                             </>
                         );
 
-                        if (hasLink) {
+                        if (hasLink && activity.link) {
                             return (
                                 <Link
                                     key={activity._id}
