@@ -281,3 +281,19 @@ export const rejectProperty = async (id: string, token: string) => {
 
     return data;
 }
+
+export const fetchActivities = async (token: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/activities`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to fetch recent activities");
+    }
+
+    return data.data;
+}
