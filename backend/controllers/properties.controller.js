@@ -1,7 +1,8 @@
 import Property from "../models/property.model.js";
+import Activity from "../models/activity.model.js";
 import cloudinary from "../config/cloudinary.js";
 import mongoose from "mongoose";
-import { extractPublicId } from "../lib/helpers.js";
+import { activityMessageMap, extractPublicId } from "../lib/helpers.js";
 
 const sortingMap = {
     "None": { createdAt: -1 },
@@ -209,6 +210,9 @@ export async function getMyProperties(req, res, next) {
 }
 
 export async function deleteProperty(req, res, next) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
         const { id } = req.params;
         const userId = req.user._id;
@@ -224,7 +228,7 @@ export async function deleteProperty(req, res, next) {
             throw error;
         }
 
-        const property = await Property.findById(id);
+        const property = await Property.findById(id).session(session);
 
         if (!property) {
             const error = new Error("Property not found!");
@@ -255,14 +259,28 @@ export async function deleteProperty(req, res, next) {
                 .catch(() => { });
         }
 
-        await Property.findByIdAndDelete(id);
+        await Property.findByIdAndDelete(id, { session });
+
+        // Create activity for listing_deleted
+        await Activity.create([
+            {
+                userId,
+                type: "listing_deleted",
+                message: activityMessageMap["listing_deleted"](property.title)
+            }
+        ], { session });
+
+        await session.commitTransaction();
 
         return res.status(200).json({
             success: true,
             message: "Property Deleted!"
         });
     } catch (e) {
+        await session.abortTransaction();
         next(e);
+    } finally {
+        session.endSession();
     }
 }
 
@@ -353,6 +371,17 @@ export async function createProperty(req, res, next) {
         createdProperty.images = imageUrls;
         await createdProperty.save({ session });
 
+        // Create activity for listing_created
+        await Activity.create([
+            {
+                userId,
+                type: "listing_created",
+                message: activityMessageMap["listing_created"](createdProperty.title),
+                relatedId: createdProperty._id,
+                link: `/dashboard/my-properties`
+            }
+        ], { session });
+
         await session.commitTransaction();
 
         return res.status(201).json({
@@ -371,6 +400,9 @@ export async function createProperty(req, res, next) {
 }
 
 export async function approveProperty(req, res, next) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
         const { id } = req.params;
 
@@ -387,7 +419,7 @@ export async function approveProperty(req, res, next) {
             throw error;
         }
 
-        const property = await Property.findById(id);
+        const property = await Property.findById(id).session(session);
 
         if (!property) {
             const error = new Error("Property not found!");
@@ -397,6 +429,7 @@ export async function approveProperty(req, res, next) {
         }
 
         if (property.status === "Available") {
+            await session.commitTransaction();
             return res.status(200).json({
                 success: true,
                 message: "Property is already approved!"
@@ -404,7 +437,20 @@ export async function approveProperty(req, res, next) {
         }
 
         property.status = "Available";
-        await property.save();
+        await property.save({ session });
+
+        // Create activity for listing_approved
+        await Activity.create([
+            {
+                userId: property.seller,
+                type: "listing_approved",
+                message: activityMessageMap["listing_approved"](property.title),
+                relatedId: property._id,
+                link: `/properties/${property._id}`
+            }
+        ], { session });
+
+        await session.commitTransaction();
 
         return res.status(200).json({
             success: true,
@@ -412,7 +458,10 @@ export async function approveProperty(req, res, next) {
         });
     }
     catch (e) {
+        await session.abortTransaction();
         next(e);
+    } finally {
+        session.endSession();
     }
 }
 
@@ -448,6 +497,9 @@ export async function getAllPendingProperties(req, res, next) {
 }
 
 export async function rejectProperty(req, res, next) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
         const { id } = req.params;
 
@@ -464,7 +516,7 @@ export async function rejectProperty(req, res, next) {
             throw error;
         }
 
-        const property = await Property.findById(id);
+        const property = await Property.findById(id).session(session);
 
         if (!property) {
             const error = new Error("Property not found!");
@@ -474,6 +526,7 @@ export async function rejectProperty(req, res, next) {
         }
 
         if (property.status === "Rejected") {
+            await session.commitTransaction();
             return res.status(200).json({
                 success: true,
                 message: "Property is already rejected!"
@@ -481,7 +534,20 @@ export async function rejectProperty(req, res, next) {
         }
 
         property.status = "Rejected";
-        await property.save();
+        await property.save({ session });
+
+        // Create activity for listing_rejected
+        await Activity.create([
+            {
+                userId: property.seller,
+                type: "listing_rejected",
+                message: activityMessageMap["listing_rejected"](property.title),
+                relatedId: property._id,
+                link: `/dashboard/my-properties`
+            }
+        ], { session });
+
+        await session.commitTransaction();
 
         return res.status(200).json({
             success: true,
@@ -489,6 +555,9 @@ export async function rejectProperty(req, res, next) {
         });
     }
     catch (e) {
+        await session.abortTransaction();
         next(e);
+    } finally {
+        session.endSession();
     }
 }
