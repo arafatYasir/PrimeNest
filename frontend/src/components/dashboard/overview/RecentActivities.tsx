@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchActivities } from "@/lib/apiCalls";
 import { formatRelativeTime, getActivityConfig } from "@/lib/utils";
@@ -63,28 +64,28 @@ const RecentActivities = () => {
 
             {/* ---- Error State ---- */}
             {isError && (
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-error/20 bg-error/5 p-4 text-error">
-                    <div className="flex items-center gap-3 min-w-0">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-error/20 bg-error/5 p-4">
+                    <div className="flex items-center gap-3 min-w-0 text-error">
                         <AlertCircle className="size-5 shrink-0" />
                         <p className="text-xs sm:text-sm font-medium leading-relaxed truncate">
                             {error?.message || "Failed to load recent activities."}
                         </p>
                     </div>
-                    <button
+                    <Button
                         onClick={() => refetch()}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-error/10 px-3 py-1.5 text-xs font-semibold text-error hover:bg-error/20 transition-colors shrink-0 cursor-pointer"
+                        variant="outline"
                     >
                         <RefreshCw className="size-3.5" />
                         <span>Retry</span>
-                    </button>
+                    </Button>
                 </div>
             )}
 
             {/* ---- Empty State ---- */}
             {!isLoading && !isError && (!activities || activities.length === 0) && (
-                <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
-                    <div className="flex size-12 items-center justify-center rounded-full bg-section text-text-secondary mb-3">
-                        <Activity className="size-6" />
+                <div className="flex flex-col items-center justify-center p-2 text-center">
+                    <div className="flex size-11 items-center justify-center rounded-full bg-section text-text-secondary mb-3">
+                        <Activity className="size-5.5" />
                     </div>
                     <p className="font-heading text-sm font-semibold text-text">No recent activity</p>
                     <p className="text-xs text-text-secondary mt-1">

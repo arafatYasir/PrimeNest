@@ -292,7 +292,7 @@ export const fetchActivities = async (token: string) => {
     const data = await res.json();
 
     if (!data.success) {
-        throw new Error(data.message || "Failed to fetch recent activities");
+        throw new Error(data.message || "Failed to load recent activities");
     }
 
     return data.data;
