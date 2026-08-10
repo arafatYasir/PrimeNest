@@ -691,7 +691,7 @@ const AddPropertyForm = () => {
                     <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-section border text-text-secondary">
                         Max 10 images
                     </span>
-                </div>
+                </div>                
 
                 {/* ---- Image Dropzone ---- */}
                 <div
@@ -717,6 +717,9 @@ const AddPropertyForm = () => {
                         <p className="text-xs text-text-secondary">High quality images improve buyer engagement (Up to 5 MB each)</p>
                     </div>
                 </div>
+
+                {/* ---- Error Message for Images ---- */}
+                {errors.images && <p className="text-xs text-error">{errors.images.message}</p>}
 
                 {/* ---- Image Input ---- */}
                 <input
@@ -785,7 +788,7 @@ const AddPropertyForm = () => {
                     size="lg"
                     onClick={() => reset()}
                 >
-                    Cancel
+                    Reset Form
                 </Button>
                 <Button variant="secondary" size="lg" type="submit" disabled={isPending}>
                     {isPending ? (
