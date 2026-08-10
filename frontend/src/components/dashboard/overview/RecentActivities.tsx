@@ -1,3 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import { fetchActivities } from "@/lib/apiCalls";
 import { formatRelativeTime, getActivityConfig } from "@/lib/utils";
 import type { ActivityItem } from "@/types/global";
@@ -36,25 +37,25 @@ const RecentActivities = () => {
             {/* ---- Loading Skeleton State ---- */}
             {isLoading && (
                 <div className="flex flex-col gap-3">
-                    {Array.from({ length: 5 }).map((_, index) => (
+                    {Array.from({ length: 3 }).map((_, index) => (
                         <div
                             key={index}
-                            className="flex items-center gap-3.5 rounded-xl border border-border/60 bg-section/40 p-3.5"
+                            className="flex items-center gap-3.5 rounded-xl border p-3.5"
                         >
                             {/* Serial Number Skeleton */}
-                            <div className="size-5 rounded-full bg-border/60 animate-pulse shrink-0" />
+                            <Skeleton className="size-5 rounded-full shrink-0" />
 
                             {/* Icon Skeleton */}
-                            <div className="size-10 rounded-lg bg-border/60 animate-pulse shrink-0" />
+                            <Skeleton className="size-10 rounded-lg shrink-0" />
 
                             {/* Content Skeleton */}
                             <div className="flex flex-1 flex-col gap-2 min-w-0">
-                                <div className="h-4 w-3/4 rounded bg-border/60 animate-pulse" />
-                                <div className="h-3 w-1/4 rounded bg-border/40 animate-pulse" />
+                                <Skeleton className="h-4 w-3/4 rounded" />
+                                <Skeleton className="h-3 w-1/4 rounded" />
                             </div>
 
                             {/* Chevron / Badge Skeleton */}
-                            <div className="h-4 w-12 rounded bg-border/40 animate-pulse shrink-0 hidden xs:block" />
+                            <Skeleton className="h-4 w-12 rounded shrink-0 hidden xs:block" />
                         </div>
                     ))}
                 </div>
