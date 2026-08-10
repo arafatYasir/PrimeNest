@@ -378,7 +378,7 @@ export async function createProperty(req, res, next) {
                 type: "listing_created",
                 message: activityMessageMap["listing_created"](createdProperty.title),
                 relatedId: createdProperty._id,
-                link: `/dashboard/my-properties`
+                link: `/dashboard/properties`
             }
         ], { session });
 
@@ -543,7 +543,7 @@ export async function rejectProperty(req, res, next) {
                 type: "listing_rejected",
                 message: activityMessageMap["listing_rejected"](property.title),
                 relatedId: property._id,
-                link: `/dashboard/my-properties`
+                link: `/dashboard/properties`
             }
         ], { session });
 

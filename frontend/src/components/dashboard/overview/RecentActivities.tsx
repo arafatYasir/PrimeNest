@@ -82,7 +82,7 @@ const RecentActivities = () => {
             )}
 
             {/* ---- Empty State ---- */}
-            {!isLoading && !isError && (!activities || activities.length === 0) && (
+            {(!isLoading && !isError) && (!activities || activities.length === 0) && (
                 <div className="flex flex-col items-center justify-center p-2 text-center">
                     <div className="flex size-11 items-center justify-center rounded-full bg-section text-text-secondary mb-3">
                         <Activity className="size-5.5" />
