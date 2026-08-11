@@ -76,7 +76,7 @@ const PropertiesFilter = ({
                 <Input
                     type="text"
                     placeholder="City or ZIP code..."
-                    className="w-full"
+                    className="w-full shadow-xs bg-card!"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     id="location"
@@ -172,7 +172,7 @@ const PropertiesFilter = ({
                             type="text"
                             inputMode="numeric"
                             placeholder="Min"
-                            className="w-full"
+                            className="w-full shadow-xs bg-card!"
                             value={minPrice}
                             onChange={(e) => handlePriceChange(e.target.value, setMinPrice)}
                         />
@@ -183,7 +183,7 @@ const PropertiesFilter = ({
                             type="text"
                             inputMode="numeric"
                             placeholder="Max"
-                            className="w-full"
+                            className="w-full shadow-xs bg-card!"
                             value={maxPrice}
                             onChange={(e) => handlePriceChange(e.target.value, setMaxPrice)}
                         />
