@@ -26,7 +26,7 @@ const PropertyDetailsPage = () => {
     // Scroll to the top on page load
     useEffect(() => {
         window.scrollTo({ top: 0 });
-    }, []);
+    }, [id]);
 
 
     if (isLoading) return <PropertyDetailsSkeleton />

@@ -1,5 +1,8 @@
 import { Mail, Phone, Calendar, MessageSquare } from "lucide-react";
 import { Button } from "../ui/button";
+import { useUserContext } from "@/context/UserContext";
+import { SignInButton } from "@clerk/react";
+import { Skeleton } from "../ui/skeleton";
 
 interface SellerInfo {
     _id: string;
@@ -14,6 +17,8 @@ interface SellerInfo {
 
 export default function SellerInformations({ seller }: { seller: SellerInfo }) {
     if (!seller) return null;
+
+    const { user, isLoading } = useUserContext();
 
     const {
         fullName,
@@ -84,15 +89,42 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
                 </div>
             </div>
 
-            {/* ---- Action Buttons ---- */}
+            {/* ---- Action Button ---- */}
             <div className="pt-2">
-                <Button
-                    size="lg"
-                    className="w-full h-9 xs:h-10"
-                >
-                    <MessageSquare className="size-4 mr-1" />
-                    Contact Agent
-                </Button>
+                {/* ---- If user data is loading ---- */}
+                {
+                    isLoading && (
+                        <Skeleton className="w-full h-9 xs:h-10 rounded-md" />
+                    )
+                }
+
+                {/* ---- If user is not signed in ---- */}
+                {
+                    (!isLoading && !user) && (
+                        <SignInButton mode="modal">
+                            <Button
+                                size="lg"
+                                className="w-full h-9 xs:h-10"
+                            >
+                                <MessageSquare className="size-4 mr-1" />
+                                Sign In to Contact Agent
+                            </Button>
+                        </SignInButton>
+                    )
+                }
+
+                {/* ---- If user is signed in ---- */}
+                {
+                    (!isLoading && user) && (
+                        <Button
+                            size="lg"
+                            className="w-full h-9 xs:h-10"
+                        >
+                            <MessageSquare className="size-4 mr-1" />
+                            Contact Agent
+                        </Button>
+                    )
+                }
             </div>
         </div>
     );
