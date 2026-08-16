@@ -10,8 +10,7 @@ import { clerkMiddleware } from '@clerk/express';
 import clerkWebhook from "./webhooks/clerk.webhook.js";
 import usersRouter from "./routes/users.route.js";
 import activitiesRouter from "./routes/activities.route.js";
-
-const app = express();
+import { app, server } from "./lib/socket.js";
 
 // Clerk webhook endpoint
 app.use("/api/v1/webhook/clerk", express.raw({ type: "application/json" }), clerkWebhook);
@@ -33,7 +32,7 @@ app.use("/api/v1/activities", activitiesRouter);
 // Global error handler
 app.use(errorMiddleware);
 
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
     console.log(`Example app listening on port ${PORT}`);
 
     // Connect to database
