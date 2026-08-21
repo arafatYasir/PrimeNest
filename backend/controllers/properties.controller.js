@@ -400,9 +400,6 @@ export async function createProperty(req, res, next) {
 }
 
 export async function approveProperty(req, res, next) {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
     try {
         const { id } = req.params;
 
@@ -419,7 +416,7 @@ export async function approveProperty(req, res, next) {
             throw error;
         }
 
-        const property = await Property.findById(id).session(session);
+        const property = await Property.findById(id);
 
         if (!property) {
             const error = new Error("Property not found!");
@@ -429,7 +426,6 @@ export async function approveProperty(req, res, next) {
         }
 
         if (property.status === "Available") {
-            await session.commitTransaction();
             return res.status(200).json({
                 success: true,
                 message: "Property is already approved!"
@@ -437,20 +433,7 @@ export async function approveProperty(req, res, next) {
         }
 
         property.status = "Available";
-        await property.save({ session });
-
-        // Create activity for listing_approved
-        await Activity.create([
-            {
-                userId: property.seller,
-                type: "listing_approved",
-                message: activityMessageMap["listing_approved"](property.title),
-                relatedId: property._id,
-                link: `/properties/${property._id}`
-            }
-        ], { session });
-
-        await session.commitTransaction();
+        await property.save();
 
         return res.status(200).json({
             success: true,
@@ -458,10 +441,7 @@ export async function approveProperty(req, res, next) {
         });
     }
     catch (e) {
-        await session.abortTransaction();
         next(e);
-    } finally {
-        session.endSession();
     }
 }
 
@@ -497,9 +477,6 @@ export async function getAllPendingProperties(req, res, next) {
 }
 
 export async function rejectProperty(req, res, next) {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
     try {
         const { id } = req.params;
 
@@ -516,7 +493,7 @@ export async function rejectProperty(req, res, next) {
             throw error;
         }
 
-        const property = await Property.findById(id).session(session);
+        const property = await Property.findById(id);
 
         if (!property) {
             const error = new Error("Property not found!");
@@ -526,7 +503,6 @@ export async function rejectProperty(req, res, next) {
         }
 
         if (property.status === "Rejected") {
-            await session.commitTransaction();
             return res.status(200).json({
                 success: true,
                 message: "Property is already rejected!"
@@ -534,20 +510,7 @@ export async function rejectProperty(req, res, next) {
         }
 
         property.status = "Rejected";
-        await property.save({ session });
-
-        // Create activity for listing_rejected
-        await Activity.create([
-            {
-                userId: property.seller,
-                type: "listing_rejected",
-                message: activityMessageMap["listing_rejected"](property.title),
-                relatedId: property._id,
-                link: `/dashboard/properties`
-            }
-        ], { session });
-
-        await session.commitTransaction();
+        await property.save();
 
         return res.status(200).json({
             success: true,
@@ -555,9 +518,6 @@ export async function rejectProperty(req, res, next) {
         });
     }
     catch (e) {
-        await session.abortTransaction();
         next(e);
-    } finally {
-        session.endSession();
     }
 }
