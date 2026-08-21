@@ -1,9 +1,13 @@
 import { Router } from "express";
 import { protectRoute } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
+import { createRateLimiter } from "../middlewares/rateLimiter.middleware.js";
 import { updateAgentProfileSchema } from "../validations/user.validation.js";
 import { getUserData, saveProperty, unsaveProperty, getSavedProperties, uploadProfilePhoto, updateAgentProfile } from "../controllers/users.controller.js";
 import upload from "../config/multer.js";
+
+// Toggle save property rate limiter
+const toggleSavePropertyLimiter = createRateLimiter({ windowMs: 60 * 1000, max: 10 });
 
 const usersRouter = Router();
 
@@ -11,10 +15,10 @@ const usersRouter = Router();
 usersRouter.get("/me/saved-properties", protectRoute, getSavedProperties);
 
 // Save A Specific Property
-usersRouter.post("/me/saved-properties/:id", protectRoute, saveProperty);
+usersRouter.post("/me/saved-properties/:id", protectRoute, toggleSavePropertyLimiter, saveProperty);
 
 // Unsave A Specific Property
-usersRouter.delete("/me/saved-properties/:id", protectRoute, unsaveProperty);
+usersRouter.delete("/me/saved-properties/:id", protectRoute, toggleSavePropertyLimiter, unsaveProperty);
 
 // Get An User Data
 usersRouter.get("/:clerkId", protectRoute, getUserData);
