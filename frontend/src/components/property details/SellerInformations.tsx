@@ -1,6 +1,6 @@
 import { Mail, Phone, Calendar, MessageSquare } from "lucide-react";
 import { Button } from "../ui/button";
-import { useUserContext } from "@/context/UserContext";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { SignInButton } from "@clerk/react";
 import { Skeleton } from "../ui/skeleton";
 
@@ -18,7 +18,8 @@ interface SellerInfo {
 export default function SellerInformations({ seller }: { seller: SellerInfo }) {
     if (!seller) return null;
 
-    const { user, isLoading } = useUserContext();
+    const user = useAuthStore((state) => state.user);
+    const isLoading = useAuthStore((state) => state.isLoading);
 
     const {
         fullName,

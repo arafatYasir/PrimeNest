@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useUserContext } from "@/context/UserContext";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,7 +18,7 @@ const DashboardProfilePage = () => {
     const [selectedProfilePhoto, setSelectedProfilePhoto] = useState<File | null>(null);
 
     // Get the user informations
-    const { user } = useUserContext();
+    const user = useAuthStore((state) => state.user);
 
     // Get the user's token
     const { getToken } = useAuth();

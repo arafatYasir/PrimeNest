@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+import { useInitAuth } from "./stores/useAuthStore"
 import RootLayout from "./layouts/RootLayout"
 import HomePage from "./pages/HomePage"
 import PropertiesPage from "./pages/PropertiesPage"
@@ -15,6 +16,9 @@ import DashboardAddPropertyPage from "./pages/DashboardAddPropertyPage"
 import DashboardPendingPropertiesPage from "./pages/DashboardPendingPropertiesPage"
 
 const App = () => {
+  // Initialize user authentication
+  useInitAuth();
+
   return (
     <>
       {/* ---- Routes ---- */}

@@ -1,7 +1,7 @@
 import { Heart } from "lucide-react"
 import { Button } from "../ui/button"
 import { cn } from "@/lib/utils"
-import { useUserContext } from "@/context/UserContext"
+import { useAuthStore } from "@/stores/useAuthStore"
 import { useState, useEffect } from "react"
 import { Skeleton } from "../ui/skeleton"
 import { useAuth } from "@clerk/react"
@@ -11,19 +11,21 @@ import { toast } from "sonner"
 
 const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
     // Get user informations
-    const { user, isLoading } = useUserContext();
+    const user = useAuthStore((state) => state.user);
+    const isLoading = useAuthStore((state) => state.isLoading);
 
     // Get the user's token
     const { getToken } = useAuth();
 
     // States
-    const [isPropertySaved, setIsPropertySaved] = useState(Boolean(user && user.savedProperties.includes(propertyId)));
+    const [isPropertySaved, setIsPropertySaved] = useState(false);
 
+    // Set the correct property status after user data updates
     useEffect(() => {
-        if (user) {
+        if (user && !isLoading) {
             setIsPropertySaved(user.savedProperties.includes(propertyId));
         }
-    }, [user, propertyId]);
+    }, [user, isLoading, propertyId]);
 
     const saveMutation = useMutation({
         mutationFn: async () => {
@@ -37,11 +39,6 @@ const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
 
             // Roll back to previous state
             setIsPropertySaved(false);
-        },
-        onSuccess: (data) => {
-            toast.success(data.message, {
-                className: "text-success!"
-            });
         }
     });
 
@@ -57,11 +54,6 @@ const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
 
             // Roll back to previous state
             setIsPropertySaved(true);
-        },
-        onSuccess: (data) => {
-            toast.success(data.message, {
-                className: "text-success!"
-            });
         }
     });
 

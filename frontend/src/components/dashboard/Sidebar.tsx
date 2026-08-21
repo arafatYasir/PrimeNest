@@ -23,7 +23,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import { useUserContext } from '@/context/UserContext';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const navLinks = [
     { name: 'Overview', path: '/dashboard', icon: LayoutDashboard, end: true },
@@ -90,7 +90,7 @@ export const Sidebar = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     // Get the user information
-    const { user } = useUserContext();
+    const user = useAuthStore((state) => state.user);
 
     return (
         <>

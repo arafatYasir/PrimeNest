@@ -2,10 +2,11 @@ import ActiveProposals from "@/components/dashboard/overview/ActiveProposals";
 import QuickActions from "@/components/dashboard/overview/QuickActions";
 import RecentActivities from "@/components/dashboard/overview/RecentActivities";
 import StatsCards from "@/components/dashboard/overview/StatsCards"
-import { useUserContext } from "@/context/UserContext"
+import { useAuthStore } from "@/stores/useAuthStore"
 
 const DashboardOverviewPage = () => {
-    const { user, isLoading } = useUserContext();
+    const user = useAuthStore((state) => state.user);
+    const isLoading = useAuthStore((state) => state.isLoading);
 
     const getGreeting = () => {
         const hour = new Date().getHours();

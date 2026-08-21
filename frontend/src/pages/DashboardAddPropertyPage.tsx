@@ -1,4 +1,4 @@
-import { useUserContext } from "@/context/UserContext";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useEffect, useState } from "react";
 import { profileSchema } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ const DashboardAddPropertyPage = () => {
     const [loading, setLoading] = useState(true);
 
     // Get the user information
-    const { user } = useUserContext();
+    const user = useAuthStore((state) => state.user);
 
     // Update property adding permission based on user data
     useEffect(() => {

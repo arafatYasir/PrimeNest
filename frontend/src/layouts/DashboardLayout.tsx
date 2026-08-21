@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from "react-router"
 import { Loader2 } from "lucide-react";
-import { useUserContext } from "@/context/UserContext";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 
 const DashboardLayout = () => {
     // Authentication Checking
-    const { user, isLoading } = useUserContext();
+    const user = useAuthStore((state) => state.user);
+    const isLoading = useAuthStore((state) => state.isLoading);
 
     if (isLoading) {
         return (
