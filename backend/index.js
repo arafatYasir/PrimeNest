@@ -11,11 +11,19 @@ import clerkWebhook from "./webhooks/clerk.webhook.js";
 import usersRouter from "./routes/users.route.js";
 import activitiesRouter from "./routes/activities.route.js";
 import { app, server } from "./lib/socket.js";
+import { createRateLimiter } from "./middlewares/rateLimiter.middleware.js";
+
+// Global rate limiter
+const globalLimiter = createRateLimiter({
+    windowMs: 10 * 60 * 1000,
+    max: 500
+});
 
 // Clerk webhook endpoint
 app.use("/api/v1/webhook/clerk", express.raw({ type: "application/json" }), clerkWebhook);
 
 // Middlewares
+app.use(globalLimiter);
 app.use(express.json());
 app.use(cors({
     origin: SITE_URL,

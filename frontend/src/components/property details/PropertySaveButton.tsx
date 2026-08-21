@@ -26,7 +26,7 @@ const PropertySaveButton = ({ propertyId }: { propertyId: string }) => {
     // Ref to hold the debounce timeout ID
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Set the correct property status after user data updates
+    // Set the correct property saved status after user data updates
     useEffect(() => {
         if (user && !isLoading) {
             const isSaved = user.savedProperties.includes(propertyId);
