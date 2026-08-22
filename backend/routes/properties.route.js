@@ -32,10 +32,10 @@ propertiesRouter.post("/", protectRoute, upload.array("images", 10), validate(pr
 // Delete A Specific Property
 propertiesRouter.delete("/:id", protectRoute, deleteProperty);
 
-// Approve A Property (Admin)
+// Approve A Property (Admin Only)
 propertiesRouter.patch("/:id/approve", protectRoute, requireAdmin, approveProperty);
 
-// Reject A Property (Admin)
+// Reject A Property (Admin Only)
 propertiesRouter.patch("/:id/reject", protectRoute, requireAdmin, rejectProperty);
 
 export default propertiesRouter;

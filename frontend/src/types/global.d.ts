@@ -80,10 +80,18 @@ export interface ActivityItem {
     userId: string;
     type: string;
     message: string;
-    relatedId?: string;
-    metaId?: string;
     link?: string;
-    isRead?: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface NotificationItem {
+    _id: string;
+    userId: string;
+    type: string;
+    message: string;
+    link?: string;
+    isRead: boolean;
     createdAt: string;
     updatedAt: string;
 }
