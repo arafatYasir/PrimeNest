@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const activitySchema = new Schema(
+const notificationSchema = new Schema(
     {
         userId: {
             type: Schema.Types.ObjectId,
@@ -11,14 +11,12 @@ const activitySchema = new Schema(
         type: {
             type: String,
             enum: [
-                "profile_photo_updated",
-                "profile_info_updated",
-                "listing_created",
-                "listing_updated",
-                "listing_deleted",
-                "you_sent_proposal",
-                "you_accepted_proposal",
-                "you_rejected_proposal"
+                "listing_approved",
+                "listing_rejected",
+                "new_message",
+                "proposal_received",
+                "your_proposal_accepted",
+                "your_proposal_rejected",
             ],
             required: true,
         },
@@ -33,6 +31,6 @@ const activitySchema = new Schema(
     { timestamps: true }
 );
 
-const Activity = mongoose.model("Activity", activitySchema);
+const Notification = mongoose.model("Notification", notificationSchema);
 
-export default Activity;
+export default Notification;

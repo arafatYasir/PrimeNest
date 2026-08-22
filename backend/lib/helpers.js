@@ -9,10 +9,24 @@ export const activityMessageMap = {
     "you_rejected_proposal": (listingName) => `You've rejected the proposal for '${listingName}'`
 };
 
+export const notificationMessageMap = {
+    "listing_approved": (listingName) => `Great news! Your listing '${listingName}' was approved.`,
+    "listing_rejected": (listingName) => `Your listing '${listingName}' was not approved.`,
+    "new_message": (senderName) => `You have a new message from ${senderName}.`,
+    "proposal_received": (listingName) => `You've received a new proposal for your listing '${listingName}'.`,
+    "your_proposal_accepted": (listingName) => `Your proposal for '${listingName}' has been accepted!`,
+    "your_proposal_rejected": (listingName) => `Your proposal for '${listingName}' was rejected.`,
+}
+
 export const formatActivityMessage = (type, data = {}) => {
     const formatter = activityMessageMap[type];
     return formatter ? formatter(data) : "New activity on your account.";
 };
+
+export const formatNotificationMessage = (type, data = {}) => {
+    const formatter = notificationMessageMap[type];
+    return formatter ? formatter(data) : "New notification arrived."
+}
 
 export function extractPublicId(url) {
     try {
