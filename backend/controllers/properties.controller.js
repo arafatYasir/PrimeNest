@@ -29,10 +29,12 @@ export async function getAllProperties(req, res, next) {
         const maxPrice = req.query.maxPrice || "";
         const beds = req.query.beds || "Any";
         const baths = req.query.baths || "Any";
-        const limit = parseInt(req.query.limit) || 15;
+        let limit = parseInt(req.query.limit) || 15;
         const excludeId = req.query.excludeId || "";
 
-        if (page < 1) page = 1;
+        // If page/limit is negative convert it to absolute value
+        page = Math.abs(page);
+        limit = Math.abs(limit);
 
         const skip = (page - 1) * limit;
         const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
@@ -147,7 +149,10 @@ export async function getFeaturedProperties(req, res, next) {
     try {
         const properties = await Property.find({ status: "Available" }).limit(8).sort({ createdAt: -1 });
 
-        res.status(200).json({ properties });
+        res.status(200).json({
+            success: true,
+            properties
+        });
     } catch (e) {
         next(e);
     }
@@ -181,9 +186,12 @@ export async function getPropertiesStatuses(req, res, next) {
 export async function getMyProperties(req, res, next) {
     try {
         const userId = req.user._id;
-        const page = parseInt(req.query.page) || 1;
+        let page = parseInt(req.query.page) || 1;
         const sortBy = req.query.sortBy || "None";
         const limit = 5;
+
+        // If page is negative convert it to absolute value
+        page = abs(page);
 
         const skip = limit * (page - 1);
         const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
@@ -470,9 +478,12 @@ export async function approveProperty(req, res, next) {
 
 export async function getAllPendingProperties(req, res, next) {
     try {
-        const page = parseInt(req.query.page) || 1;
+        let page = parseInt(req.query.page) || 1;
         const sortBy = req.query.sortBy || "None";
         const limit = 10;
+
+        // If page is negative convert it to absolute value
+        page = abs(page);
 
         const skip = limit * (page - 1);
         const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
