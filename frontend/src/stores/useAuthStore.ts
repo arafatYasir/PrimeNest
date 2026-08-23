@@ -53,7 +53,7 @@ export const useInitAuth = () => {
 
         // Load user data
         loadUser();
-    }, [isClerkLoaded, isSignedIn, clerkUser, getToken, setUser, setIsLoading, setError]);
+    }, [isClerkLoaded, isSignedIn, getToken, setUser, setIsLoading, setError]);
 };
 
 /// why do we have to pass the setter functions as the dependency of useEffect? Because the setter function values are never changed so what is the point of it?
