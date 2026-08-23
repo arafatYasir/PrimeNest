@@ -191,7 +191,7 @@ export async function getMyProperties(req, res, next) {
         const limit = 5;
 
         // If page is negative convert it to absolute value
-        page = abs(page);
+        page = Math.abs(page);
 
         const skip = limit * (page - 1);
         const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
@@ -483,7 +483,7 @@ export async function getAllPendingProperties(req, res, next) {
         const limit = 10;
 
         // If page is negative convert it to absolute value
-        page = abs(page);
+        page = Math.abs(page);
 
         const skip = limit * (page - 1);
         const sortingQuery = sortingMap[sortBy] ?? sortingMap["None"];
