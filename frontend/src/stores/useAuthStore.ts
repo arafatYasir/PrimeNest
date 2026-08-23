@@ -55,7 +55,3 @@ export const useInitAuth = () => {
         loadUser();
     }, [isClerkLoaded, isSignedIn, getToken, setUser, setIsLoading, setError]);
 };
-
-/// why do we have to pass the setter functions as the dependency of useEffect? Because the setter function values are never changed so what is the point of it?
-
-// sometimes I see we need to do `useAuthStore((state) => state.user)` to get the value of something. Like we have to pass a callback function to access the state. But other times I see that in /src/components/property details/PropertySaveButton.tsx we are doing only `useAuthStore()` to get data why is that so? What is the difference? How is both working?
