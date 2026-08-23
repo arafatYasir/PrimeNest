@@ -41,7 +41,7 @@ export const fetchAllProperties = async ({
     const data = await res.json();
 
     if (!res.ok) {
-        throw new Error(data.message || "Failed to fetch properties");
+        throw new Error(data.message || "Failed to load properties");
     }
 
     return data;
@@ -52,7 +52,7 @@ export async function fetchProperty(id: string) {
     const data = await res.json();
 
     if (!data.success) {
-        throw new Error(data.message || "Failed to fetch the property");
+        throw new Error(data.message || "Failed to load the property");
     }
 
     return data.data;
@@ -63,7 +63,7 @@ export const fetchFeaturedProperties = async () => {
     const data = await res.json();
 
     if (!res.ok) {
-        throw new Error(data.message || "Failed to fetch featured properties");
+        throw new Error(data.message || "Failed to load featured properties");
     }
 
     return data;
@@ -78,7 +78,7 @@ export const fetchPropertyStatuses = async (token: string) => {
     const data = await res.json();
 
     if (!data.success) {
-        throw new Error(data.message || "Failed to fetch property statuses");
+        throw new Error(data.message || "Failed to load property statuses");
     }
 
     return data.data;
@@ -108,7 +108,7 @@ export const fetchMyProperties = async (token: string, page?: number, sortBy?: s
     const data = await res.json();
 
     if (!data.success) {
-        throw new Error(data.message || "Failed to fetch your properties");
+        throw new Error(data.message || "Failed to load your properties");
     }
 
     return data;
@@ -173,7 +173,7 @@ export const fetchSavedProperties = async (token: string, page?: number, sortBy?
     const data = await res.json();
 
     if (!data.success) {
-        throw new Error(data.message || "Failed to fetch saved properties");
+        throw new Error(data.message || "Failed to load saved properties");
     }
 
     return data;
@@ -244,7 +244,7 @@ export const fetchPendingProperties = async (token: string, page?: number, sortB
     const data = await res.json();
 
     if (!data.success) {
-        throw new Error(data.message || "Failed to fetch pending properties");
+        throw new Error(data.message || "Failed to load pending properties");
     }
 
     return data;
@@ -299,5 +299,17 @@ export const fetchActivities = async (token: string) => {
 }
 
 export const fetchNotifications = async (token: string, page: string, limit: number) => {
-    
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/notifications?page=${page}&limit=${limit}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to load recent notifications");
+    }
+
+    return data;
 }
