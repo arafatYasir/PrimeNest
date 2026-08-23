@@ -12,6 +12,7 @@ import usersRouter from "./routes/users.route.js";
 import activitiesRouter from "./routes/activities.route.js";
 import { app, server } from "./lib/socket.js";
 import { createRateLimiter } from "./middlewares/rateLimiter.middleware.js";
+import notificationRouter from "./routes/notifications.route.js"
 
 // Global rate limiter
 const globalLimiter = createRateLimiter({
@@ -35,6 +36,7 @@ app.use(clerkMiddleware());
 app.use("/health", healthRouter);
 app.use("/api/v1/properties", propertiesRouter);
 app.use("/api/v1/users", usersRouter);
+app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/activities", activitiesRouter);
 
 // Global error handler

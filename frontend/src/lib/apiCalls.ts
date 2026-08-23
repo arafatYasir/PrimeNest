@@ -297,3 +297,7 @@ export const fetchActivities = async (token: string) => {
 
     return data.data;
 }
+
+export const fetchNotifications = async (token: string, page: string, limit: number) => {
+    
+}
