@@ -1,5 +1,6 @@
 import Property from "../models/property.model.js";
 import Activity from "../models/activity.model.js";
+import Notification from "../models/notification.model.js";
 import cloudinary from "../config/cloudinary.js";
 import mongoose from "mongoose";
 import { activityMessageMap, extractPublicId, notificationMessageMap } from "../lib/helpers.js";
