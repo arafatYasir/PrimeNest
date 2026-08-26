@@ -26,6 +26,7 @@ const notificationSchema = new Schema(
         },
         link: {
             type: String,
+            required: true
         },
         isRead: {
             type: Boolean,

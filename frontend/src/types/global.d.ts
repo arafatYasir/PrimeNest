@@ -90,7 +90,7 @@ export interface NotificationItem {
     userId: string;
     type: string;
     message: string;
-    link?: string;
+    link: string;
     isRead: boolean;
     createdAt: string;
     updatedAt: string;
