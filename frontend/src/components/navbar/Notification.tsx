@@ -30,9 +30,10 @@ const Notification = ({
                 <div className="flex items-start justify-between gap-2">
                     <p
                         className={cn(
-                            "text-xs xs:text-sm font-medium leading-snug text-text line-clamp-2",
+                            "text-xs xs:text-sm font-medium leading-snug text-text",
                             hasLink && "group-hover:underline"
                         )}
+                        // title={notification.message}
                     >
                         {notification.message}
                     </p>
