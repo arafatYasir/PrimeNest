@@ -314,3 +314,20 @@ export const fetchNotifications = async (token: string, page: number, limit: num
 
     return data;
 }
+
+export const markNotificationAsRead = async (token: string, id: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/notifications/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to mark notification as read");
+    }
+
+    return data;
+}

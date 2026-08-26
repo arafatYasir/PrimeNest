@@ -31,3 +31,41 @@ export async function getNotifications(req, res, next) {
         next(e);
     }
 }
+
+export async function markNotificationAsRead(req, res, next) {
+    try {
+        const userId = req.user._id;
+        const { id } = req.params;
+
+        const notification = await Notification.findOne({
+            userId, _id: id
+        });
+
+        // If the notification wasn't found
+        if (!notification) {
+            return res.status(404).json({
+                success: false,
+                message: "Notification not found!"
+            });
+        }
+
+        // Mark the notification as read if it wasn't
+        if (!notification.isRead) {
+            notification.isRead = true;
+            await notification.save();
+
+            return res.status(200).json({
+                success: true,
+                message: "Notification is marked as read"
+            });
+        }
+
+        return res.status(400).json({
+            success: true,
+            message: "Notification is already marked as read"
+        });
+    }
+    catch (e) {
+        next(e);
+    }
+}

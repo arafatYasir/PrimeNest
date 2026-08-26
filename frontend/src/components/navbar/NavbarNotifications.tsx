@@ -196,12 +196,11 @@ const NavbarNotifications = () => {
 
                         {/* ---- Notifications List ---- */}
                         {!isLoading && !isError && notifications.length > 0 && (
-                            <div className="flex flex-col divide-y divide-border/60">
+                            <div className="flex flex-col divide-y divide-border">
                                 {notifications.map((notification) => (
                                     <Notification
                                         key={notification._id}
                                         notification={notification}
-                                        onClick={() => setIsOpen(false)}
                                     />
                                 ))}
                             </div>
