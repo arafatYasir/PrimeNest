@@ -88,7 +88,7 @@ const NavbarNotifications = () => {
             {isOpen && (
                 <div className="absolute right-0 top-full mt-2.5 w-[calc(100vw-2rem)] xs:w-95 sm:w-105 max-w-105 rounded-2xl border bg-card shadow-2xl shadow-primary/10 overflow-hidden z-50 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-250">
                     {/* ---- Header ---- */}
-                    <div className="flex items-center justify-between border-b px-4 py-3.5 sm:px-5 sm:py-4 bg-card">
+                    <div className="flex items-center justify-between border-b px-4 py-2 sm:px-5 sm:py-3 bg-card">
                         <div className="flex items-center gap-2.5">
                             <h3 className="font-heading text-base font-bold tracking-tight text-text">
                                 Notifications

@@ -130,3 +130,14 @@ export function formatRelativeTime(dateString: string): string {
   
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
+
+export function getOptimizedImageUrl(
+  url: string,
+  { width = 350, height = 260, quality = "auto", format = "auto"} = {}
+) {
+  if (!url || !url.includes("res.cloudinary.com")) return url;
+
+  const transformation = `f_${format},q_${quality},c_fill,w_${width},h_${height},dpr_auto`;
+
+  return url.replace("/upload/", `/upload/${transformation}/`);
+}

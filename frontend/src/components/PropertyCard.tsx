@@ -1,3 +1,4 @@
+import { getOptimizedImageUrl } from "@/lib/utils";
 import type { Property } from "@/types/global";
 import { Bath, Bed, MapPin, Maximize, type LucideIcon } from "lucide-react";
 import { Link } from "react-router";
@@ -39,7 +40,7 @@ function StatItem({ icon: Icon, value, unit }: StatItemTypes) {
     );
 }
 
-function PropertyCard({ property }: { property: Property }) {
+const PropertyCard = ({ property }: { property: Property }) => {
     const {
         _id,
         title,
@@ -54,7 +55,7 @@ function PropertyCard({ property }: { property: Property }) {
         location,
     } = property;
 
-    const coverImage = images?.[0];
+    const coverImage = images?.[0] ? getOptimizedImageUrl(images[0]) : null;
     const cityLine = [location?.city, location?.country]
         .filter(Boolean)
         .join(", ");
@@ -63,10 +64,7 @@ function PropertyCard({ property }: { property: Property }) {
     return (
         <Link
             to={`/properties/${_id ?? ""}`}
-            className="group flex flex-col overflow-hidden rounded-2xl bg-card border border-border/60
-                 transition-all duration-300 ease-out
-                 hover:shadow-lg hover:shadow-black/6 hover:border-border
-                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="group flex flex-col overflow-hidden rounded-2xl bg-card border border-border/60 transition-[shadow,border-color] duration-300 ease-out hover:shadow-lg hover:shadow-black/6 hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
             {/* ---- Image ---- */}
             <div className="relative aspect-4/3 w-full overflow-hidden bg-section">
@@ -75,11 +73,14 @@ function PropertyCard({ property }: { property: Property }) {
                         src={coverImage}
                         alt={title}
                         loading="lazy"
+                        decoding="async"
+                        width={350}
+                        height={260}
                         className="h-full w-full object-cover transition-transform duration-500 ease-out
                        group-hover:scale-105"
                     />
                 ) : (
-                    <div className="flex h-full w-full items-center justify-center text-sm text-text-secondary">
+                    <div className="flex h-full w-full items-center justify-center text-base font-semibold text-text-secondary">
                         No image available
                     </div>
                 )}
@@ -150,6 +151,6 @@ function PropertyCard({ property }: { property: Property }) {
             </div>
         </Link>
     );
-}
+};
 
 export default PropertyCard;
