@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import { Home, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
     Sheet,
     SheetContent,
@@ -10,7 +10,7 @@ import {
     SheetClose,
     SheetTitle,
     SheetHeader,
-} from "./ui/sheet";
+} from "../ui/sheet";
 import { Show, SignInButton, UserButton } from "@clerk/react";
 import { navItems } from "@/lib/data";
 import NavbarNotifications from "./NavbarNotifications";

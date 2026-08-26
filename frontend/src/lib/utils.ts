@@ -1,5 +1,5 @@
 import { clsx, type ClassValue } from "clsx"
-import { Activity, CheckCircle2, FileSpreadsheet, Home, MessageSquare, Trash2, User, UserCheck, XCircle } from "lucide-react";
+import { Activity, Bell, CheckCircle2, FileSpreadsheet, Home, MessageSquare, Trash2, User, UserCheck, XCircle } from "lucide-react";
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -38,6 +38,35 @@ export function getActivityConfig(type: string) {
         bgClass: "bg-error/10 text-error border-error/20",
         badgeClass: "bg-error/10 text-error",
       };
+    case "you_sent_proposal":
+      return {
+        icon: FileSpreadsheet,
+        bgClass: "bg-secondary/15 text-secondary border-secondary/25",
+        badgeClass: "bg-secondary/15 text-secondary",
+      };
+    case "you_accepted_proposal":
+      return {
+        icon: CheckCircle2,
+        bgClass: "bg-success/10 text-success border-success/20",
+        badgeClass: "bg-success/10 text-success",
+      };
+    case "you_rejected_proposal":
+      return {
+        icon: XCircle,
+        bgClass: "bg-error/10 text-error border-error/20",
+        badgeClass: "bg-error/10 text-error",
+      };
+    default:
+      return {
+        icon: Activity,
+        bgClass: "bg-primary/10 text-primary border-primary/20",
+        badgeClass: "bg-primary/10 text-primary",
+      };
+  }
+}
+
+export function getNotificationConfig(type: string) {
+  switch (type) {
     case "listing_approved":
       return {
         icon: CheckCircle2,
@@ -62,13 +91,13 @@ export function getActivityConfig(type: string) {
         bgClass: "bg-secondary/15 text-secondary border-secondary/25",
         badgeClass: "bg-secondary/15 text-secondary",
       };
-    case "proposal_accepted":
+    case "your_proposal_accepted":
       return {
         icon: CheckCircle2,
         bgClass: "bg-success/10 text-success border-success/20",
         badgeClass: "bg-success/10 text-success",
       };
-    case "proposal_rejected":
+    case "your_proposal_rejected":
       return {
         icon: XCircle,
         bgClass: "bg-error/10 text-error border-error/20",
@@ -76,7 +105,7 @@ export function getActivityConfig(type: string) {
       };
     default:
       return {
-        icon: Activity,
+        icon: Bell,
         bgClass: "bg-primary/10 text-primary border-primary/20",
         badgeClass: "bg-primary/10 text-primary",
       };

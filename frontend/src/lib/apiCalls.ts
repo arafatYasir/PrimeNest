@@ -298,11 +298,12 @@ export const fetchActivities = async (token: string) => {
     return data.data;
 }
 
-export const fetchNotifications = async (token: string, page: number, limit: number) => {
+export const fetchNotifications = async (token: string, page: number, limit: number, signal?: AbortSignal) => {
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/notifications?page=${page}&limit=${limit}`, {
         headers: {
             "Authorization": `Bearer ${token}`
-        }
+        },
+        signal
     });
 
     const data = await res.json();
