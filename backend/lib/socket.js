@@ -7,12 +7,31 @@ const app = express();
 const server = http.createServer(app);
 
 const io = new Server(server, {
-    cors: SITE_URL
+    cors: {
+        origin: SITE_URL
+    }
 });
 
+const userSocketMap = {};
+
 io.on("connection", (socket) => {
-    console.log("A user is connected to socket.");
-    console.log("Socket id: ", socket.id);
+    const userId = socket.handshake.query.userId;
+
+    if (userId) {
+        userSocketMap[userId] = socket.id;
+    }
+
+    // Send currently online users id after this user connects
+    io.emit("users:online", Object.keys(userSocketMap));
+
+    socket.on("disconnect", () => {
+        if (userId) {
+            delete userSocketMap[userId];
+        }
+
+        // Send currently online users id after this user disconnects
+        io.emit("users:online", Object.keys(userSocketMap));
+    })
 })
 
-export { app, server, io };
+export { app, server, io, userSocketMap };
