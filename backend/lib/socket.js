@@ -18,7 +18,9 @@ io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
 
     if (userId) {
-        userSocketMap[userId] = socket.id;
+        if (!userSocketMap[userId]) userSocketMap[userId] = new Set();
+        userSocketMap[userId].add(socket.id);
+        socket.join(userId);
     }
 
     // Send currently online users id after this user connects
@@ -26,7 +28,10 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         if (userId) {
-            delete userSocketMap[userId];
+            userSocketMap[userId].delete(socket.id);
+            if (userSocketMap[userId].size === 0) {
+                delete userSocketMap[userId];
+            }
         }
 
         // Send currently online users id after this user disconnects
@@ -34,4 +39,4 @@ io.on("connection", (socket) => {
     })
 })
 
-export { app, server, io, userSocketMap };
+export { app, server, io };

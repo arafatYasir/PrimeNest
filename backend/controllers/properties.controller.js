@@ -464,13 +464,9 @@ export async function approveProperty(req, res, next) {
 
         await session.commitTransaction();
 
-        // Send the notification to ther user in real-time
+        // Send the notification to the user in real-time
         if (newNotification) {
-            const userSocketId = userSocketMap[property.seller];
-            
-            if (userSocketId) {
-                io.to(userSocketId).emit("notification", newNotification);
-            }
+            io.to(property.seller.toString()).emit("notification", newNotification);
         }
 
         return res.status(200).json({
@@ -576,13 +572,9 @@ export async function rejectProperty(req, res, next) {
 
         await session.commitTransaction();
 
-        // Send the notification to ther user in real-time
+        // Send the notification to the user in real-time
         if (newNotification) {
-            const userSocketId = userSocketMap[property.seller];
-            
-            if (userSocketId) {
-                io.to(userSocketId).emit("notification", newNotification);
-            }
+            io.to(property.seller.toString()).emit("notification", newNotification);
         }
 
         return res.status(200).json({
