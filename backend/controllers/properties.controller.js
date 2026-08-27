@@ -4,7 +4,7 @@ import Notification from "../models/notification.model.js";
 import cloudinary from "../config/cloudinary.js";
 import mongoose from "mongoose";
 import { activityMessageMap, extractPublicId, notificationMessageMap } from "../lib/helpers.js";
-import { io, userSocketMap } from "../lib/socket.js";
+import { io } from "../lib/socket.js";
 
 const sortingMap = {
     "None": { createdAt: -1 },
@@ -450,7 +450,7 @@ export async function approveProperty(req, res, next) {
         await property.save({ session });
 
         // Create a new notification
-        const newNotification = await Notification.create(
+        const [newNotification] = await Notification.create(
             [
                 {
                     userId: property.seller,
@@ -558,7 +558,7 @@ export async function rejectProperty(req, res, next) {
         await property.save({ session });
 
         // Create a new notification
-        const newNotification = await Notification.create(
+        const [newNotification] = await Notification.create(
             [
                 {
                     userId: property.seller,
