@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { useUser, useAuth } from "@clerk/react";
 import { useEffect } from "react";
-import { CancelledError, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { fetchUser } from "../lib/apiCalls";
 import { getSocket, disconnectSocket } from "../lib/socket";
