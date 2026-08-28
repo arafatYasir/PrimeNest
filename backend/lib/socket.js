@@ -2,7 +2,7 @@ import http from "node:http";
 import express from "express";
 import { Server } from "socket.io";
 import { clerkClient } from "@clerk/express";
-import { SITE_URL, CLERK_SECRET_KEY } from "../config/env.js";
+import { ALLOWED_ORIGINS, CLERK_SECRET_KEY } from "../config/env.js";
 import User from "../models/user.model.js";
 
 const app = express();
@@ -10,7 +10,14 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: SITE_URL
+        origin: (origin, callback) => {
+            if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
+        credentials: true
     }
 });
 

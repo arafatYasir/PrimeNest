@@ -1,5 +1,5 @@
 import express from "express";
-import { NODE_ENV, PORT, SITE_URL } from "./config/env.js";
+import { NODE_ENV, PORT, ALLOWED_ORIGINS } from "./config/env.js";
 import { connectToDB } from "./config/mongodb.js";
 import cors from "cors";
 import healthRouter from "./routes/health.route.js";
@@ -27,7 +27,13 @@ app.use("/api/v1/webhook/clerk", express.raw({ type: "application/json" }), cler
 app.use(globalLimiter);
 app.use(express.json());
 app.use(cors({
-    origin: SITE_URL,
+    origin: (origin, callback) => {
+        if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true
 }));
 app.use(clerkMiddleware());
