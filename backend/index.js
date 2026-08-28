@@ -1,5 +1,5 @@
 import express from "express";
-import { NODE_ENV, PORT, ALLOWED_ORIGINS, SITE_URL } from "./config/env.js";
+import { NODE_ENV, PORT, SITE_URL } from "./config/env.js";
 import { connectToDB } from "./config/mongodb.js";
 import cors from "cors";
 import healthRouter from "./routes/health.route.js";
