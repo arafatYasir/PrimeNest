@@ -2,17 +2,23 @@ import { Clock } from "lucide-react";
 import { Link } from "react-router";
 import { cn, formatRelativeTime, getNotificationConfig } from "@/lib/utils";
 import type { NotificationItem } from "@/types/global";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
 import { markNotificationAsRead } from "@/lib/apiCalls";
 
-const Notification = ({ notification }: { notification: NotificationItem }) => {
+interface NotificationProps {
+    notification: NotificationItem;
+    onClick: () => void;
+}
+
+const Notification = ({ notification, onClick }: NotificationProps) => {
     const config = getNotificationConfig(notification.type);
     const IconComponent = config.icon;
     const hasLink = Boolean(notification.link);
 
     // Get the user's token
     const { getToken } = useAuth();
+    const queryClient = useQueryClient();
 
     // Notification: Mark as read api
     const { mutate } = useMutation({
@@ -20,13 +26,22 @@ const Notification = ({ notification }: { notification: NotificationItem }) => {
             const token = await getToken();
 
             return markNotificationAsRead(token ?? "", notification._id);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["notifications"] });
         }
     });
+
+    const handleClick = () => {
+        onClick();
+
+        mutate();
+    }
 
     return (
         <Link
             to={notification.link}
-            onClick={() => mutate()}
+            onClick={handleClick}
             className={cn(
                 "group flex items-center p-3.5 sm:p-4 transition-all duration-150 hover:bg-card cursor-pointer",
                 !notification.isRead && "bg-primary/8"

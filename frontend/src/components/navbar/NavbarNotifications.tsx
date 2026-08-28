@@ -201,6 +201,7 @@ const NavbarNotifications = () => {
                                     <Notification
                                         key={notification._id}
                                         notification={notification}
+                                        onClick={() => setIsOpen(false)}
                                     />
                                 ))}
                             </div>
