@@ -15,8 +15,3 @@ export const {
     CLOUDINARY_API_SECRET,
     CLOUDINARY_API_KEY
 } = process.env;
-
-export const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || SITE_URL || "")
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean);
