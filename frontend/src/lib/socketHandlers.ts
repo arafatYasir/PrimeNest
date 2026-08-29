@@ -31,8 +31,8 @@ export function handleNotification(
     // Invalidate the query to refetch the api
     queryClient.invalidateQueries({ queryKey: ["notifications"] });
 
-    for (const item of items) {
-        toast.message(item.message);
+    for (let i = 0; i < items.length; i++) {
+        toast.message("You have a new notification!");
     }
 }
 
