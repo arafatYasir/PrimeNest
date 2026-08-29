@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { useUser, useAuth } from "@clerk/react";
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
 import { fetchUser } from "../lib/apiCalls";
 import { getSocket, disconnectSocket } from "../lib/socket";
 import {
@@ -56,7 +55,6 @@ export const useInitAuth = () => {
     
     // Extra hooks
     const queryClient = useQueryClient();
-    const navigate = useNavigate();
 
     // ---- Load the app user profile from the backend ----
     useEffect(() => {
@@ -94,7 +92,7 @@ export const useInitAuth = () => {
         const socket = getSocket();
 
         socket.on("notification", (payload) => {
-            return handleNotification(payload, queryClient, navigate);
+            return handleNotification(payload, queryClient);
         });
         socket.on("connect", handleConnect);
         socket.on("disconnect", handleDisconnect);
@@ -113,5 +111,5 @@ export const useInitAuth = () => {
             disconnectSocket();
             setSocketStatus("disconnected");
         };
-    }, [isClerkLoaded, isSignedIn, getToken, queryClient, navigate, setSocketStatus]);
+    }, [isClerkLoaded, isSignedIn, getToken, queryClient, setSocketStatus]);
 };
