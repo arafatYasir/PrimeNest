@@ -1,7 +1,7 @@
 import http from "node:http";
 import express from "express";
 import { Server } from "socket.io";
-import { clerkClient } from "@clerk/express";
+import { verifyToken } from "@clerk/express";
 import { CLERK_SECRET_KEY, SITE_URL } from "../config/env.js";
 import User from "../models/user.model.js";
 
@@ -19,20 +19,23 @@ const io = new Server(server, {
 io.use(async (socket, next) => {
     try {
         const token = socket.handshake.auth?.token;
-
+        
         if (!token) {
             return next(new Error("Unauthorized: missing token"));
         }
-
-        const decoded = await clerkClient.verifyToken(token, {
+        
+        // Decode the token and get clerk user id
+        const decodedPayload = await verifyToken(token, {
             secretKey: CLERK_SECRET_KEY
         });
 
-        if (!decoded?.sub) {
+        // If the the token is invalid
+        if (!decodedPayload.sub) {
             return next(new Error("Unauthorized: invalid token"));
         }
 
-        const user = await User.findOne({ clerkId: decoded.sub }).select("_id");
+        // Find the user document from database
+        const user = await User.findOne({ clerkId: decodedPayload.sub }).select("_id");
 
         if (!user) {
             return next(new Error("Unauthorized: user not found"));
@@ -51,6 +54,7 @@ const userSocketMap = {};
 
 io.on("connection", (socket) => {
     const userId = socket.userId;
+    console.log("New user is connected: ", socket.id);
 
     if (userId) {
         if (!userSocketMap[userId]) userSocketMap[userId] = new Set();
