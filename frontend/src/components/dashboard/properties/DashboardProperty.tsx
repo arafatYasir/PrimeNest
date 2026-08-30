@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { useMediaQuery } from 'react-responsive'
+import { getOptimizedImageUrl } from "@/lib/utils";
 
 interface DashboardPropertyProps {
   property: Property;
@@ -57,7 +58,7 @@ export default function DashboardProperty({ property, onDelete }: DashboardPrope
     location,
   } = property;
 
-  const coverImage = images?.[0];
+  const coverImage = images[0] ? getOptimizedImageUrl(images[0], { width: 144, height: 96 }) : null;
   const statusStyle = STATUS_STYLES[status] ?? STATUS_STYLES["Available"];
 
   // Media Query Breakpoints
@@ -73,6 +74,9 @@ export default function DashboardProperty({ property, onDelete }: DashboardPrope
           <img
             src={coverImage}
             alt={title}
+            width={144}
+            height={96}
+            decoding="async"
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-105"
           />

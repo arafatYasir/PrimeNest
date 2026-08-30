@@ -6,7 +6,9 @@ import {
     CarouselPrevious,
     type CarouselApi,
 } from "@/components/ui/carousel";
+import { getOptimizedImageUrl } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 interface PropertyImageSliderProps {
     images: string[];
@@ -18,6 +20,8 @@ const PropertyImageSlider = ({ images, title }: PropertyImageSliderProps) => {
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState(0)
     const [count, setCount] = useState(0);
+
+    const optimizedImages = images.map((image) => getOptimizedImageUrl(image, { width: 977, height: 550 }));
 
     useEffect(() => {
         if (!api) {
@@ -35,14 +39,17 @@ const PropertyImageSlider = ({ images, title }: PropertyImageSliderProps) => {
             <Carousel setApi={setApi} className="relative w-full">
                 <CarouselContent>
                     {
-                        images.map((image: string, i: number) => (
+                        optimizedImages.map((image: string, i: number) => (
                             <CarouselItem key={i}>
                                 <div className="overflow-hidden rounded-2xl border border-border/80">
                                     <img
                                         src={image}
+                                        width={977}
+                                        height={550}
                                         alt={`${title}-${i}`}
                                         className="w-full aspect-video object-cover transition-all duration-500 hover:scale-[1.01]"
-                                        loading="eager"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                 </div>
                             </CarouselItem>

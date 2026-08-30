@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { SignInButton } from "@clerk/react";
 import { Skeleton } from "../ui/skeleton";
+import { getOptimizedImageUrl } from "@/lib/utils";
 
 interface SellerInfo {
     _id: string;
@@ -35,6 +36,8 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
         month: "long",
     }).format(new Date(createdAt));
 
+    const optimizedProfilePic = profilePic ?? getOptimizedImageUrl(profilePic, { width: 60, height: 60 });
+
     return (
         <div className="bg-card rounded-2xl border border-border p-4 xs:p-6 space-y-4 lg:sticky lg:top-[65px]">
             {/* ---- Profile Header ---- */}
@@ -42,7 +45,10 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
                 {profilePic ? (
                     <div className="size-13 xs:size-14 sm:size-15 overflow-hidden border border-border rounded-full">
                         <img
-                            src={profilePic}
+                            src={optimizedProfilePic}
+                            loading="lazy"
+                            width={60}
+                            height={60}
                             alt={fullName}
                             className="w-full h-full object-cover"
                         />

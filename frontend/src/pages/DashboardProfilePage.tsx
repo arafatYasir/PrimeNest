@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Camera, Mail, User, Phone, Save, Lock, X, Upload, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
+import { cn, getOptimizedImageUrl } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
 import { uploadProfilePhoto, updateAgentProfile } from "@/lib/apiCalls";
@@ -88,7 +88,7 @@ const DashboardProfilePage = () => {
     const uploadInputRef = useRef<HTMLInputElement | null>(null);
     const objectUrlRef = useRef<string | null>(null);
 
-    const watchedProfilePic = watch("profilePic");
+    const watchedProfilePic = watch("profilePic") ?? getOptimizedImageUrl(watch("profilePic"), { width: 108, height: 108 });
     const watchedFullName = watch("fullName");
     const watchedBio = watch("bio");
     const watchedEmail = watch("email");
@@ -175,6 +175,9 @@ const DashboardProfilePage = () => {
                             {watchedProfilePic ? (
                                 <img
                                     src={watchedProfilePic}
+                                    width={108}
+                                    height={108}
+                                    loading="lazy"
                                     alt={watchedFullName || "Profile Photo"}
                                     className="size-full object-cover"
                                 />
