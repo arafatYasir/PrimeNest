@@ -36,13 +36,13 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
         month: "long",
     }).format(new Date(createdAt));
 
-    const optimizedProfilePic = profilePic ?? getOptimizedImageUrl(profilePic, { width: 60, height: 60 });
+    const optimizedProfilePic = profilePic ? getOptimizedImageUrl(profilePic, { width: 60, height: 60 }) : "";
 
     return (
         <div className="bg-card rounded-2xl border border-border p-4 xs:p-6 space-y-4 lg:sticky lg:top-[65px]">
             {/* ---- Profile Header ---- */}
             <div className="flex items-center gap-4">
-                {profilePic ? (
+                {optimizedProfilePic ? (
                     <div className="size-13 xs:size-14 sm:size-15 overflow-hidden border border-border rounded-full">
                         <img
                             src={optimizedProfilePic}

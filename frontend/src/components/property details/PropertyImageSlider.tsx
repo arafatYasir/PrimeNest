@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/carousel";
 import { getOptimizedImageUrl } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
 
 interface PropertyImageSliderProps {
     images: string[];
