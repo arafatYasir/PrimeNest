@@ -90,7 +90,7 @@ const DashboardProfilePage = () => {
 
     // Form values
     const rawProfilePic = watch("profilePic");
-    const watchedProfilePic = rawProfilePic ? getOptimizedImageUrl(rawProfilePic, { width: 108, height: 108 }) : "";
+    const watchedProfilePic = rawProfilePic ? getOptimizedImageUrl(rawProfilePic, { width: 200, height: 200 }) : "";
     const watchedFullName = watch("fullName");
     const watchedBio = watch("bio");
     const watchedEmail = watch("email");
@@ -177,9 +177,9 @@ const DashboardProfilePage = () => {
                             {watchedProfilePic ? (
                                 <img
                                     src={watchedProfilePic}
-                                    width={108}
-                                    height={108}
-                                    loading="lazy"
+                                    width={200}
+                                    height={200}
+                                    fetchPriority="high"
                                     alt={watchedFullName || "Profile Photo"}
                                     className="size-full object-cover"
                                 />
