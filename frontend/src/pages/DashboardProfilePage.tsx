@@ -88,7 +88,9 @@ const DashboardProfilePage = () => {
     const uploadInputRef = useRef<HTMLInputElement | null>(null);
     const objectUrlRef = useRef<string | null>(null);
 
-    const watchedProfilePic = watch("profilePic") ? getOptimizedImageUrl(watch("profilePic"), { width: 108, height: 108 }) : "";
+    // Form values
+    const rawProfilePic = watch("profilePic");
+    const watchedProfilePic = rawProfilePic ? getOptimizedImageUrl(rawProfilePic, { width: 108, height: 108 }) : "";
     const watchedFullName = watch("fullName");
     const watchedBio = watch("bio");
     const watchedEmail = watch("email");

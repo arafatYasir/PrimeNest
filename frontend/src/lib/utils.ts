@@ -132,10 +132,10 @@ export function formatRelativeTime(dateString: string): string {
 }
 
 export function getOptimizedImageUrl(
-  url: string,
+  url?: string | null,
   { width = 350, height = 260, quality = "auto", format = "auto"} = {}
-) {
-  if (!url || !url.includes("res.cloudinary.com")) return url;
+): string {
+  if (!url || !url.includes("res.cloudinary.com")) return url || "";
 
   const transformation = `f_${format},q_${quality},c_fill,w_${width},h_${height},dpr_auto`;
 
