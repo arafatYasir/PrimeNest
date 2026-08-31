@@ -77,7 +77,7 @@ const NavbarNotifications = () => {
                 observer.unobserve(sentinel);
             }
         }
-    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+    }, [isOpen, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     // Handle outside click to close the modal
     useEffect(() => {
@@ -259,7 +259,7 @@ const NavbarNotifications = () => {
                                 {isFetchingNextPage && (
                                     <div className="flex items-center gap-2 text-xs text-text-secondary">
                                         <RefreshCw className="size-3.5 animate-spin" />
-                                        <span>Loading more...</span>
+                                        <span className="font-medium">Loading more...</span>
                                     </div>
                                 )}
                             </div>
