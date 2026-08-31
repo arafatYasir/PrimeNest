@@ -56,23 +56,8 @@ const PropertyDetailsPage = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
                     {/* ---- Left Side ---- */}
                     <div className="lg:col-span-8 space-y-8">
-                        {/* ---- Property Image Slider / Single Image ---- */}
-                        {
-                            property.images.length > 1 ? (
-                                // Image Slider
-                                <PropertyImageSlider images={property.images} title={property.title} />
-                            ) : (
-                                // Single Image
-                                <div className="overflow-hidden rounded-2xl border border-border/80">
-                                    <img
-                                        src={property.images[0]}
-                                        alt={property.title}
-                                        className="w-full aspect-video object-cover transition-all duration-500 hover:scale-[1.01]"
-                                        loading="eager"
-                                    />
-                                </div>
-                            )
-                        }
+                        {/* ---- Property Image Slider ---- */}
+                        <PropertyImageSlider images={property.images} title={property.title} />
 
                         <div className="space-y-6 xs:space-y-8 bg-card rounded-2xl border border-border p-4 sm:p-6 md:p-8 relative">
                             {/* ---- Save / Unsave Button ---- */}

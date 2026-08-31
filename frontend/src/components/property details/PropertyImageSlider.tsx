@@ -20,6 +20,7 @@ const PropertyImageSlider = ({ images, title }: PropertyImageSliderProps) => {
     const [current, setCurrent] = useState(0)
     const [count, setCount] = useState(0);
 
+    // Variables
     const optimizedImages = images.map((image) => getOptimizedImageUrl(image, { width: 977, height: 550 }));
 
     useEffect(() => {
@@ -47,8 +48,7 @@ const PropertyImageSlider = ({ images, title }: PropertyImageSliderProps) => {
                                         height={550}
                                         alt={`${title}-${i}`}
                                         className="w-full aspect-video object-cover transition-all duration-500 hover:scale-[1.01]"
-                                        loading="lazy"
-                                        decoding="async"
+                                        fetchPriority={i == 0 ? "high" : "auto"}
                                     />
                                 </div>
                             </CarouselItem>

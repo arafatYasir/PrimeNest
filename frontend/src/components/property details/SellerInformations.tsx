@@ -36,7 +36,7 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
         month: "long",
     }).format(new Date(createdAt));
 
-    const optimizedProfilePic = profilePic ? getOptimizedImageUrl(profilePic, { width: 60, height: 60 }) : "";
+    const optimizedProfilePic = profilePic ? getOptimizedImageUrl(profilePic, { width: 200, height: 200 }) : "";
 
     return (
         <div className="bg-card rounded-2xl border border-border p-4 xs:p-6 space-y-4 lg:sticky lg:top-[65px]">
