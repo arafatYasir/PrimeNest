@@ -4,10 +4,15 @@ import type { Socket } from "socket.io-client";
 import type { NotificationItem } from "@/types/global";
 import { useAuthStore } from "@/stores/useAuthStore";
 
-interface NotificationsQueryData {
+interface NotificationsPageData {
     success: boolean;
     data: NotificationItem[];
     pagination: { hasNextPage: boolean };
+}
+
+interface InfiniteNotificationsData {
+    pages: NotificationsPageData[];
+    pageParams: number[];
 }
 
 export function handleNotification(
@@ -17,15 +22,27 @@ export function handleNotification(
     const items = Array.isArray(payload) ? payload : [payload];
     if (items.length === 0) return;
     
-    // Optimistically add the new notification in the query
-    queryClient.setQueryData<NotificationsQueryData>(["notifications"], (old) => {
-        if (!old) return old;
+    // Optimistically add the new notification into the first page of the infinite query
+    queryClient.setQueryData<InfiniteNotificationsData>(["notifications"], (old) => {
+        if (!old || !old.pages || old.pages.length === 0) return old;
 
-        const existingIds = new Set(old.data.map((n) => n._id));
+        const existingIds = new Set(
+            old.pages.flatMap((page) => page.data.map((n) => n._id))
+        );
         const fresh = items.filter((n) => !existingIds.has(n._id));
 
         if (fresh.length === 0) return old;
-        return { ...old, data: [...fresh, ...old.data] };
+
+        // Prepend new notifications to the first page
+        const updatedFirstPage: NotificationsPageData = {
+            ...old.pages[0],
+            data: [...fresh, ...old.pages[0].data],
+        };
+
+        return {
+            ...old,
+            pages: [updatedFirstPage, ...old.pages.slice(1)],
+        };
     });
 
     // Invalidate the query to refetch the api
