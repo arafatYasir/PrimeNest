@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Bell, AlertCircle, RefreshCw, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
 import { fetchNotifications } from "@/lib/apiCalls";
 import type { NotificationItem } from "@/types/global";
@@ -22,16 +22,62 @@ const NavbarNotifications = () => {
     // Get user's token
     const { getToken } = useAuth();
 
-    const { data, isLoading, isError, error, refetch, isFetching } = useQuery<NotificationResponse>({
+    const {
+        data,
+        isLoading,
+        isError,
+        error,
+        refetch,
+        isFetching,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage
+    } = useInfiniteQuery({
         queryKey: ["notifications"],
-        queryFn: async ({ signal }) => {
+        queryFn: async ({ pageParam, signal }): Promise<NotificationResponse> => {
             const token = await getToken();
-            return fetchNotifications(token ?? "", 1, 10, signal);
+            return fetchNotifications(token ?? "", pageParam as number, 10, signal);
         },
+        initialPageParam: 1,
+        getNextPageParam: (lastPage: NotificationResponse, allPages) => {
+            return lastPage.pagination.hasNextPage ? allPages.length + 1 : undefined;
+        }
     });
 
-    const notifications: NotificationItem[] = data?.data ?? [];
+    // Extra hooks
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
+    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+
+    const notifications: NotificationItem[] = data?.pages.flatMap((page) => page.data) ?? [];
     const unreadCount = notifications.filter((n) => !n.isRead).length;
+
+    // Handle infinite scrolling of notifications
+    useEffect(() => {
+        // If no pages are available or already fetching don't listen to observer
+        if (!hasNextPage || isFetchingNextPage) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                fetchNextPage();
+            }
+        }, {
+            root: scrollContainerRef.current,
+            rootMargin: "0px",
+            threshold: 0.1
+        });
+
+        const sentinel = sentinelRef.current;
+
+        if (sentinel) {
+            observer.observe(sentinel);
+        }
+
+        return () => {
+            if (sentinel) {
+                observer.unobserve(sentinel);
+            }
+        }
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     // Handle outside click to close the modal
     useEffect(() => {
@@ -131,7 +177,7 @@ const NavbarNotifications = () => {
                     </div>
 
                     {/* ---- Content Body ---- */}
-                    <div className="max-h-100 overflow-y-auto overscroll-contain">
+                    <div ref={scrollContainerRef} className="max-h-100 overflow-y-auto overscroll-contain">
                         {/* ---- Loading State ---- */}
                         {isLoading && (
                             <div className="flex flex-col divide-y divide-border/50 p-1">
@@ -204,6 +250,18 @@ const NavbarNotifications = () => {
                                         onClick={() => setIsOpen(false)}
                                     />
                                 ))}
+                            </div>
+                        )}
+
+                        {/* ---- Infinite Scroll Sentinel & Loader ---- */}
+                        {(!isLoading && !isError && hasNextPage) && (
+                            <div ref={sentinelRef} className="flex justify-center py-3">
+                                {isFetchingNextPage && (
+                                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                                        <RefreshCw className="size-3.5 animate-spin" />
+                                        <span>Loading more...</span>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
