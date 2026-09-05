@@ -15,6 +15,7 @@ import { getOptimizedImageUrl } from "@/lib/utils";
 interface DashboardPropertyProps {
   property: Property;
   onDelete: (id: string) => void;
+  onEdit: (id: string) => void;
 }
 
 const STATUS_STYLES = {
@@ -43,7 +44,7 @@ const STATUS_STYLES = {
 const formatPrice = (price: number, listingType: string) =>
   `$${price.toLocaleString()}${listingType === "For Rent" ? "/mo" : ""}`;
 
-export default function DashboardProperty({ property, onDelete }: DashboardPropertyProps) {
+export default function DashboardProperty({ property, onDelete, onEdit }: DashboardPropertyProps) {
   const {
     _id,
     title,
@@ -164,15 +165,17 @@ export default function DashboardProperty({ property, onDelete }: DashboardPrope
           } />
 
           <DropdownMenuContent align="end" sideOffset={2}>
-            <DropdownMenuItem render={<Link to={`/properties/${_id}`} />}>
-              <Eye className="mr-2 h-3.5 w-3.5 text-text" />
-              <span className="text-text">View</span>
+            <DropdownMenuItem>
+              <Link to={`/properties/${_id}`} className="flex items-center gap-4">
+                <Eye className="h-3.5 w-3.5 text-text" />
+                <span className="text-text">View</span>
+              </Link>
             </DropdownMenuItem>
 
             {/* ---- Show Edit Option Only If Property Is Not Sold ---- */}
             {
-              status !== "Sold" && (
-                <DropdownMenuItem>
+              (status !== "Sold") && (
+                <DropdownMenuItem onClick={() => onEdit(_id)}>
                   <Edit3 className="mr-2 h-3.5 w-3.5 text-text" />
                   <span className="text-text">Edit</span>
                 </DropdownMenuItem>

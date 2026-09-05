@@ -14,12 +14,14 @@ import { sortOptions } from "@/lib/data";
 import { toast } from "sonner";
 import NotFound from "../NotFound";
 import DashboardError from "../DashboardError";
+import DashboardPropertyEditModal from "./DashboardPropertyEditModal";
 
 const DashboardProperties = () => {
     // States
     const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState("None");
     const [deletePropertyId, setDeletePropertyId] = useState<string | null>(null);
+    const [editPropertyId, setEditPropertyId] = useState<string | null>(null);
 
     const queryClient = useQueryClient();
 
@@ -45,7 +47,7 @@ const DashboardProperties = () => {
             await queryClient.cancelQueries({ queryKey: ["my-properties", page, sortBy] });
             const previousProperties = queryClient.getQueryData(["my-properties", page, sortBy]);
 
-            queryClient.setQueryData(["my-properties", page, sortBy], (old: any) => ({
+            queryClient.setQueryData(["my-properties", page, sortBy], (old: { properties: Property[] }) => ({
                 ...old,
                 properties: old?.properties.filter((p: Property) => p._id !== id)
             }));
@@ -69,6 +71,7 @@ const DashboardProperties = () => {
         }
     });
 
+    // Scroll to the top of the page on first load
     useEffect(() => {
         window.scrollTo({ top: 0 });
     }, [page]);
@@ -76,6 +79,10 @@ const DashboardProperties = () => {
     const handleDeleteProperty = (id: string) => {
         setDeletePropertyId(id);
     };
+
+    const handleEditProperty = (id: string) => {
+        setEditPropertyId(id);
+    }
 
     const confirmDelete = () => {
         if (deletePropertyId) {
@@ -161,6 +168,7 @@ const DashboardProperties = () => {
                                 key={property._id}
                                 property={property}
                                 onDelete={handleDeleteProperty}
+                                onEdit={handleEditProperty}
                             />
                         ))
                     )
@@ -196,6 +204,7 @@ const DashboardProperties = () => {
                 )
             }
 
+            {/* ---- Property Delete Confirmation Modal ---- */}
             <ConfirmationModal
                 isOpen={deletePropertyId !== null}
                 title="Delete Property"
@@ -205,6 +214,11 @@ const DashboardProperties = () => {
                 onClose={() => setDeletePropertyId(null)}
                 isLoading={deleteMutation.isPending}
             />
+
+            {/* ---- Property Edit Modal ---- */}
+            {
+                editPropertyId && <DashboardPropertyEditModal id={editPropertyId} onClose={() => setEditPropertyId(null)} />
+            }
         </div>
     );
 };

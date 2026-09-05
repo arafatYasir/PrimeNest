@@ -11,7 +11,6 @@ export const profileSchema = z.object({
     bio: z.string().trim().min(80, "Bio must be at least 80 characters long."),
     profilePic: z.string().optional()
 });
-
 export type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export const propertySchema = z.object({
@@ -32,5 +31,9 @@ export const propertySchema = z.object({
     features: z.array(z.string()).min(2, "You must add at least 2 features").max(10, "You can add 10 features maximum"),
     images: z.array(z.file()).min(2, "You must upload at least 2 images").max(10, "You can upload 10 images maximum"),
 });
-
 export type PropertyFormValues = z.infer<typeof propertySchema>;
+
+export const propertyEditSchema = propertySchema.extend({
+    images: z.array(z.file()).optional(),
+});
+export type PropertyEditFormValues = z.infer<typeof propertyEditSchema>;

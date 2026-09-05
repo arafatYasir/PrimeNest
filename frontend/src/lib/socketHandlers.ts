@@ -4,6 +4,7 @@ import type { Socket } from "socket.io-client";
 import type { NotificationItem } from "@/types/global";
 import { useAuthStore } from "@/stores/useAuthStore";
 
+// Object Interfaces
 interface NotificationsPageData {
     success: boolean;
     data: NotificationItem[];
@@ -15,6 +16,7 @@ interface InfiniteNotificationsData {
     pageParams: number[];
 }
 
+// ---- Handler Functions ----
 export function handleNotification(
     payload: NotificationItem | NotificationItem[],
     queryClient: QueryClient
