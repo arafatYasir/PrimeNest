@@ -208,3 +208,16 @@ export const dashboardQuickActions = [
         to: "/dashboard/saved",
     },
 ];
+
+export const SUGGESTED_FEATURES = [
+    "Swimming Pool",
+    "Garden",
+    "Garage",
+    "Air Conditioning",
+    "Gym",
+    "Security System",
+    "Solar Panels",
+    "Balcony",
+    "Pet Friendly",
+    "High-Speed Internet",
+];

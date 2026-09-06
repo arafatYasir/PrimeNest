@@ -37,19 +37,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
 import { toast } from "sonner";
 import { createProperty } from "@/lib/apiCalls";
-
-const SUGGESTED_FEATURES = [
-    "Swimming Pool",
-    "Garden",
-    "Garage",
-    "Air Conditioning",
-    "Gym",
-    "Security System",
-    "Solar Panels",
-    "Balcony",
-    "Pet Friendly",
-    "High-Speed Internet"
-];
+import { SUGGESTED_FEATURES } from "@/lib/data";
 
 const AddPropertyForm = () => {
     // States

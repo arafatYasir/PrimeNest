@@ -14,7 +14,7 @@ import { sortOptions } from "@/lib/data";
 import { toast } from "sonner";
 import NotFound from "../NotFound";
 import DashboardError from "../DashboardError";
-import DashboardPropertyEditModal from "./DashboardPropertyEditModal";
+import DashboardPropertyEditModal from "./edit property/DashboardPropertyEditModal";
 
 const DashboardProperties = () => {
     // States

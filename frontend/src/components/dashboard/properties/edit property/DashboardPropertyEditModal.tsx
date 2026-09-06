@@ -35,22 +35,10 @@ import {
     Check,
     RefreshCw,
 } from "lucide-react";
-import PropertyLocationMap from "../add property/PropertyLocationMap";
-import DashboardError from "../DashboardError";
-import { Skeleton } from "@/components/ui/skeleton";
-
-const SUGGESTED_FEATURES = [
-    "Swimming Pool",
-    "Garden",
-    "Garage",
-    "Air Conditioning",
-    "Gym",
-    "Security System",
-    "Solar Panels",
-    "Balcony",
-    "Pet Friendly",
-    "High-Speed Internet",
-];
+import PropertyLocationMap from "../../add property/PropertyLocationMap";
+import DashboardError from "../../DashboardError";
+import DashboardPropertyEditModalSkeleton from "./DashboardPropertyEditModalSkeleton";
+import { SUGGESTED_FEATURES } from "@/lib/data";
 
 interface Props {
     id: string;
@@ -180,8 +168,8 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
         );
         if (validImageFiles.length === 0) return;
 
-        const currentImages = watch("images");
-        const sizeLeft = 10 - currentImages.length;
+        const currentImages = watch("images") ?? [];
+        const sizeLeft = 10 - currentImages.length - existingImages.length;
         if (sizeLeft <= 0) return;
 
         const filesToAdd = validImageFiles.slice(0, sizeLeft);
@@ -226,7 +214,7 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
     };
 
     const handleRemoveImage = (indexToRemove: number) => {
-        const currentImages = watch("images");
+        const currentImages = watch("images") ?? [];
         const updated = currentImages.filter((_, idx) => idx !== indexToRemove);
         setValue("images", updated, { shouldValidate: true });
     };
@@ -309,24 +297,7 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
                     "flex-1 p-6 sm:p-8",
                     (isSelectOpen[0] || isSelectOpen[1]) ? "overflow-hidden" : "overflow-y-auto"
                 )}>
-                    {isLoading && (
-                        <div className="space-y-6 animate-pulse">
-                            <div className="space-y-4">
-                                <Skeleton className="h-6 w-48 rounded" />
-                                <Skeleton className="h-10 w-full rounded-lg" />
-                                <Skeleton className="h-28 w-full rounded-lg" />
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <Skeleton className="h-10 w-full rounded-lg" />
-                                <Skeleton className="h-10 w-full rounded-lg" />
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <Skeleton className="h-10 w-full rounded-lg" />
-                                <Skeleton className="h-10 w-full rounded-lg" />
-                                <Skeleton className="h-10 w-full rounded-lg" />
-                            </div>
-                        </div>
-                    )}
+                    {isLoading && <DashboardPropertyEditModalSkeleton />}
 
                     {isError && (
                         <div className="py-8">
@@ -786,6 +757,7 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
                                         <div className="flex flex-wrap gap-2">
                                             {SUGGESTED_FEATURES.map((suggestion) => {
                                                 const isSelected = features.includes(suggestion);
+
                                                 return (
                                                     <button
                                                         key={suggestion}
