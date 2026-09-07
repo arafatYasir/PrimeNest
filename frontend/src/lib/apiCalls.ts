@@ -235,6 +235,22 @@ export const createProperty = async (token: string, formData: FormData) => {
     return data;
 }
 
+export const editProperty = async (id: string, token: string, formData: FormData) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/${id}`, {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+        body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to update property");
+    }
+}
+
 export const fetchPendingProperties = async (token: string, page?: number, sortBy?: string) => {
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/properties/pending?page=${page}&sortBy=${sortBy || "None"}`, {
         headers: {

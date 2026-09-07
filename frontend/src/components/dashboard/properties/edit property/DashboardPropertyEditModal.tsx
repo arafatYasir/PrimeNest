@@ -1,6 +1,6 @@
-import { fetchProperty } from "@/lib/apiCalls";
+import { editProperty, fetchProperty } from "@/lib/apiCalls";
 import type { Property } from "@/types/global";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,11 +34,14 @@ import {
     X,
     Check,
     RefreshCw,
+    Loader2,
 } from "lucide-react";
 import PropertyLocationMap from "../../add property/PropertyLocationMap";
 import DashboardError from "../../DashboardError";
 import DashboardPropertyEditModalSkeleton from "./DashboardPropertyEditModalSkeleton";
 import { SUGGESTED_FEATURES } from "@/lib/data";
+import { useAuth } from "@clerk/react";
+import { toast } from "sonner";
 
 interface Props {
     id: string;
@@ -49,10 +52,59 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
     // States
     const [isSelectOpen, setIsSelectOpen] = useState<[boolean, boolean]>([false, false]);
 
+    // Get the user's token
+    const { getToken } = useAuth();
+    const queryClient = useQueryClient();
+
     // Fetch the property that is selected for edit
     const { data: property, isLoading, isError, error, refetch } = useQuery<Property>({
         queryFn: () => fetchProperty(id),
         queryKey: ["edit-property", id],
+    });
+
+    // Edit property mutation
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (values: PropertyEditFormValues) => {
+            const token = await getToken();
+            const formData = new FormData();
+
+            formData.append("title", values.title);
+            formData.append("description", values.description);
+            formData.append("propertyType", values.propertyType);
+            formData.append("listingType", values.listingType);
+            formData.append("price", values.price.toString());
+            formData.append("area", values.area.toString());
+            formData.append("yearBuilt", values.yearBuilt.toString());
+
+            if (watch("propertyType") !== "Land") {
+                formData.append("beds", (values.beds ?? 1).toString());
+                formData.append("baths", (values.baths ?? 1).toString());
+            }
+
+            formData.append("country", values.country);
+            formData.append("city", values.city);
+            formData.append("fullAddress", values.fullAddress);
+            formData.append("lat", values.lat.toString());
+            formData.append("lon", values.lon.toString());
+            values.features.forEach((feature) => formData.append("features", feature));
+            if (values.images) {
+                values.images.forEach((image) => formData.append("images", image));
+            }
+
+            return editProperty(id, token ?? "", formData);
+        },
+        onSuccess: () => {
+            toast.success("Property Updated!", {
+                className: "text-success!"
+            });
+            queryClient.invalidateQueries({ queryKey: ["my-properties"] });
+            onClose();
+        },
+        onError: (err) => {
+            toast.error(err.message, {
+                className: "text-error!"
+            });
+        }
     });
 
     const modalRef = useRef<HTMLDivElement>(null);
@@ -315,7 +367,7 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
 
                     {!isLoading && !isError && (
                         <form
-                            onSubmit={handleSubmit(() => { })}
+                            onSubmit={handleSubmit((data) => mutate(data))}
                             className="space-y-8"
                         >
                             {/* ---- Section 1: Basic Information ---- */}
@@ -945,9 +997,13 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
                                 >
                                     Cancel
                                 </Button>
-                                <Button variant="secondary" size="lg" type="submit">
-                                    <Building2 className="size-4" />
-                                    Save Changes
+                                <Button variant="secondary" size="lg" type="submit" disabled={isPending}>
+                                    {isPending ? (
+                                        <Loader2 className="size-4 animate-spin" />
+                                    ) : (
+                                        <Building2 className="size-4" />
+                                    )}
+                                    {isPending ? "Saving..." : "Save Changes"}
                                 </Button>
                             </div>
                         </form>
