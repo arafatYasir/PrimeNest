@@ -191,8 +191,8 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
     }, [onClose]);
 
     // Variables
-    const images = watch("images");
-    const features = watch("features");
+    const images = watch("images") ?? [];
+    const features = watch("features") ?? [];
 
     const objectUrls = useMemo(() => images.map((file) => URL.createObjectURL(file)), [images]);
 
