@@ -424,6 +424,7 @@ export async function editProperty(req, res, next) {
     try {
         const userId = req.user._id;
         const propertyId = req.params.id;
+        const userRole = req.user.role;
 
         const {
             title,
@@ -471,7 +472,7 @@ export async function editProperty(req, res, next) {
                 lon,
             },
             features,
-            status: "Pending"
+            status: userRole === "admin" ? "Available" : "Pending"
         }, { session });
 
         // Count images and upload to cloudinary if any image is left
