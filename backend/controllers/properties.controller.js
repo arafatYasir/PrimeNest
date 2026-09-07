@@ -522,7 +522,7 @@ export async function editProperty(req, res, next) {
                 userId,
                 type: "listing_updated",
                 message: activityMessageMap["listing_updated"](property.title),
-                link: `/properties/${propertyId}`
+                link: `/dashboard/properties`
             }
         ], { session });
 
