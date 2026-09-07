@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty, createProperty, approveProperty, getAllPendingProperties, rejectProperty } from "../controllers/properties.controller.js";
+import { getFeaturedProperties, getProperty, getAllProperties, getPropertiesStatuses, getMyProperties, deleteProperty, createProperty, approveProperty, getAllPendingProperties, rejectProperty, editProperty } from "../controllers/properties.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
 import { requireAdmin } from "../middlewares/requireAdmin.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js"
@@ -28,6 +28,9 @@ propertiesRouter.get("/:id", getProperty);
 
 // Create A New Property
 propertiesRouter.post("/", protectRoute, upload.array("images", 10), validate(propertySchema), createProperty);
+
+// Edit A Property
+propertiesRouter.put("/:id", protectRoute, upload.array("images", 8), validate(propertySchema), editProperty);
 
 // Delete A Specific Property
 propertiesRouter.delete("/:id", protectRoute, deleteProperty);

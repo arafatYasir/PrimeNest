@@ -306,6 +306,13 @@ export async function createProperty(req, res, next) {
         const userId = req.user._id;
         const userRole = req.user.role;
 
+        // If user uploads less than 2 images
+        if (!req.files || req.files.length < 2) {
+            const error = new Error("At least 2 images are required!");
+            error.statusCode = 400;
+            throw error;
+        }
+
         const {
             title,
             description,
@@ -352,7 +359,7 @@ export async function createProperty(req, res, next) {
         createdProperty = newProperty;
 
         // Upload the images received from the multer middleware to Cloudinary
-        const files = req.files || (Array.isArray(req.body.images) ? req.body.images : []);
+        const files = req.files;
         let imageUrls = [];
 
         if (files && files.length > 0) {
@@ -398,6 +405,134 @@ export async function createProperty(req, res, next) {
             message: "Property Created!",
         });
     } catch (e) {
+        if (uploadedPublicIds.length > 0) {
+            await cloudinary.api.delete_resources(uploadedPublicIds).catch(() => { });
+        }
+        await session.abortTransaction();
+        next(e);
+    } finally {
+        session.endSession();
+    }
+}
+
+export async function editProperty(req, res, next) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    let uploadedPublicIds = [];
+
+    try {
+        const userId = req.user._id;
+        const propertyId = req.params.id;
+
+        const {
+            title,
+            description,
+            propertyType,
+            listingType,
+            price,
+            area,
+            yearBuilt,
+            beds,
+            baths,
+            country,
+            city,
+            fullAddress,
+            lat,
+            lon,
+            features
+        } = req.body;
+
+        const property = await Property.findById(propertyId);
+
+        // Check if the property belongs to the requested user
+        if (property.seller.toString() !== userId.toString()) {
+            const error = new Error("You are not authorized to edit this property!");
+            error.statusCode = 403;
+            throw error;
+        }
+
+        // Update property document in MongoDB
+        await Property.findByIdAndUpdate(propertyId, {
+            title,
+            description,
+            propertyType,
+            listingType,
+            price,
+            area,
+            yearBuilt,
+            beds: beds ?? null,
+            baths: baths ?? null,
+            location: {
+                country,
+                city,
+                fullAddress,
+                lat,
+                lon,
+            },
+            features,
+            status: "Pending"
+        }, { session });
+
+        // Count images and upload to cloudinary if any image is left
+        const remainingSize = 10 - property.images.length;
+        const files = req.files.slice(0, remainingSize);
+        let imageUrls = [];
+
+        if (files && files.length > 0) {
+            const uploadPromises = files.map((file) => {
+                return new Promise((resolve, reject) => {
+                    if (!file.buffer) {
+                        return reject(new Error("File buffer missing for upload"));
+                    }
+
+                    const stream = cloudinary.uploader.upload_stream(
+                        {
+                            folder: `PrimeNest/${userId}/property-photos/${propertyId}`
+                        },
+                        (err, result) => {
+                            if (err) return reject(err);
+                            resolve({
+                                url: result.secure_url,
+                                publicId: result.public_id
+                            });
+                        }
+                    );
+
+                    stream.end(file.buffer);
+                })
+            });
+
+            const uploadedFiles = await Promise.all(uploadPromises);
+            imageUrls = uploadedFiles.map((file) => file.url);
+            uploadedPublicIds = uploadedFiles.map((file) => file.publicId);
+
+            const allImages = [...property.images, ...imageUrls];
+
+            // Update property document to include new uploaded image urls
+            await Property.findByIdAndUpdate(propertyId, {
+                images: allImages
+            }, { session });
+        }
+
+        // Create activity for listing_updated
+        await Activity.create([
+            {
+                userId,
+                type: "listing_updated",
+                message: activityMessageMap["listing_updated"](property.title),
+                link: `/properties/${propertyId}`
+            }
+        ], { session });
+
+        await session.commitTransaction();
+
+        return res.status(201).json({
+            success: true,
+            message: "Property Updated!",
+        });
+    }
+    catch (e) {
         if (uploadedPublicIds.length > 0) {
             await cloudinary.api.delete_resources(uploadedPublicIds).catch(() => { });
         }

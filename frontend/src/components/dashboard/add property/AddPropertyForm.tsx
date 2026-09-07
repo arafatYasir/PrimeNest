@@ -679,7 +679,7 @@ const AddPropertyForm = () => {
                     <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-section border text-text-secondary">
                         Max 10 images
                     </span>
-                </div>                
+                </div>
 
                 {/* ---- Image Dropzone ---- */}
                 <div
