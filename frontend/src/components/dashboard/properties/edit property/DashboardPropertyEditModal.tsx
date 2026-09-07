@@ -111,7 +111,6 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
     const imageInputRef = useRef<HTMLInputElement | null>(null);
 
     // States
-    const [objectUrls, setObjectUrls] = useState<string[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const [featureInput, setFeatureInput] = useState("");
 
@@ -192,20 +191,17 @@ const DashboardPropertyEditModal = ({ id, onClose }: Props) => {
     }, [onClose]);
 
     // Variables
-    const rawImages = watch("images");
-    const images = useMemo(() => rawImages || [], [rawImages]);
-    const features = watch("features") || [];
+    const images = watch("images");
+    const features = watch("features");
 
-    // Create object urls from newly selected files
+    const objectUrls = useMemo(() => images.map((file) => URL.createObjectURL(file)), [images]);
+
+    // Cleanup object urls when images change or component unmounts
     useEffect(() => {
-        const urls = images.map((file) => URL.createObjectURL(file));
-        setObjectUrls(urls);
-
-        // Cleanup: revoke object urls
         return () => {
-            urls.forEach((url) => URL.revokeObjectURL(url));
+            objectUrls.forEach((url) => URL.revokeObjectURL(url));
         };
-    }, [images]);
+    }, [objectUrls]);
 
     // Image handlers
     const handleTriggerInput = () => {
