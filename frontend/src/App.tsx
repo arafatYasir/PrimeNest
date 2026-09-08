@@ -14,6 +14,7 @@ import DashboardSavedPage from "./pages/DashboardSavedPage"
 import DashboardProfilePage from "./pages/DashboardProfilePage"
 import DashboardAddPropertyPage from "./pages/DashboardAddPropertyPage"
 import DashboardPendingPropertiesPage from "./pages/DashboardPendingPropertiesPage"
+import DashboardInboxPage from "./pages/DashboardInboxPage"
 
 const App = () => {
   // Initialize user authentication
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/dashboard/add-property" element={<DashboardAddPropertyPage />} />
           <Route path="/dashboard/saved" element={<DashboardSavedPage />} />
           <Route path="/dashboard/profile" element={<DashboardProfilePage />} />
+          <Route path="/dashboard/inbox" element={<DashboardInboxPage />} />
           
           {/* ---- Admin Routes ---- */}
           <Route path="/dashboard/admin/pending-properties" element={<DashboardPendingPropertiesPage />} />
