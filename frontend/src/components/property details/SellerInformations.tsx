@@ -96,43 +96,41 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
                 </div>
             </div>
 
-            {/* ---- Action Button ---- */}
-            <div>
-                {/* ---- If user data is loading ---- */}
-                {
-                    isLoading && (
-                        <Skeleton className="w-full h-9 xs:h-10 rounded-md pt-2" />
-                    )
-                }
+            {/* ---- Contact Button ---- */}
+            {/* ---- If user data is loading ---- */}
+            {
+                isLoading && (
+                    <Skeleton className="w-full h-9 xs:h-10 rounded-md pt-2" />
+                )
+            }
 
-                {/* ---- If user is not signed in ---- */}
-                {
-                    (!isLoading && !user) && (
-                        <SignInButton mode="modal">
-                            <Button
-                                size="lg"
-                                className="w-full h-9 xs:h-10 mt-2"
-                            >
-                                <MessageSquare className="size-4 mr-1" />
-                                Sign In to Contact Agent
-                            </Button>
-                        </SignInButton>
-                    )
-                }
-
-                {/* ---- If user is signed in ---- */}
-                {
-                    (!isLoading && user && (user._id !== seller._id)) && (
+            {/* ---- If user is not signed in ---- */}
+            {
+                (!isLoading && !user) && (
+                    <SignInButton mode="modal">
                         <Button
                             size="lg"
                             className="w-full h-9 xs:h-10 mt-2"
                         >
                             <MessageSquare className="size-4 mr-1" />
-                            Contact Agent
+                            Sign In to Contact Agent
                         </Button>
-                    )
-                }
-            </div>
+                    </SignInButton>
+                )
+            }
+
+            {/* ---- If user is signed in and he is not the property owner ---- */}
+            {
+                (!isLoading && user && (user._id !== seller._id)) && (
+                    <Button
+                        size="lg"
+                        className="w-full h-9 xs:h-10 mt-2"
+                    >
+                        <MessageSquare className="size-4 mr-1" />
+                        Contact Agent
+                    </Button>
+                )
+            }
         </div>
     );
 }
