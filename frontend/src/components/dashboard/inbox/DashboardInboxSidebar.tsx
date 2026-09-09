@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, SquarePen, MessageSquare } from "lucide-react";
+import { Search, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,15 +42,8 @@ const DashboardInboxSidebar = () => {
             {/* ---- Heading ---- */}
             <div className="flex items-center justify-between border-b border-border px-5 py-4">
                 <h2 className="font-heading text-xl font-bold tracking-tight text-text">
-                    Inbox
+                    Lead Inbox
                 </h2>
-
-                <Button
-                    aria-label="Start new chat"
-                >
-                    <SquarePen className="size-3.5" />
-                    New Chat
-                </Button>
             </div>
 
             {/* ---- Search Bar ---- */}
