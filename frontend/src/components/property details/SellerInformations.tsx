@@ -17,10 +17,10 @@ interface SellerInfo {
 }
 
 export default function SellerInformations({ seller }: { seller: SellerInfo }) {
-    if (!seller) return null;
-
     const user = useAuthStore((state) => state.user);
     const isLoading = useAuthStore((state) => state.isLoading);
+
+    if (!seller) return null;
 
     const {
         fullName,
@@ -97,11 +97,11 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
             </div>
 
             {/* ---- Action Button ---- */}
-            <div className="pt-2">
+            <div>
                 {/* ---- If user data is loading ---- */}
                 {
                     isLoading && (
-                        <Skeleton className="w-full h-9 xs:h-10 rounded-md" />
+                        <Skeleton className="w-full h-9 xs:h-10 rounded-md pt-2" />
                     )
                 }
 
@@ -111,7 +111,7 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
                         <SignInButton mode="modal">
                             <Button
                                 size="lg"
-                                className="w-full h-9 xs:h-10"
+                                className="w-full h-9 xs:h-10 mt-2"
                             >
                                 <MessageSquare className="size-4 mr-1" />
                                 Sign In to Contact Agent
@@ -122,10 +122,10 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
 
                 {/* ---- If user is signed in ---- */}
                 {
-                    (!isLoading && user) && (
+                    (!isLoading && user && (user._id !== seller._id)) && (
                         <Button
                             size="lg"
-                            className="w-full h-9 xs:h-10"
+                            className="w-full h-9 xs:h-10 mt-2"
                         >
                             <MessageSquare className="size-4 mr-1" />
                             Contact Agent
