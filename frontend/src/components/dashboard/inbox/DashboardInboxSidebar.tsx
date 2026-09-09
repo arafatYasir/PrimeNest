@@ -36,8 +36,7 @@ const DashboardInboxSidebar = () => {
     return (
         <aside
             className={cn(
-                "flex min-h-screen flex-col border-r border-border rounded-l-xl bg-card",
-                "md:w-80 lg:w-88 xl:w-96",
+                "flex min-h-screen flex-col border-r border-border rounded-l-xl bg-card flex-1"
             )}
         >
             {/* ---- Heading ---- */}
@@ -85,7 +84,7 @@ const DashboardInboxSidebar = () => {
 
             <ScrollArea className="flex-1">
                 {/* ---- Conversation empty state ---- */}
-                <div className="flex h-full flex-col items-center justify-center px-8 py-20 text-center">
+                <div className="flex h-full flex-col items-center px-8 py-20 text-center">
                     <div className="flex size-12 items-center justify-center rounded-2xl bg-section">
                         <MessageSquare className="size-6 text-text-secondary" />
                     </div>

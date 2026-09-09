@@ -1,3 +1,4 @@
+import DashboardInboxChat from "@/components/dashboard/inbox/DashboardInboxChat";
 import DashboardInboxSidebar from "@/components/dashboard/inbox/DashboardInboxSidebar"
 import { useEffect } from "react"
 
@@ -8,8 +9,9 @@ const DashboardInboxPage = () => {
     }, []);
 
     return (
-        <div className="shadow-xl">
+        <div className="flex border rounded-xl shadow-lg shadow-primary/15">
             <DashboardInboxSidebar />
+            <DashboardInboxChat />
         </div>
     )
 }
