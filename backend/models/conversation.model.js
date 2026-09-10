@@ -9,6 +9,10 @@ const conversationSchema = new Schema(
                 required: true
             }
         ],
+        participantHash: {
+            type: String,
+            required: true,
+        },
         propertyId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Property",
@@ -17,21 +21,19 @@ const conversationSchema = new Schema(
         lastMessage: {
             text: {
                 type: String,
-                required: true
             },
             senderId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-                required: true
+                ref: "User"
             },
             createdAt: {
-                type: Date,
-                required: true
+                type: Date
             }
         },
         unreadCount: {
             type: Number,
-            required: true
+            required: true,
+            default: 0
         }
     },
     {
@@ -39,4 +41,7 @@ const conversationSchema = new Schema(
     }
 );
 
-export const Conversation = mongoose.model("Conversation", conversationSchema);
+conversationSchema.index({ propertyId: 1, participantHash: 1 }, { unique: true });
+
+const Conversation = mongoose.model("Conversation", conversationSchema);
+export default Conversation;

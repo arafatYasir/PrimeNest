@@ -2,7 +2,7 @@ import { Router } from "express";
 import { protectRoute } from "../middlewares/auth.middleware.js"
 import { getActivities } from "../controllers/activities.controller.js";
 
-const activitiesRouter = new Router();
+const activitiesRouter = Router();
 
 activitiesRouter.get("/", protectRoute, getActivities);
 
