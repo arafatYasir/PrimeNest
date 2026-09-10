@@ -109,7 +109,7 @@ const AddPropertyForm = () => {
             reset();
         },
         onError: (err) => {
-            toast.error(err.message || "Failed to update profile photo", {
+            toast.error(err.message, {
                 className: "text-error!"
             });
         }

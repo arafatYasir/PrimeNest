@@ -1,25 +1,14 @@
-import { Mail, Phone, Calendar, MessageSquare } from "lucide-react";
-import { Button } from "../ui/button";
-import { useAuthStore } from "@/stores/useAuthStore";
-import { SignInButton } from "@clerk/react";
-import { Skeleton } from "../ui/skeleton";
+import { Mail, Phone, Calendar } from "lucide-react";
 import { getOptimizedImageUrl } from "@/lib/utils";
+import type { SellerInfo } from "@/types/global";
+import ContactAgentBtn from "./ContactAgentBtn";
 
-interface SellerInfo {
-    _id: string;
-    fullName: string;
-    email: string;
-    phone?: string;
-    profilePic?: string;
-    bio?: string;
-    createdAt: string;
-    updatedAt: string;
+interface Props {
+    seller: SellerInfo;
+    propertyId: string;
 }
 
-export default function SellerInformations({ seller }: { seller: SellerInfo }) {
-    const user = useAuthStore((state) => state.user);
-    const isLoading = useAuthStore((state) => state.isLoading);
-
+export default function SellerInformations({ seller, propertyId }: Props) {
     if (!seller) return null;
 
     const {
@@ -97,40 +86,7 @@ export default function SellerInformations({ seller }: { seller: SellerInfo }) {
             </div>
 
             {/* ---- Contact Button ---- */}
-            {/* ---- If user data is loading ---- */}
-            {
-                isLoading && (
-                    <Skeleton className="w-full h-9 xs:h-10 rounded-md pt-2" />
-                )
-            }
-
-            {/* ---- If user is not signed in ---- */}
-            {
-                (!isLoading && !user) && (
-                    <SignInButton mode="modal">
-                        <Button
-                            size="lg"
-                            className="w-full h-9 xs:h-10 mt-2"
-                        >
-                            <MessageSquare className="size-4 mr-1" />
-                            Sign In to Contact Agent
-                        </Button>
-                    </SignInButton>
-                )
-            }
-
-            {/* ---- If user is signed in and he is not the property owner ---- */}
-            {
-                (!isLoading && user && (user._id !== seller._id)) && (
-                    <Button
-                        size="lg"
-                        className="w-full h-9 xs:h-10 mt-2"
-                    >
-                        <MessageSquare className="size-4 mr-1" />
-                        Contact Agent
-                    </Button>
-                )
-            }
+            <ContactAgentBtn sellerId={seller._id} propertyId={propertyId} />
         </div>
     );
 }

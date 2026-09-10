@@ -76,7 +76,7 @@ const PropertyDetailsPage = () => {
 
                     {/* ---- Right Side ---- */}
                     <div className="lg:col-span-4">
-                        <SellerInformations seller={sellerInfo} />
+                        <SellerInformations seller={sellerInfo} propertyId={id} />
                     </div>
                 </div>
 

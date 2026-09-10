@@ -110,3 +110,14 @@ export interface AllPropertiesParams {
     excludeId?: string;
     limit?: number;
 }
+
+export interface SellerInfo {
+    _id: string;
+    fullName: string;
+    email: string;
+    phone?: string;
+    profilePic?: string;
+    bio?: string;
+    createdAt: string;
+    updatedAt: string;
+}
