@@ -347,3 +347,22 @@ export const markNotificationAsRead = async (token: string, id: string) => {
 
     return data;
 }
+
+export const findOrCreateConversation = async (token: string, sellerId: string, propertyId: string) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/conversations`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ sellerId, propertyId })
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to contact with agent");
+    }
+
+    return data.data;
+}
