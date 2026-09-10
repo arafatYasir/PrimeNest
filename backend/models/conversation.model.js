@@ -13,6 +13,25 @@ const conversationSchema = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Property",
             required: true
+        },
+        lastMessage: {
+            text: {
+                type: String,
+                required: true
+            },
+            senderId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            },
+            createdAt: {
+                type: Date,
+                required: true
+            }
+        },
+        unreadCount: {
+            type: Number,
+            required: true
         }
     },
     {

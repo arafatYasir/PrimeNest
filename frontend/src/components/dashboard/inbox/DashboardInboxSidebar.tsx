@@ -14,7 +14,7 @@ export interface Conversation {
         createdAt: string;
     } | null;
     unreadCount: number;
-    propertyId?: string;
+    propertyId: string;
     createdAt: string;
     updatedAt: string;
 }
