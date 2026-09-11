@@ -1,12 +1,22 @@
-import { useState } from "react";
-import { Search, MessageSquare } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Search, MessageSquare, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useAuth } from "@clerk/react";
+import { fetchConversations } from "@/lib/apiCalls";
+import type { Conversation } from "@/types/global";
 
 type FilterTab = "all" | "unread" | "favourites";
 
+interface ConversationResponse {
+    success: boolean;
+    data: Conversation[];
+    pagination: { hasNextPage: boolean };
+}
 
 const filterTabs: { label: string; value: FilterTab }[] = [
     { label: "All", value: "all" },
@@ -18,6 +28,49 @@ const DashboardInboxSidebar = () => {
     // States
     const [searchQuery, setSearchQuery] = useState("");
     const [activeFilter, setActiveFilter] = useState<FilterTab>("all");
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+    // Get user's token
+    const { getToken } = useAuth();
+
+    // Query
+    const {
+        data,
+        isLoading,
+        isError,
+        error,
+        isFetchingNextPage,
+        fetchNextPage,
+        hasNextPage
+    } = useInfiniteQuery({
+        queryKey: ["conversations", activeFilter],
+        queryFn: async ({ pageParam }) => {
+            const token = await getToken();
+            return fetchConversations(token ?? "", pageParam as number, 20);
+        },
+        initialPageParam: 1,
+        getNextPageParam: (lastPage: ConversationResponse, allPages) => {
+            return lastPage.pagination.hasNextPage ? allPages.length + 1 : undefined;
+        }
+    });
+
+    const conversations = data?.pages.flatMap((page) => page.data) ?? [];
+
+    // Infinite Scroll
+    useEffect(() => {
+        if (!hasNextPage || isFetchingNextPage) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                fetchNextPage();
+            }
+        }, { threshold: 0.1 });
+
+        const sentinel = sentinelRef.current;
+        if (sentinel) observer.observe(sentinel);
+
+        return () => { if (sentinel) observer.unobserve(sentinel); };
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     return (
         <aside
@@ -62,20 +115,54 @@ const DashboardInboxSidebar = () => {
             </div>
 
             <ScrollArea className="flex-1">
-                {/* ---- Conversation empty state ---- */}
-                <div className="flex h-full flex-col items-center px-8 py-20 text-center">
-                    <div className="flex size-12 items-center justify-center rounded-2xl bg-section">
-                        <MessageSquare className="size-6 text-text-secondary" />
+                {/* ---- Loading State ---- */}
+                {isLoading && (
+                    <div className="flex flex-col gap-2 p-4">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <Skeleton key={i} className="h-16 w-full rounded-xl" />
+                        ))}
                     </div>
+                )}
 
-                    <h3 className="mt-4 text-sm font-semibold text-text">
-                        No conversations yet
-                    </h3>
+                {/* ---- Error State ---- */}
+                {isError && (
+                    <div className="p-8 text-center text-error">
+                        <AlertCircle className="mx-auto size-8 mb-2" />
+                        <p className="text-sm font-medium">Failed to load conversations</p>
+                        <p className="text-xs">{error.message}</p>
+                    </div>
+                )}
 
-                    <p className="mt-1.5 max-w-55 text-xs leading-relaxed text-text-secondary">
-                        Start a chat by visiting a property listing.
-                    </p>
-                </div>
+                {/* ---- Content ---- */}
+                {(!isLoading && !isError && conversations.length > 0) && (
+                    <div className="flex flex-col p-2">
+                        {conversations.map((conversation: Conversation) => (
+                            <div key={conversation._id} className="p-4 border-b">
+                                Conversation {conversation._id}
+                            </div>
+                        ))}
+                        
+                        <div ref={sentinelRef} className="h-4" />
+                        {isFetchingNextPage && <div className="p-4 text-center text-xs">Loading...</div>}
+                    </div>
+                )}
+
+                {/* ---- Empty State ---- */}
+                {(!isLoading && !isError && conversations.length === 0) && (
+                    <div className="flex h-full flex-col items-center px-8 py-20 text-center">
+                        <div className="flex size-12 items-center justify-center rounded-2xl bg-section">
+                            <MessageSquare className="size-6 text-text-secondary" />
+                        </div>
+
+                        <h3 className="mt-4 text-sm font-semibold text-text">
+                            No conversations yet
+                        </h3>
+
+                        <p className="mt-1.5 max-w-55 text-xs leading-relaxed text-text-secondary">
+                            Start a chat by visiting a property listing.
+                        </p>
+                    </div>
+                )}
             </ScrollArea>
         </aside>
     );
