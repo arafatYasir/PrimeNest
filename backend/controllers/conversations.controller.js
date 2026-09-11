@@ -53,3 +53,38 @@ export async function findOrCreateConversation(req, res, next) {
         next(e);
     }
 }
+
+export async function getAllConversations(req, res, next) {
+    try {
+        const userId = req.user._id;
+        let page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 10;
+
+        // If page/limit is negative convert it to absolute value
+        page = Math.abs(page);
+        limit = Math.abs(limit);
+
+        const skip = (page - 1) * limit;
+
+        // Fetch limit + 1 to check for next page efficiently
+        const conversations = await Conversation.find({
+            participants: { $in: [userId] },
+        }).sort({ createdAt: -1, unreadCount: -1 }).skip(skip).limit(limit + 1);
+
+        const hasNextPage = conversations.length > limit;
+
+        // Remove the extra document if it exists
+        const data = hasNextPage ? conversations.slice(0, limit) : conversations;
+
+        return res.status(200).json({
+            success: true,
+            data: data,
+            pagination: {
+                hasNextPage
+            }
+        });
+    }
+    catch (e) {
+        next(e);
+    }
+}
