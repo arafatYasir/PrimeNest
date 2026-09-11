@@ -366,3 +366,21 @@ export const findOrCreateConversation = async (token: string, sellerId: string, 
 
     return data.data;
 }
+
+export const fetchConversations = async (token: string, page: number, limit: number, signal?: AbortSignal) => {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/conversations?page=${page}&limit=${limit}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+        signal
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+        throw new Error(data.message || "Failed to load conversations");
+    }
+
+    return data;
+}

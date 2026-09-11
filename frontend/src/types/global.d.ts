@@ -121,3 +121,18 @@ export interface SellerInfo {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface Conversation {
+    _id: string;
+    participants: string[];
+    participantHash: string;
+    propertyId: string;
+    lastMessage?: {
+        text: string;
+        senderId: string;
+        createdAt: Date;
+    }
+    unreadCount: number;
+    createdAt: Date;
+    updatedAt: Date;
+}

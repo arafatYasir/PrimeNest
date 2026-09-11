@@ -5,20 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-export interface Conversation {
-    _id: string;
-    participants: string[];
-    lastMessage: {
-        text: string;
-        senderId: string;
-        createdAt: string;
-    } | null;
-    unreadCount: number;
-    propertyId: string;
-    createdAt: string;
-    updatedAt: string;
-}
-
 type FilterTab = "all" | "unread" | "favourites";
 
 
