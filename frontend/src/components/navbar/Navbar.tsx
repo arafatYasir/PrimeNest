@@ -95,10 +95,10 @@ export default function Navbar() {
                     {/* ---- Logo (main navbar) ---- */}
                     <Link
                         to="/"
-                        className="group flex items-center gap-2.5"
+                        className="flex items-center gap-2.5"
                         aria-label="PrimeNest Home"
                     >
-                        <span className="flex size-7 xs:size-9 items-center justify-center rounded-xl bg-primary text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
+                        <span className="flex size-7 xs:size-9 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
                             <Home className="size-4 xs:size-5" strokeWidth={2.5} />
                         </span>
                         <span className="font-heading text-lg xs:text-xl font-bold tracking-tight text-primary">
