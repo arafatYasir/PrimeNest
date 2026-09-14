@@ -61,7 +61,7 @@ A dedicated admin-only page to keep listings legitimate:
 
 | Layer | Technology |
 |---|---|
-| **Frontend Framework** | React |
+| **Frontend** | React |
 | **Language** | TypeScript |
 | **State Management** | Zustand |
 | **Data Fetching** | TanStack Query |
