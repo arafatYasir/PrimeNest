@@ -61,21 +61,22 @@ A dedicated admin-only page to keep listings legitimate:
 
 | Layer | Technology |
 |---|---|
-| Frontend Framework | React |
-| Language | TypeScript |
-| Data Fetching | TanStack Query |
-| Styling | Tailwind CSS |
-| UI Components | shadcn/ui |
-| Forms & Validation | React Hook Form, Zod |
-| Maps | React Leaflet |
-| Real-Time Communication | Socket.io |
-| Authentication | Clerk |
-| Payments | Stripe |
-| Image Storage & CDN | Cloudinary |
-| Backend | Node.js, Express |
-| Database | MongoDB |
-| Deployment (Frontend) | Vercel |
-| Deployment (Backend) | Render |
+| **Frontend Framework** | React |
+| **Language** | TypeScript |
+| **State Management** | Zustand |
+| **Data Fetching** | TanStack Query |
+| **Styling** | Tailwind CSS |
+| **UI Components** | shadcn/ui |
+| **Forms & Validation** | React Hook Form, Zod |
+| **Maps** | React Leaflet |
+| **Real-Time Communication** | Socket.io |
+| **Authentication** | Clerk |
+| **Payments** | Stripe |
+| **Image Storage & CDN** | Cloudinary |
+| **Backend** | Node.js, Express |
+| **Database** | MongoDB |
+| **Deployment (Frontend)** | Vercel |
+| **Deployment (Backend)** | Render |
 
 ## 🏗️ Architecture Highlights
 
