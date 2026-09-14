@@ -1,12 +1,11 @@
 # PrimeNest — Real Estate Marketplace
-
-Browse, buy, sell, or rent properties — and talk to the other side in real time, without ever needing a phone number.
+<img width="1905" height="1079" alt="Screenshot 2026-09-14 153352" src="https://github.com/user-attachments/assets/3f64ef4b-08f4-4aac-9e7e-9d6c675c8417" />
 
 PrimeNest is a full-stack real estate marketplace built to close the gap between finding a property and actually reaching the person behind it. Instead of chasing unanswered calls or emails that never get opened, buyers, sellers, and renters connect directly inside the platform through built-in real-time chat. From browsing listings with rich filters to managing your own properties, proposals, and transactions, PrimeNest brings the entire buying and selling workflow into one place.
 
 🔗 **Live URL:** [your-prime-nest.vercel.app](https://your-prime-nest.vercel.app/)
 
-💳 **Note:** Payments run on Stripe Test Mode — use Stripe's standard test card `4242 4242 4242 4242` (any future expiry, any CVC). No real charges occur.
+> 💳 **Note:** Payments run on Stripe Test Mode — use Stripe's standard test card `4242 4242 4242 4242` (any future expiry, any CVC). No real charges occur.
 
 ## ✨ Overview
 
