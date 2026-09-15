@@ -17,8 +17,8 @@ const DashboardConversation = ({ conversation, isActive = false, onClick }: Prop
     const hasUnread = conversation.unreadCount > 0;
 
     // Determine the "other" participant
-    const { fullName, profilePic } = conversation.participants.find((p) => p._id !== currentUser._id);
-    const optimizedProfilePic = profilePic ? getOptimizedImageUrl(profilePic, { width: 100, height: 100 }) : "";
+    const participant = conversation.participants.find((p) => p._id !== currentUser._id);
+    const optimizedProfilePic = participant?.profilePic ? getOptimizedImageUrl(participant.profilePic, { width: 100, height: 100 }) : "";
 
     const displayTime = conversation.lastMessage ? formatRelativeTime(conversation.lastMessage.createdAt) : formatRelativeTime(conversation.updatedAt);
 
@@ -42,12 +42,12 @@ const DashboardConversation = ({ conversation, isActive = false, onClick }: Prop
                             width={100}
                             height={100}
                             loading="lazy"
-                            alt={`${fullName}'s Profile Picture`}
+                            alt={`${participant?.fullName || "Other"}'s Profile Picture`}
                             className="size-full object-cover"
                         />
                     ) : (
                         <div className="flex size-full items-center justify-center rounded-full bg-section border border-border text-text-secondary font-bold text-2xl">
-                            {fullName.charAt(0)}
+                            {participant?.fullName ? participant.fullName.charAt(0) : "U"}
                         </div>
                     )
                 }
@@ -62,7 +62,7 @@ const DashboardConversation = ({ conversation, isActive = false, onClick }: Prop
                             "truncate text-sm font-semibold"
                         )}
                     >
-                        {fullName}
+                        {participant?.fullName || "Unknown"}
                     </span>
 
                     <span
