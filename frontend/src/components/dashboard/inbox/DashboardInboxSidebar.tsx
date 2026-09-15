@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Search, MessageSquare, AlertCircle } from "lucide-react";
+import { Search, AlertCircle, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
 import { fetchConversations } from "@/lib/apiCalls";
 import type { Conversation } from "@/types/global";
+import DashboardInboxEmptyState from "./DashboardInboxEmptyState";
 
 type FilterTab = "all" | "unread" | "favourites";
 
@@ -141,27 +142,22 @@ const DashboardInboxSidebar = () => {
                                 Conversation {conversation._id}
                             </div>
                         ))}
-                        
+
+                        {/* ---- Infinite Scrolling Observer Div ---- */}
                         <div ref={sentinelRef} className="h-4" />
-                        {isFetchingNextPage && <div className="p-4 text-center text-xs">Loading...</div>}
+
+                        {isFetchingNextPage && (
+                            <div className="flex mx-auto items-center gap-2 text-sm text-text">
+                                <RefreshCw className="size-4 animate-spin" />
+                                <span className="font-medium">Loading more...</span>
+                            </div>
+                        )}
                     </div>
                 )}
 
                 {/* ---- Empty State ---- */}
                 {(!isLoading && !isError && conversations.length === 0) && (
-                    <div className="flex h-full flex-col items-center px-8 py-20 text-center">
-                        <div className="flex size-12 items-center justify-center rounded-2xl bg-section">
-                            <MessageSquare className="size-6 text-text-secondary" />
-                        </div>
-
-                        <h3 className="mt-4 text-sm font-semibold text-text">
-                            No conversations yet
-                        </h3>
-
-                        <p className="mt-1.5 max-w-55 text-xs leading-relaxed text-text-secondary">
-                            Start a chat by visiting a property listing.
-                        </p>
-                    </div>
+                    <DashboardInboxEmptyState />
                 )}
             </ScrollArea>
         </aside>
