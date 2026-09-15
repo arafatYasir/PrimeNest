@@ -17,7 +17,7 @@ const DashboardConversation = ({ conversation, isActive = false, onClick }: Prop
     const hasUnread = conversation.unreadCount > 0;
 
     // Determine the "other" participant
-    const participant = conversation.participants.find((p) => p._id !== currentUser._id);
+    const participant = conversation.participants.find((p) => p._id !== currentUser?._id);
     const optimizedProfilePic = participant?.profilePic ? getOptimizedImageUrl(participant.profilePic, { width: 100, height: 100 }) : "";
 
     const displayTime = conversation.lastMessage ? formatRelativeTime(conversation.lastMessage.createdAt) : formatRelativeTime(conversation.updatedAt);
