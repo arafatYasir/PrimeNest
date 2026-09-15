@@ -12,17 +12,16 @@ export async function getNotifications(req, res, next) {
 
         const skip = (page - 1) * limit;
 
-        const [notifications, totalNotifications] = await Promise.all([
-            Notification.find({ userId }).sort({ createdAt: -1 }).skip(skip).limit(limit),
-            Notification.countDocuments({ userId })
-        ]);
+        // Fetch limit + 1 to check for next page
+        const notifications = await Notification.find({ userId }).sort({ createdAt: -1 }).skip(skip).limit(limit + 1);
+        const hasNextPage = notifications.length > limit;
 
-        const totalPages = Math.ceil(totalNotifications / limit);
-        const hasNextPage = totalPages > page;
+        // Remove the extra notification if it exists
+        const data = hasNextPage ? notifications.slice(0, limit) : notifications;
 
         return res.status(200).json({
             success: true,
-            data: notifications,
+            data,
             pagination: {
                 hasNextPage
             }
