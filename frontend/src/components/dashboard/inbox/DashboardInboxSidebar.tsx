@@ -20,13 +20,18 @@ interface ConversationResponse {
     pagination: { hasNextPage: boolean };
 }
 
+interface Props {
+    conversationId: string;
+    setConversationId: (val: string) => void;
+}
+
 const filterTabs: { label: string; value: FilterTab }[] = [
     { label: "All", value: "all" },
     { label: "Unread", value: "unread" },
     { label: "Favourites", value: "favourites" },
 ];
 
-const DashboardInboxSidebar = () => {
+const DashboardInboxSidebar = ({ conversationId, setConversationId }: Props) => {
     // States
     const [searchQuery, setSearchQuery] = useState("");
     const [activeFilter, setActiveFilter] = useState<FilterTab>("all");
@@ -139,7 +144,12 @@ const DashboardInboxSidebar = () => {
                 {(!isLoading && !isError && conversations.length > 0) && (
                     <div className="flex flex-col p-2 gap-y-1">
                         {conversations.map((conversation: Conversation) => (
-                            <DashboardConversation key={conversation._id} conversation={conversation} />
+                            <DashboardConversation
+                                key={conversation._id}
+                                conversation={conversation}
+                                onClick={() => setConversationId(conversation._id)}
+                                isActive={conversationId === conversation._id}
+                            />
                         ))}
 
                         {/* ---- Infinite Scrolling Observer Div ---- */}

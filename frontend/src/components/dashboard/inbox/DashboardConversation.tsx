@@ -6,7 +6,7 @@ import type { Conversation } from "@/types/global";
 interface Props {
     conversation: Conversation;
     isActive?: boolean;
-    onClick?: (conversation: Conversation) => void;
+    onClick?: () => void;
 }
 
 const DashboardConversation = ({ conversation, isActive = false, onClick }: Props) => {
@@ -24,7 +24,7 @@ const DashboardConversation = ({ conversation, isActive = false, onClick }: Prop
 
     return (
         <div
-            onClick={() => onClick?.(conversation)}
+            onClick={onClick}
             className={cn(
                 "group flex cursor-pointer w-full items-center gap-3 rounded-xl px-3 py-3 transition-colors duration-150 hover:bg-primary/10 active:bg-primary/10",
                 hasUnread && "bg-section/50",
