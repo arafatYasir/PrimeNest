@@ -4,13 +4,13 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
 import { fetchConversations } from "@/lib/apiCalls";
 import type { Conversation } from "@/types/global";
 import DashboardInboxEmptyState from "./DashboardInboxEmptyState";
 import DashboardConversation from "./DashboardConversation";
+import DashboardConversationSkeleton from "./DashboardConversationSkeleton";
 
 type FilterTab = "all" | "unread" | "favourites";
 
@@ -119,9 +119,9 @@ const DashboardInboxSidebar = () => {
             <ScrollArea className="flex-1">
                 {/* ---- Loading State ---- */}
                 {isLoading && (
-                    <div className="flex flex-col gap-2 p-4">
+                    <div className="flex flex-col gap-y-1 p-2">
                         {Array.from({ length: 5 }).map((_, i) => (
-                            <Skeleton key={i} className="h-16 w-full rounded-xl" />
+                            <DashboardConversationSkeleton key={i} />
                         ))}
                     </div>
                 )}

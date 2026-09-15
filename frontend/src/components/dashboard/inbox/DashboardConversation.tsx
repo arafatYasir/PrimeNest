@@ -33,7 +33,7 @@ const DashboardConversation = ({ conversation, isActive = false, onClick }: Prop
         >
             {/* ---- Avatar ---- */}
             <div
-                className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full"
+                className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full"
             >
                 {
                     optimizedProfilePic ? (
