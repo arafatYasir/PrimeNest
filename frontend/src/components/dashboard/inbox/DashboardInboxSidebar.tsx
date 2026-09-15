@@ -10,6 +10,7 @@ import { useAuth } from "@clerk/react";
 import { fetchConversations } from "@/lib/apiCalls";
 import type { Conversation } from "@/types/global";
 import DashboardInboxEmptyState from "./DashboardInboxEmptyState";
+import DashboardConversation from "./DashboardConversation";
 
 type FilterTab = "all" | "unread" | "favourites";
 
@@ -136,11 +137,9 @@ const DashboardInboxSidebar = () => {
 
                 {/* ---- Content ---- */}
                 {(!isLoading && !isError && conversations.length > 0) && (
-                    <div className="flex flex-col p-2">
+                    <div className="flex flex-col p-2 gap-y-1">
                         {conversations.map((conversation: Conversation) => (
-                            <div key={conversation._id} className="p-4 border-b">
-                                Conversation {conversation._id}
-                            </div>
+                            <DashboardConversation key={conversation._id} conversation={conversation} />
                         ))}
 
                         {/* ---- Infinite Scrolling Observer Div ---- */}

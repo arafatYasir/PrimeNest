@@ -66,10 +66,10 @@ export async function getAllConversations(req, res, next) {
 
         const skip = (page - 1) * limit;
 
-        // Fetch limit + 1 to check for next page efficiently
+        // Fetch limit + 1 to check for next page
         const conversations = await Conversation.find({
             participants: { $in: [userId] },
-        }).sort({ createdAt: -1, unreadCount: -1 }).skip(skip).limit(limit + 1);
+        }).populate("participants", "fullName profilePic").sort({ createdAt: -1, unreadCount: -1 }).skip(skip).limit(limit + 1);
 
         const hasNextPage = conversations.length > limit;
 
